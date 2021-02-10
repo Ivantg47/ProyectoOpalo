@@ -1,5 +1,5 @@
 /**
- * Clase DAO del producto. 1111111111111
+ * Clase DAO del producto.
  * @author Ivan Tronco
  * @version 1.0
  */
