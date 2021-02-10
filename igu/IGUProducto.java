@@ -13,8 +13,7 @@ import javax.swing.table.*;
 
 public class IGUProducto extends JFrame{
 
-	public static final String ICONOS = "/iconos/"; //ruta para la carpeta de imagenes
- 	private JButton btModificar, btEliminar, btAgregar, btFlechaDer, btFlechaDobleDer, btFlechaDobleIzq, btFlechaIzq;
+ 	//private JButton btModificar, btEliminar, btAgregar, btFlechaDer, btFlechaDobleDer, btFlechaDobleIzq, btFlechaIzq;
 	//private JComboBox<String> combo1;
 
 	private JTextField camposTexto[] = {
@@ -88,7 +87,7 @@ public class IGUProducto extends JFrame{
 		campoBuscar.setPreferredSize(new Dimension(200,25));
 		panel.add(campoBuscar);
 
-		JButton btBuscar = new JButton(new ImageIcon(ICONOS + "lupa.png"));
+		JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa.png")));
 		btBuscar.setPreferredSize(new Dimension(32,32));
 
 		btBuscar.addActionListener(new ActionListener() {
@@ -135,13 +134,13 @@ public class IGUProducto extends JFrame{
 
 		panel.add(jScroll, BorderLayout.CENTER);
 
-		btFlechaDer = new JButton(new ImageIcon(ICONOS + "flechaDer.png"));
+		btFlechaDer = new JButton(new ImageIcon(getClass().getResource("/iconos/flechaDer.png")));
 		btFlechaDer.setToolTipText("Siguiente");		
-		btFlechaDobleDer = new JButton(new ImageIcon(ICONOS + "flechaDobleDer.png"));
+		btFlechaDobleDer = new JButton(new ImageIcon(getClass().getResource("/iconos/flechaDobleDer.png")));
 		btFlechaDobleDer.setToolTipText("Fin");		
-		btFlechaDobleIzq = new JButton(new ImageIcon(ICONOS + "flechaDobleIzq.png"));
+		btFlechaDobleIzq = new JButton(new ImageIcon(getClass().getResource("/iconos/flechaDobleIzq.png")));
 		btFlechaDobleIzq.setToolTipText("Inicio");
-		btFlechaIzq = new JButton(new ImageIcon(ICONOS + "flechaIzq.png"));
+		btFlechaIzq = new JButton(new ImageIcon(getClass().getResource("/iconos/flechaIzq.png")));
 		btFlechaIzq.setToolTipText("Anterior");
 		
 
@@ -221,13 +220,13 @@ public class IGUProducto extends JFrame{
 
 		panelBotones.setLayout(new FlowLayout());
 
-		btAgregar = new JButton(new ImageIcon(ICONOS + "agregar.png"));
+		btAgregar = new JButton(new ImageIcon(getClass().getResource("/iconos/agregar.png")));
 		btAgregar.setToolTipText("Agregar");
 
-		btEliminar = new JButton(new ImageIcon(ICONOS + "eliminar.png"));
+		btEliminar = new JButton(new ImageIcon(getClass().getResource("/iconos/eliminar.png")));
 		btEliminar.setToolTipText("Eliminar");
 
-		btModificar = new JButton(new ImageIcon(ICONOS + "modificar.png"));
+		btModificar = new JButton(new ImageIcon(getClass().getResource("/iconos/modificar.png")));
 		btModificar.setToolTipText("Modificar");
 
 		panelBotones.add(btAgregar);
@@ -235,10 +234,22 @@ public class IGUProducto extends JFrame{
 		panelBotones.add(btModificar);
 
 		return panelBotones;
+
 	}
 
 	public void limpiar(){
 
+		for (JTextField campo : camposTextoExistencias) {
+			
+			campo.setText(null);
+
+		}
+
+		for (JTextField campo : camposTexto) {
+			
+			campo.setText(null);
+			
+		}
 
 	}
 
