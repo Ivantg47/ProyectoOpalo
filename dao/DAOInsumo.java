@@ -1,4 +1,8 @@
 import java.sql.*;
+
+//ejecutar java ProyectoOpalo.dao.DAOInsumo
+//compilo normal ejecuto ProyectoOpalo.igu.IGUAplicacionMenu
+
 package ProyectoOpalo.dao;//Pertenece a este paquete
 
 import java.sql.Connection;
@@ -8,6 +12,8 @@ import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 
 public class DAOInsumo{
+
+	private String hola;
 
 	private Connection oConexion = null;
 	private PreparedStatement oSentencia = null;
