@@ -68,9 +68,9 @@ public class IGUProducto extends JFrame{
 		JPanel panel = new JPanel();
 
 		panel.setBorder(BorderFactory.createTitledBorder(""));
-		panel.setLayout(new FlowLayout());
+		panel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-		JLabel titulo = new JLabel("Producto\t\t\t");
+		JLabel titulo = new JLabel("Producto      ");
 		titulo.setFont(new Font("Tahoma", Font.PLAIN, 36));
 		panel.add(titulo);
 
@@ -157,19 +157,20 @@ public class IGUProducto extends JFrame{
 	
 	public JPanel getPanelDatosProducto(){
 
-		JPanel panelLayoutGeneral = new JPanel();
+		JPanel panelDatosProducto = new JPanel();
 
-		panelLayoutGeneral.setLayout(new GridLayout(3, 1, 50, 10));
+		// panelDatosProducto.setLayout(new GridLayout(3, 1, 50, 10));
+		panelDatosProducto.setLayout(new FlowLayout(FlowLayout.CENTER, 0,10));
+		System.out.println("flow");
+		panelDatosProducto.add(getPanelDatos());
+		panelDatosProducto.add(getPanelExistencias());
+		panelDatosProducto.add(getPanelBotones());
+		panelDatosProducto.setPreferredSize(new Dimension(230, 670));
 
-		panelLayoutGeneral.add(getPanelDatos());
-		panelLayoutGeneral.add(getPanelExistencias());
-		panelLayoutGeneral.add(getPanelBotones());
-		
-
-		panelLayoutGeneral.setBorder(BorderFactory.createTitledBorder("Datos producto"));
+		panelDatosProducto.setBorder(BorderFactory.createTitledBorder("Datos producto"));
 
 
-		return panelLayoutGeneral;
+		return panelDatosProducto;
 
 	}
 
@@ -186,6 +187,8 @@ public class IGUProducto extends JFrame{
 
 		}
 
+		panel.setPreferredSize(new Dimension(210, 200));
+
 		return panel;
 
 	}
@@ -199,6 +202,7 @@ public class IGUProducto extends JFrame{
 		for (int eContador = 0; eContador < etiquetasExistencias.length; eContador++){
 
 			panelExistencias.add(etiquetasExistencias[eContador]);
+			etiquetasExistencias[eContador].setSize(50, 30);
 			
 		}
 
@@ -209,6 +213,7 @@ public class IGUProducto extends JFrame{
 		}
 
 		panelExistencias.setBorder(BorderFactory.createTitledBorder("Existencias"));
+		panelExistencias.setPreferredSize(new Dimension(210, 80));
 
 		return panelExistencias;
 
@@ -239,6 +244,8 @@ public class IGUProducto extends JFrame{
 		panelBotones.add(btAgregar);
 		panelBotones.add(btEliminar);
 		panelBotones.add(btModificar);
+
+		// panelBotones.setPreferredSize(new Dimension(210, 40));
 
 		return panelBotones;
 
