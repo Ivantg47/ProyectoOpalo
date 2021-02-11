@@ -1,7 +1,8 @@
 /**
  * Clase que implementa una interfaz para el modulo de productos.
  * @author Frida Hernadez
- * @version 1.0
+ * @author Ivan Tronco
+ * @version 1.2
  */
 
 package ProyectoOpalo.igu;
@@ -10,11 +11,13 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
+import ProyectoOpalo.control.ControlProducto;
 
 public class IGUProducto extends JFrame{
 
- 	private JButton btModificar, btEliminar, btAgregar, btFlechaDer, btFlechaDobleDer, btFlechaDobleIzq, btFlechaIzq;
-	//private JComboBox<String> combo1;
+ 	private JButton btModificar, btEliminar, btAgregar, btFlechaDer, btFlechaDobleDer, btFlechaDobleIzq, btFlechaIzq, btBuscar;
+ 	private ControlProducto control = new ControlProducto(this);
+ 	private ControlProducto.EventoRaton raton = control.new EventoRaton();
 
 	private JTextField camposTexto[] = {
 		new JTextField(),
@@ -43,15 +46,7 @@ public class IGUProducto extends JFrame{
 	};
 
 	public IGUProducto(){
-/*
-		super("Producto");
 
-		add(getIGUProducto());
-
-		setSize(700, 600);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setVisible(true);
-*/
 	}
 
 	public JPanel getIGUProducto(){
@@ -73,9 +68,9 @@ public class IGUProducto extends JFrame{
 		JPanel panel = new JPanel();
 
 		panel.setBorder(BorderFactory.createTitledBorder(""));
-		panel.setLayout(new FlowLayout());
+		panel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-		JLabel titulo = new JLabel("Producto");
+		JLabel titulo = new JLabel("Producto      ");
 		titulo.setFont(new Font("Tahoma", Font.PLAIN, 36));
 		panel.add(titulo);
 
@@ -85,19 +80,14 @@ public class IGUProducto extends JFrame{
 		JTextField campoBuscar = new JTextField();
 		campoBuscar.setText("Codigo/Nombre");
 		campoBuscar.setPreferredSize(new Dimension(200,25));
+		campoBuscar.addMouseListener(raton);
 		panel.add(campoBuscar);
 
-		JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa.png")));
+		btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa.png")));
 		btBuscar.setPreferredSize(new Dimension(32,32));
 
-		btBuscar.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent evt) {
-
-            //    btBuscarActionPerformed(evt);
-
-            }
-        });
+		btBuscar.addActionListener(control);
+		btBuscar.setActionCommand("buscar");
 
 		panel.add(btBuscar);
 
@@ -135,13 +125,24 @@ public class IGUProducto extends JFrame{
 		panel.add(jScroll, BorderLayout.CENTER);
 
 		btFlechaDer = new JButton(new ImageIcon(getClass().getResource("/iconos/flechaDer.png")));
-		btFlechaDer.setToolTipText("Siguiente");		
+		btFlechaDer.setToolTipText("Siguiente");
+		btFlechaDer.addActionListener(control);
+		btFlechaDer.setActionCommand("siguiente");
+
 		btFlechaDobleDer = new JButton(new ImageIcon(getClass().getResource("/iconos/flechaDobleDer.png")));
-		btFlechaDobleDer.setToolTipText("Fin");		
+		btFlechaDobleDer.setToolTipText("Fin");	
+		btFlechaDobleDer.addActionListener(control);
+		btFlechaDobleDer.setActionCommand("fin");
+
 		btFlechaDobleIzq = new JButton(new ImageIcon(getClass().getResource("/iconos/flechaDobleIzq.png")));
 		btFlechaDobleIzq.setToolTipText("Inicio");
+		btFlechaDobleIzq.addActionListener(control);
+		btFlechaDobleIzq.setActionCommand("inicio");
+
 		btFlechaIzq = new JButton(new ImageIcon(getClass().getResource("/iconos/flechaIzq.png")));
-		btFlechaIzq.setToolTipText("Anterior");
+		btFlechaIzq.setToolTipText("anterior");
+		btFlechaIzq.addActionListener(control);
+		btFlechaIzq.setActionCommand("anterior");
 		
 
 		panel.add(btFlechaDobleIzq, BorderLayout.SOUTH);
@@ -156,19 +157,20 @@ public class IGUProducto extends JFrame{
 	
 	public JPanel getPanelDatosProducto(){
 
-		JPanel panelLayoutGeneral = new JPanel();
+		JPanel panelDatosProducto = new JPanel();
 
-		panelLayoutGeneral.setLayout(new GridLayout(3, 1, 50, 10));
+		// panelDatosProducto.setLayout(new GridLayout(3, 1, 50, 10));
+		panelDatosProducto.setLayout(new FlowLayout(FlowLayout.CENTER, 0,10));
+		System.out.println("flow");
+		panelDatosProducto.add(getPanelDatos());
+		panelDatosProducto.add(getPanelExistencias());
+		panelDatosProducto.add(getPanelBotones());
+		panelDatosProducto.setPreferredSize(new Dimension(230, 670));
 
-		panelLayoutGeneral.add(getPanelDatos());
-		panelLayoutGeneral.add(getPanelExistencias());
-		panelLayoutGeneral.add(getPanelBotones());
-		
-
-		panelLayoutGeneral.setBorder(BorderFactory.createTitledBorder("Datos producto"));
+		panelDatosProducto.setBorder(BorderFactory.createTitledBorder("Datos producto"));
 
 
-		return panelLayoutGeneral;
+		return panelDatosProducto;
 
 	}
 
@@ -185,6 +187,8 @@ public class IGUProducto extends JFrame{
 
 		}
 
+		panel.setPreferredSize(new Dimension(210, 200));
+
 		return panel;
 
 	}
@@ -198,6 +202,7 @@ public class IGUProducto extends JFrame{
 		for (int eContador = 0; eContador < etiquetasExistencias.length; eContador++){
 
 			panelExistencias.add(etiquetasExistencias[eContador]);
+			etiquetasExistencias[eContador].setSize(50, 30);
 			
 		}
 
@@ -208,6 +213,7 @@ public class IGUProducto extends JFrame{
 		}
 
 		panelExistencias.setBorder(BorderFactory.createTitledBorder("Existencias"));
+		panelExistencias.setPreferredSize(new Dimension(210, 80));
 
 		return panelExistencias;
 
@@ -222,16 +228,24 @@ public class IGUProducto extends JFrame{
 
 		btAgregar = new JButton(new ImageIcon(getClass().getResource("/iconos/agregar.png")));
 		btAgregar.setToolTipText("Agregar");
+		btAgregar.addActionListener(control);
+		btAgregar.setActionCommand("agregar");
 
 		btEliminar = new JButton(new ImageIcon(getClass().getResource("/iconos/eliminar.png")));
 		btEliminar.setToolTipText("Eliminar");
+		btEliminar.addActionListener(control);
+		btEliminar.setActionCommand("eliminar");
 
 		btModificar = new JButton(new ImageIcon(getClass().getResource("/iconos/modificar.png")));
 		btModificar.setToolTipText("Modificar");
+		btModificar.addActionListener(control);
+		btModificar.setActionCommand("modificar");
 
 		panelBotones.add(btAgregar);
 		panelBotones.add(btEliminar);
 		panelBotones.add(btModificar);
+
+		// panelBotones.setPreferredSize(new Dimension(210, 40));
 
 		return panelBotones;
 
