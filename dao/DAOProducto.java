@@ -16,7 +16,7 @@ public class DAOProducto{
 	private Connection conexion = null;
 	private PreparedStatement prepared;
     private ResultSet result;
-//	DTOProducto producto;
+	DTOProducto producto;
 
     public DAOProducto(){
 
