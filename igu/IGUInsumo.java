@@ -14,26 +14,27 @@ import javax.swing.table.*;
 public class IGUInsumo extends JFrame{
 
 	public static final String ICONOS = "/iconos/"; //ruta para la carpeta de imagenes
-	private JComboBox<String> combo1;
 
-	private JTextField camposTexto[] = {
+	private JComboBox<String> oComboUnidadMedida;
+
+	private JTextField aCamposTextoDatos[] = {
 		new JTextField(),
 		new JTextField(),
 	};
 
-	private JTextField camposTextoExistencias[] = {
+	private JTextField aCamposTextoDatosExistencias[] = {
 		new JTextField(),
 		new JTextField(),
 		new JTextField(),
 	};
 
-	private JLabel etiquetas[] = {
+	private JLabel aEtiquetasDatos[] = {
 		new JLabel("Codigo"),
-		new JLabel("Nombre"),
+		new JLabel("Nombres"),
 		new JLabel("Unidad medida"),
 	};
 
-	private JLabel etiquetasExistencias[] = {
+	private JLabel aEtiquetasExistencias[] = {
 		new JLabel("Actual"),
 		new JLabel("M\u00EDnima"),
 		new JLabel("M\u00E1xima"),
@@ -53,72 +54,71 @@ public class IGUInsumo extends JFrame{
 
 	public JPanel getIGUInsumo(){
 
-		JPanel panel = new JPanel();
-		panel.setLayout(new BorderLayout());
-		panel.add(getPanel1(), BorderLayout.NORTH);
-		panel.add(getPanel2(), BorderLayout.CENTER);
-		panel.add(getPanelLayoutGeneral(), BorderLayout.WEST);
+		JPanel oPanel = new JPanel();
+		oPanel.setLayout(new BorderLayout());
+		oPanel.add(getoPaneloEtiquetaBuscar(), BorderLayout.NORTH);
+		oPanel.add(getPanelInventario(), BorderLayout.CENTER);
+		oPanel.add(getPanelDatos(), BorderLayout.WEST);
 
-		return panel;
-
-	}
-
-	public JPanel getPanel1(){
-
-		JPanel panel = new JPanel();
-
-		panel.setBorder(BorderFactory.createTitledBorder(""));
-		panel.setLayout(new FlowLayout());
-
-		JLabel titulo = new JLabel("Insumos");
-		titulo.setFont(new Font("Tahoma", Font.PLAIN, 36));
-		panel.add(titulo);
-
-		JLabel buscar = new JLabel("Buscar");
-		panel.add(buscar);
-
-		JTextField campoBuscar = new JTextField();
-		campoBuscar.setText("Codigo/Nombre");
-		campoBuscar.setPreferredSize(new Dimension(200,25));
-		panel.add(campoBuscar);
-
-		JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa.png")));
-		btBuscar.setPreferredSize(new Dimension(32,32));
-		panel.add(btBuscar);
-
-
-		return panel;
+		return oPanel;
 
 	}
 
-	public JPanel getPanel2(){
+	public JPanel getoPaneloEtiquetaBuscar(){
 
-		JPanel panel = new JPanel();
+		JPanel oPanel = new JPanel();
 
-		panel.setBorder(BorderFactory.createTitledBorder("Inventario"));
-		//panel.setLayout(new GridLayout(1,4));
+		oPanel.setBorder(BorderFactory.createTitledBorder(""));
+		oPanel.setLayout(new FlowLayout());
 
-		//creacion de la tabla
-		JTable tabla = new JTable();
-		JScrollPane jScroll = new JScrollPane(tabla);
+		JLabel oEtiquetaInsumos = new JLabel("Insumos");
+		oEtiquetaInsumos.setFont(new Font("Tahoma", Font.PLAIN, 36));
+		oPanel.add(oEtiquetaInsumos);
 
-		String [] nombre = {
+		JLabel oEtiquetaBuscar = new JLabel("Buscar");
+		oPanel.add(oEtiquetaBuscar);
+
+		JTextField oCampoTxBuscar = new JTextField();
+		oCampoTxBuscar.setText("Codigo/aNombres");
+		oCampoTxBuscar.setPreferredSize(new Dimension(200,25));
+		oPanel.add(oCampoTxBuscar);
+
+		JButton oBotonBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa.png")));
+		oBotonBuscar.setPreferredSize(new Dimension(32,32));
+		oPanel.add(oBotonBuscar);
+
+		return oPanel;
+
+	}
+
+	public JPanel getPanelInventario(){
+
+		JPanel oPanel = new JPanel();
+
+		oPanel.setBorder(BorderFactory.createTitledBorder("Inventario"));
+		//oPanel.setLayout(new GridLayout(1,4));
+
+		//creacion de la oTabla
+		JTable oTabla = new JTable();
+		JScrollPane jScroll = new JScrollPane(oTabla);
+
+		String [] aNombres = {
                 "Codigo", "Nombre", "Cantidad"
             };
 
-		tabla.setModel(new DefaultTableModel(
+		oTabla.setModel(new DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
                 {null, null, null},
                 {null, null, null}
-            }, nombre
+            }, aNombres
             
         ));
 
-        jScroll.setViewportView(tabla);
+        jScroll.setViewportView(oTabla);
 
-		panel.add(jScroll, BorderLayout.CENTER);
+		oPanel.add(jScroll, BorderLayout.CENTER);
 
 		JButton btFlechaDer = new JButton(new ImageIcon(getClass().getResource("/iconos/flechaDer.png")));
 		btFlechaDer.setToolTipText("Siguiente");		
@@ -130,97 +130,96 @@ public class IGUInsumo extends JFrame{
 		btFlechaIzq.setToolTipText("Anterior");
 		
 
-		panel.add(btFlechaDobleIzq, BorderLayout.SOUTH);
-		panel.add(btFlechaIzq, BorderLayout.SOUTH);
-		panel.add(btFlechaDer, BorderLayout.SOUTH);
-		panel.add(btFlechaDobleDer, BorderLayout.SOUTH);
+		oPanel.add(btFlechaDobleIzq, BorderLayout.SOUTH);
+		oPanel.add(btFlechaIzq, BorderLayout.SOUTH);
+		oPanel.add(btFlechaDer, BorderLayout.SOUTH);
+		oPanel.add(btFlechaDobleDer, BorderLayout.SOUTH);
 
 
-		return panel;
+		return oPanel;
 
 	}
 	
-	public JPanel getPanelLayoutGeneral(){
+	public JPanel getPanelDatos(){
 
-		JPanel panelLayoutGeneral = new JPanel();
+		JPanel oPanel = new JPanel();
 
-		panelLayoutGeneral.setLayout(new GridLayout(3, 1, 50, 10));
+		oPanel.setLayout(new GridLayout(3, 1, 50, 10));
 
-		panelLayoutGeneral.add(getPanelLayout());
-		panelLayoutGeneral.add(getPanelExistencias());
-		panelLayoutGeneral.add(getPanelBotones());
+		oPanel.add(getPanelCombo());
+		oPanel.add(getPanelExistencias());
+		oPanel.add(getPanelBotonesCrud());
 		
 
-		panelLayoutGeneral.setBorder(BorderFactory.createTitledBorder("Datos insumo"));
+		oPanel.setBorder(BorderFactory.createTitledBorder("Datos insumo"));
 
 
-		return panelLayoutGeneral;
+		return oPanel;
 
 	}
 
-	public JPanel getPanelLayout(){
+	public JPanel getPanelCombo(){
 
-		JPanel panel = new JPanel();
+		JPanel oPanel = new JPanel();
 
-		combo1 = new JComboBox<String>();
+		oComboUnidadMedida = new JComboBox<String>();
 
-		panel.setLayout(new GridLayout(6, 1));
+		oPanel.setLayout(new GridLayout(6, 1));
 
-		for (int i = 0; i < camposTexto.length; i++){
-			panel.add(etiquetas[i]);
-			panel.add(camposTexto[i]);
+		for (int i = 0; i < aCamposTextoDatos.length; i++){
+			oPanel.add(aEtiquetasDatos[i]);
+			oPanel.add(aCamposTextoDatos[i]);
 		}
 
-		panel.add(etiquetas[etiquetas.length - 1]);
-		panel.add(combo1);
+		oPanel.add(aEtiquetasDatos[aEtiquetasDatos.length - 1]);
+		oPanel.add(oComboUnidadMedida);
 
-		combo1.addItem("Miligramo");
-        combo1.addItem("Gramo");
-        combo1.addItem("Kilogramo");
-        combo1.addItem("Mililitro");
-        combo1.addItem("Litro");
-        combo1.addItem("Onza");
-        combo1.addItem("Galon");
-        combo1.addItem("Pieza");
+		oComboUnidadMedida.addItem("Miligramo");
+        oComboUnidadMedida.addItem("Gramo");
+        oComboUnidadMedida.addItem("Kilogramo");
+        oComboUnidadMedida.addItem("Mililitro");
+        oComboUnidadMedida.addItem("Litro");
+        oComboUnidadMedida.addItem("Onza");
+        oComboUnidadMedida.addItem("Galon");
+        oComboUnidadMedida.addItem("Pieza");
 
-		return panel;
+		return oPanel;
 
 	}
 
 	public JPanel getPanelExistencias(){
 
-		JPanel panelExistencias = new JPanel();
+		JPanel oPanel = new JPanel();
 
-		panelExistencias.setLayout(new GridLayout(2, 3, 10, 0));
+		oPanel.setLayout(new GridLayout(2, 3, 10, 0));
 
-		for (int eContador = 0; eContador < etiquetasExistencias.length; eContador++){
+		for (int eContador = 0; eContador < aEtiquetasExistencias.length; eContador++){
 
-			panelExistencias.add(etiquetasExistencias[eContador]);
+			oPanel.add(aEtiquetasExistencias[eContador]);
 			
 		}
 
-		for (int eContador = 0; eContador < camposTextoExistencias.length; eContador++){
+		for (int eContador = 0; eContador < aCamposTextoDatosExistencias.length; eContador++){
 
-			panelExistencias.add(camposTextoExistencias[eContador]);
+			oPanel.add(aCamposTextoDatosExistencias[eContador]);
 
 		}
 
-		panelExistencias.setBorder(BorderFactory.createTitledBorder("Existencias"));
+		oPanel.setBorder(BorderFactory.createTitledBorder("Existencias"));
 
-		return panelExistencias;
+		return oPanel;
 
 	}
 	
 
-	public JPanel getPanelBotones(){
+	public JPanel getPanelBotonesCrud(){
 
-		JPanel panelBotones = new JPanel();
+		JPanel oPanelBotones = new JPanel();
 
-		panelBotones.setLayout(new FlowLayout());
+		oPanelBotones.setLayout(new FlowLayout());
 
 		JButton btAgregar = new JButton(new ImageIcon(getClass().getResource("/iconos/agregar.png")));
 		btAgregar.setToolTipText("Agregar");
-	//	btAgregar.setPreferredSize(new Dimension(32,32));
 
 		JButton btEliminar = new JButton(new ImageIcon(getClass().getResource("/iconos/eliminar.png")));
 		btEliminar.setToolTipText("Eliminar");
@@ -228,16 +227,10 @@ public class IGUInsumo extends JFrame{
 		JButton btModificar = new JButton(new ImageIcon(getClass().getResource("/iconos/modificar.png")));
 		btModificar.setToolTipText("Modificar");
 
-		panelBotones.add(btAgregar);
-		panelBotones.add(btEliminar);
-		panelBotones.add(btModificar);
+		oPanelBotones.add(btAgregar);
+		oPanelBotones.add(btEliminar);
+		oPanelBotones.add(btModificar);
 
-		return panelBotones;
+		return oPanelBotones;
 	}
-/*
-	public static void main(String[] args) {
-		IGUInsumo ventana = new IGUInsumo();
-		
-	}
-*/	
 }

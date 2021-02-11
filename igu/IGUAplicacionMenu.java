@@ -16,7 +16,7 @@ public class IGUAplicacionMenu extends JFrame{
 
 	public IGUAplicacionMenu(){
 
-		super("Pastelería Fun Cake");
+		super("Pasteler\u00EDa Fun Cake");
 
 		//add(getBarraHtas(), BorderLayout.NORTH);
 

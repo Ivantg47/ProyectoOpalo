@@ -13,7 +13,7 @@ import javax.swing.table.*;
 
 public class IGUProducto extends JFrame{
 
- 	//private JButton btModificar, btEliminar, btAgregar, btFlechaDer, btFlechaDobleDer, btFlechaDobleIzq, btFlechaIzq;
+ 	private JButton btModificar, btEliminar, btAgregar, btFlechaDer, btFlechaDobleDer, btFlechaDobleIzq, btFlechaIzq;
 	//private JComboBox<String> combo1;
 
 	private JTextField camposTexto[] = {
