@@ -79,7 +79,7 @@ public class IGUClientes extends JFrame{
 		campoBuscar.setPreferredSize(new Dimension(200,25));
 		panel.add(campoBuscar);
 
-		JButton btBuscar = new JButton(new ImageIcon(ICONOS + "lupa.png"));
+		JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa.png")));
 		btBuscar.setPreferredSize(new Dimension(32,32));
 		panel.add(btBuscar);
 
