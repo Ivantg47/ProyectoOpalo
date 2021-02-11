@@ -7,13 +7,17 @@
 
 package ProyectoOpalo.igu;
 
+
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
+import ProyectoOpalo.dto.DTOInsumo;
+import ProyectoOpalo.control.ControlInsumo;
+
 public class IGUInsumo extends JFrame{
 
-	public static final String ICONOS = "/iconos/"; //ruta para la carpeta de imagenes
+	public static final String ICONOS = "/iconos/"; 
 
 	private JComboBox<String> oComboUnidadMedida;
 
@@ -22,7 +26,7 @@ public class IGUInsumo extends JFrame{
 		new JTextField(),
 	};
 
-	private JTextField aCamposTextoDatosExistencias[] = {
+	private JTextField aCamposTextoExistencias[] = {
 		new JTextField(),
 		new JTextField(),
 		new JTextField(),
@@ -39,6 +43,9 @@ public class IGUInsumo extends JFrame{
 		new JLabel("M\u00EDnima"),
 		new JLabel("M\u00E1xima"),
 	};
+
+	
+	private ControlInsumo oControl = new ControlInsumo(this);
 
 	public IGUInsumo(){
 /*
@@ -85,6 +92,8 @@ public class IGUInsumo extends JFrame{
 
 		JButton oBotonBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa.png")));
 		oBotonBuscar.setPreferredSize(new Dimension(32,32));
+		
+
 		oPanel.add(oBotonBuscar);
 
 		return oPanel;
@@ -199,9 +208,9 @@ public class IGUInsumo extends JFrame{
 			
 		}
 
-		for (int eContador = 0; eContador < aCamposTextoDatosExistencias.length; eContador++){
+		for (int eContador = 0; eContador < aCamposTextoExistencias.length; eContador++){
 
-			oPanel.add(aCamposTextoDatosExistencias[eContador]);
+			oPanel.add(aCamposTextoExistencias[eContador]);
 
 		}
 
@@ -214,23 +223,49 @@ public class IGUInsumo extends JFrame{
 
 	public JPanel getPanelBotonesCrud(){
 
-		JPanel oPanelBotones = new JPanel();
+		JPanel oPanel = new JPanel();
 
-		oPanelBotones.setLayout(new FlowLayout());
+		oPanel.setLayout(new FlowLayout());
 
 		JButton btAgregar = new JButton(new ImageIcon(getClass().getResource("/iconos/agregar.png")));
+		btAgregar.addActionListener(oControl);
+		btAgregar.setActionCommand("btAgregar");
 		btAgregar.setToolTipText("Agregar");
 
 		JButton btEliminar = new JButton(new ImageIcon(getClass().getResource("/iconos/eliminar.png")));
+		btEliminar.addActionListener(oControl);
+		btEliminar.setActionCommand("btEliminar");
 		btEliminar.setToolTipText("Eliminar");
 
 		JButton btModificar = new JButton(new ImageIcon(getClass().getResource("/iconos/modificar.png")));
+		btModificar.addActionListener(oControl);
+		btModificar.setActionCommand("btModificar");
 		btModificar.setToolTipText("Modificar");
 
-		oPanelBotones.add(btAgregar);
-		oPanelBotones.add(btEliminar);
-		oPanelBotones.add(btModificar);
+		oPanel.add(btAgregar);
+		oPanel.add(btEliminar);
+		oPanel.add(btModificar);
 
-		return oPanelBotones;
+		return oPanel;
 	}
+
+	public DTOInsumo leerDTO(){
+
+		String sNombre, sUnidadMedida;
+		float  fExistenciaActual, fExistenciaMinima, fExistenciaMaxima;
+		DTOInsumo oDTOInsumo;
+
+		sNombre = aCamposTextoDatos[1].getText();
+		sUnidadMedida = oComboUnidadMedida.getSelectedItem().toString();
+		fExistenciaActual = Float.valueOf(aCamposTextoExistencias[0].getText());
+		fExistenciaMinima = Float.valueOf(aCamposTextoExistencias[1].getText());
+		fExistenciaMaxima = Float.valueOf(aCamposTextoExistencias[2].getText());
+
+		oDTOInsumo = new DTOInsumo(sNombre, sUnidadMedida, fExistenciaActual, fExistenciaMinima, fExistenciaMaxima);
+
+		return oDTOInsumo;
+	}
+		
+		
+		 
 }

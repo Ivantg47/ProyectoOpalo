@@ -1,4 +1,4 @@
-import java.sql.*;
+
 
 //ejecutar java ProyectoOpalo.dao.DAOInsumo
 //compilo normal ejecuto ProyectoOpalo.igu.IGUAplicacionMenu
@@ -9,14 +9,22 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.*;
 import javax.swing.JOptionPane;
+
+import ProyectoOpalo.dto.DTOInsumo;
 
 public class DAOInsumo{
 
-	private String hola;
+	private Connection oConexion;
+	private PreparedStatement oSentencia;
 
-	private Connection oConexion = null;
-	private PreparedStatement oSentencia = null;
+	public DAOInsumo(){
+
+		Connection oConexion = null;
+		PreparedStatement oSentencia = null;
+
+	}
 	
 	public Connection getConexion(){
 
@@ -52,12 +60,12 @@ public class DAOInsumo{
 
 	public void agregarInsumo(DTOInsumo oInsumo){
 
-		int eExecucion
+		int eExecucion;
+
 
 		try{
 
 			oConexion = getConexion();
-
 			String sConsultaInsertar = 	"INSERT INTO Insumo (unidadMedida, nombre, existenciaMinima,  existenciaMaxima, existenciaActual) " +
                                			"VALUES(?, ?, ?, ?, ?);";
 
@@ -106,9 +114,10 @@ public class DAOInsumo{
 
 		
 
-	}
+	}//Fin agregarInsumo
+	
 
-}//Fin agregarInsumo
+}
 
 /*
 

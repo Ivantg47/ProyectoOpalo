@@ -8,21 +8,9 @@ public class DTOInsumo{
 	private float fExistenciaActual;
 	private float fExistenciaMinima;
 	private float fExistenciaMaxima;
-/*
-	public DTOInsumo(){
 
-		this.eId = 0;
-	 	this.sNombre = "";
-		this.fUnidadMedida;
-		this.fExistenciasActuales;
-		this.fExistenciasMinimas;
-		this.fExistenciasMaximas;
+	public DTOInsumo(String sNombre, String sUnidadMedida, float fExistenciaActual, float fExistenciaMinima, float fExistenciaMaxima){
 
-	}
-*/
-	public DTOInsumo(String sNombre, String fUnidadMedida, float fExistenciaActual, float fExistenciaMinima, float fExistenciaMaxima){
-
-		this.eId = eId;
 	 	this.sNombre = sNombre;
 		this.sUnidadMedida = sUnidadMedida;
 		this.fExistenciaActual = fExistenciaActual;
@@ -107,7 +95,7 @@ public class DTOInsumo{
 
 	public String toString(){
 
-		return "ID: " + eId + "Nombre: " + sNombre + "UnidadMedida: " + sUnidadMedida + "ExistenciasActuales: " +
+		return "ID: " + eId + "Nombre: " + sNombre + "UnidadMedida: " + sUnidadMedida +
 		"ExistenciasActuales: " + fExistenciaActual + "ExistenciasMinimas: " + fExistenciaMinima + "ExistenciasMaximas: " + fExistenciaMaxima;
 
 	}
