@@ -3,7 +3,7 @@ import java.sql.*;
 //ejecutar java ProyectoOpalo.dao.DAOInsumo
 //compilo normal ejecuto ProyectoOpalo.igu.IGUAplicacionMenu
 
-package ProyectoOpalo.dao;//Pertenece a este paquete
+package ProyectoOpalo.dao; //Pertenece a este paquete
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -52,7 +52,7 @@ public class DAOInsumo{
 
 	public void agregarInsumo(DTOInsumo oInsumo){
 
-		int eExecucion
+		int eExecucion;
 
 		try{
 
