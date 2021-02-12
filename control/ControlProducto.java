@@ -28,30 +28,49 @@ public class ControlProducto implements ActionListener{
 	public void actionPerformed(ActionEvent evento){
 
 		JButton fuente = (JButton) evento.getSource();
-
+		dao = new DAOProducto();
 		
 		switch (fuente.getActionCommand()){
 			case "buscar":
-				JOptionPane.showMessageDialog(null, "Busca");
+				int buscar = Integer.parseInt(igu.getBuscar());
+				igu.setCampos(dao.getPoducto(buscar));
+				igu.setBuscar();
+				// JOptionPane.showMessageDialog(null, "Busca");
+
 			break;
+
 			case "modificar":
-				JOptionPane.showMessageDialog(null, "modificar");
+				dao.actualizarProducto(igu.getCampos());
+				igu.limpiar();
+				// JOptionPane.showMessageDialog(null, "modificar");
 			break;
+
 			case "eliminar":
+				dao.borrarProducto(igu.getCampos());
 				JOptionPane.showMessageDialog(null, "eliminar");
 			break;
+
 			case "agregar":
-				JOptionPane.showMessageDialog(null, "agregar");
+				
+				// producto = igu.getCampos();
+				dao.agregarPoducto(igu.getCampos());
+				igu.limpiar();
+				
+
 			break;
+
 			case "siguiente":
 				JOptionPane.showMessageDialog(null, "siguiente");
 			break;
+
 			case "fin":
 				JOptionPane.showMessageDialog(null, "fin");
 			break;
+
 			case "anterior":
 				JOptionPane.showMessageDialog(null, "anterior");
 			break;
+
 			case "inicio":
 				JOptionPane.showMessageDialog(null, "inicio");
 			break;
@@ -59,6 +78,13 @@ public class ControlProducto implements ActionListener{
 
 		} 
 	}
+
+	// public void getCampos(DTOProducto producto){
+
+	// 	igu.camposTexto[1];
+	// 	igu.camposTexto[1];
+	// 	igu.camposTexto[1];
+	// }
 
 	public class EventoRaton extends MouseAdapter{
 
@@ -69,7 +95,7 @@ public class ControlProducto implements ActionListener{
 			if (btboton.getText().equals("Codigo/Nombre")) {
 								
 				btboton.setText(null);
-
+				igu.limpiar();
 			}
 		}
 

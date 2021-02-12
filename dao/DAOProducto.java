@@ -6,8 +6,13 @@
 
 package ProyectoOpalo.dao;
 
-import java.sql.*;
-import ProyectoOpalo.dto.*;
+// import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.ResultSet;
+import ProyectoOpalo.dto.DTOProducto;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -28,7 +33,7 @@ public class DAOProducto{
 
 			conexion = getConnection();
 
-			String sql = "INSERT INTO Producto (nombre, descripcion, existenciaMinima, existenciaMaxima, existenciaActuales) VALUES (?, ?, ?, ?, ?);";
+			String sql = "INSERT INTO Producto (nombre, descripcion, existenciaMinima, existenciaMaxima, existenciaActual) VALUES (?, ?, ?, ?, ?);";
 	
 			prepared = conexion.prepareStatement(sql);
 	
@@ -40,7 +45,27 @@ public class DAOProducto{
 
 			if (prepared.executeUpdate() != 0) {
 				
-				JOptionPane.showMessageDialog(null, "Producto registrado");
+				sql = "SELECT last_insert_id() AS codigo;";
+				prepared = conexion.prepareStatement(sql);
+				result = prepared.executeQuery();
+
+				if (result.next()){
+
+					sql = "INSERT INTO Precio VALUES(?,?,?);";
+					prepared = conexion.prepareStatement(sql);
+					prepared.setInt(1, result.getInt("codigo"));
+					java.util.Date fecha = new java.util.Date();
+					java.sql.Date sqlFecha = new java.sql.Date(fecha.getTime());
+					prepared.setDate(2, sqlFecha);
+					prepared.setFloat(3, producto.getPrecio());
+
+					if (prepared.executeUpdate() != 0) {
+
+						JOptionPane.showMessageDialog(null, "Producto registrado");
+
+					}
+
+				}
 
 			} 
 
@@ -76,12 +101,12 @@ public class DAOProducto{
 	public DTOProducto getPoducto(int codigo){
 
 		DTOProducto producto = new DTOProducto();
-
+		
 		try {
 
 			conexion = getConnection();
 
-			String sql = "SELECT * FROM Producto WHERE codigo = ?;";
+			String sql = "SELECT * FROM DatoProducto WHERE id_producto = ?;";
 	
 			prepared = conexion.prepareStatement(sql);
 	
@@ -91,9 +116,10 @@ public class DAOProducto{
 
 			if (result.next()) {
 				
-				producto.setCodigo(result.getInt("codigo"));
+				producto.setCodigo(result.getInt("id_producto"));
 				producto.setNombre(result.getString("nombre"));
 				producto.setDescripcion(result.getString("descripcion"));
+				producto.setPrecio(result.getFloat("precio"));
 				producto.setMinimo(result.getInt("existenciaMinima"));
 				producto.setMaximo(result.getInt("existenciaMaxima"));
 				producto.setActual(result.getInt("existenciaActual"));
@@ -139,7 +165,7 @@ public class DAOProducto{
 
 			conexion = getConnection();
 
-			String sql = "SELECT * FROM Producto WHERE nombre = ?;";
+			String sql = "SELECT * FROM DatoProducto WHERE nombre = ?;";
 	
 			prepared = conexion.prepareStatement(sql);
 	
@@ -149,9 +175,10 @@ public class DAOProducto{
 
 			if (result.next()) {
 				
-				producto.setCodigo(result.getInt("codigo"));
+				producto.setCodigo(result.getInt("id_producto"));
 				producto.setNombre(result.getString("nombre"));
 				producto.setDescripcion(result.getString("descripcion"));
+				producto.setPrecio(result.getFloat("precio"));
 				producto.setMinimo(result.getInt("existenciaMinima"));
 				producto.setMaximo(result.getInt("existenciaMaxima"));
 				producto.setActual(result.getInt("existenciaActual"));
@@ -194,7 +221,7 @@ public class DAOProducto{
 
 			conexion = getConnection();
 
-			String sql = "UPDATE Producto SET nombre = ?, descripcion = ?, existenciaMinima = ?, existenciaMaxima = ?, existenciaActuales = ? WHERE codigo = ?;";
+			String sql = "UPDATE Producto SET nombre = ?, descripcion = ?, existenciaMinima = ?, existenciaMaxima = ?, existenciaActual = ? WHERE id_producto = ?;";
 	
 			prepared = conexion.prepareStatement(sql);
 	
@@ -207,7 +234,20 @@ public class DAOProducto{
 
 			if (prepared.executeUpdate() != 0) {
 				
-				JOptionPane.showMessageDialog(null, "Producto actualizado");
+				sql = "INSERT INTO Precio VALUES(?,?,?) ON DUPLICATE KEY UPDATE precio = ?;";
+				prepared = conexion.prepareStatement(sql);
+				prepared.setInt(1, producto.getCodigo());
+				java.util.Date fecha = new java.util.Date();
+				java.sql.Date sqlFecha = new java.sql.Date(fecha.getTime());
+				prepared.setDate(2, sqlFecha);
+				prepared.setFloat(3, producto.getPrecio()); 
+				prepared.setFloat(4, producto.getPrecio());
+
+				if (prepared.executeUpdate() != 0) {
+
+					JOptionPane.showMessageDialog(null, "Producto actualizado");
+
+				}
 
 			} 
 
@@ -239,17 +279,17 @@ public class DAOProducto{
 	    }
 	}
 
-	public void borrarProducto(int codigo){
+	public void borrarProducto(DTOProducto producto){
 
 		try {
 
 			conexion = getConnection();
 
-			String sql = "DELETE FROM Producto WHERE codigo = ?;";
+			String sql = "DELETE FROM Producto WHERE id_producto = ?;";
 	
 			prepared = conexion.prepareStatement(sql);
 	
-			prepared.setInt(1, codigo);
+			prepared.setInt(1, producto.getCodigo());
 
 			if (prepared.executeUpdate() != 0) {
 				
@@ -291,7 +331,7 @@ public class DAOProducto{
 
 			conexion = getConnection();
 
-			String sql = "SELECT codigo, nombre, descripcion, existenciaActual FROM Producto;";
+			String sql = "SELECT id_producto, nombre, descripcion, existenciaActual FROM Producto;";
 	
 			prepared = conexion.prepareStatement(sql);
 
@@ -299,7 +339,7 @@ public class DAOProducto{
 
 			while (result.next()) {
 				
-				modelo.addRow(new Object[]{result.getInt("codigo"), result.getString("nombre"), result.getString("descripcion"), result.getInt("existenciaActual")});
+				modelo.addRow(new Object[]{result.getInt("id_producto"), result.getString("nombre"), result.getString("descripcion"), result.getInt("existenciaActual")});
 
 			} 
 
@@ -338,7 +378,7 @@ public class DAOProducto{
 
 			conexion = getConnection();
 
-			String sql = "SELECT codigo, nombre, descripcion, existenciaActual FROM Producto WHERE nombre = ?;";
+			String sql = "SELECT id_producto, nombre, descripcion, existenciaActual FROM Producto WHERE nombre = ?;";
 	
 			prepared = conexion.prepareStatement(sql);
 
@@ -348,7 +388,7 @@ public class DAOProducto{
 
 			while (result.next()) {
 				
-				modelo.addRow(new Object[]{result.getInt("codigo"), result.getString("nombre"), result.getString("descripcion"), result.getInt("existenciaActual")});
+				modelo.addRow(new Object[]{result.getInt("id_producto"), result.getString("nombre"), result.getString("descripcion"), result.getInt("existenciaActual")});
 
 			} 
 

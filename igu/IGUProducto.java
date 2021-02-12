@@ -12,24 +12,26 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
 import ProyectoOpalo.control.ControlProducto;
+import ProyectoOpalo.dto.DTOProducto;
 
 public class IGUProducto extends JFrame{
 
  	private JButton btModificar, btEliminar, btAgregar, btFlechaDer, btFlechaDobleDer, btFlechaDobleIzq, btFlechaIzq, btBuscar;
  	private ControlProducto control = new ControlProducto(this);
  	private ControlProducto.EventoRaton raton = control.new EventoRaton();
+ 	private JTextField campoBuscar;
 
 	private JTextField camposTexto[] = {
-		new JTextField(),
-		new JTextField(),
-		new JTextField(),
-		new JTextField(),
+		new JTextField(), //0 -> codigo
+		new JTextField(), //1 -> nombre
+		new JTextField(), //2 -> descripcion
+		new JTextField(), //3 -> precio
 	};
 
 	private JTextField camposTextoExistencias[] = {
-		new JTextField(),
-		new JTextField(),
-		new JTextField(),
+		new JTextField(), //0 -> actual
+		new JTextField(), //1 -> minima
+		new JTextField(), //2 -> maxima
 	};
 
 	private JLabel etiquetas[] = {
@@ -77,7 +79,7 @@ public class IGUProducto extends JFrame{
 		JLabel buscar = new JLabel("Buscar");
 		panel.add(buscar);
 
-		JTextField campoBuscar = new JTextField();
+		campoBuscar = new JTextField();
 		campoBuscar.setText("Codigo/Nombre");
 		campoBuscar.setPreferredSize(new Dimension(200,25));
 		campoBuscar.addMouseListener(raton);
@@ -161,7 +163,7 @@ public class IGUProducto extends JFrame{
 
 		// panelDatosProducto.setLayout(new GridLayout(3, 1, 50, 10));
 		panelDatosProducto.setLayout(new FlowLayout(FlowLayout.CENTER, 0,10));
-		System.out.println("flow");
+		
 		panelDatosProducto.add(getPanelDatos());
 		panelDatosProducto.add(getPanelExistencias());
 		panelDatosProducto.add(getPanelBotones());
@@ -186,7 +188,7 @@ public class IGUProducto extends JFrame{
 			panel.add(camposTexto[i]);
 
 		}
-
+		camposTexto[0].setEnabled(false);
 		panel.setPreferredSize(new Dimension(210, 200));
 
 		return panel;
@@ -265,6 +267,52 @@ public class IGUProducto extends JFrame{
 			
 		}
 
+	}
+
+	public DTOProducto getCampos(){
+
+		DTOProducto producto = new DTOProducto();
+		// try{
+		System.out.println(producto);
+		//System.out.println(camposTexto[0].getText());
+			if (!camposTexto[0].getText().equals("")) {
+				System.out.println("pasa");
+				producto.setCodigo(Integer.valueOf(camposTexto[0].getText()));
+			}
+			producto.setNombre(camposTexto[1].getText());
+			producto.setDescripcion(camposTexto[2].getText());
+			producto.setPrecio(Float.valueOf(camposTexto[3].getText()));
+			producto.setActual(Integer.valueOf(camposTextoExistencias[0].getText()));
+			producto.setMinimo(Integer.valueOf(camposTextoExistencias[1].getText()));
+			producto.setMaximo(Integer.valueOf(camposTextoExistencias[2].getText()));
+
+		// }
+		System.out.println(producto);
+		return producto;
+	}
+
+	public void setCampos(DTOProducto producto){
+
+			camposTexto[0].setText(String.valueOf(producto.getCodigo()));
+			camposTexto[1].setText(producto.getNombre());
+			camposTexto[2].setText(producto.getDescripcion());
+			camposTexto[3].setText(String.valueOf(producto.getPrecio()));
+			camposTextoExistencias[0].setText(String.valueOf(producto.getActual()));
+			camposTextoExistencias[1].setText(String.valueOf(producto.getMinimo()));
+			camposTextoExistencias[2].setText(String.valueOf(producto.getMaximo()));
+
+		// System.out.println(producto);
+	}
+
+	public String getBuscar(){
+
+		return campoBuscar.getText();
+	}
+
+	public void setBuscar(){
+
+		campoBuscar.setText("Codigo/Nombre");
+		
 	}
 
 	public static void main(String[] args) {
