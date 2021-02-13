@@ -44,6 +44,8 @@ public class IGUInsumo extends JFrame{
 		new JLabel("M\u00E1xima"),
 	};
 
+	private JTextField oCampoTxBuscar;
+
 	
 	private ControlInsumo oControl = new ControlInsumo(this);
 
@@ -63,7 +65,7 @@ public class IGUInsumo extends JFrame{
 
 		JPanel oPanel = new JPanel();
 		oPanel.setLayout(new BorderLayout());
-		oPanel.add(getoPaneloEtiquetaBuscar(), BorderLayout.NORTH);
+		oPanel.add(getPanelBuscar(), BorderLayout.NORTH);
 		oPanel.add(getPanelInventario(), BorderLayout.CENTER);
 		oPanel.add(getPanelDatos(), BorderLayout.WEST);
 
@@ -71,7 +73,7 @@ public class IGUInsumo extends JFrame{
 
 	}
 
-	public JPanel getoPaneloEtiquetaBuscar(){
+	public JPanel getPanelBuscar(){
 
 		JPanel oPanel = new JPanel();
 
@@ -85,12 +87,14 @@ public class IGUInsumo extends JFrame{
 		JLabel oEtiquetaBuscar = new JLabel("Buscar");
 		oPanel.add(oEtiquetaBuscar);
 
-		JTextField oCampoTxBuscar = new JTextField();
+		oCampoTxBuscar = new JTextField();
 		oCampoTxBuscar.setText("Codigo/aNombres");
 		oCampoTxBuscar.setPreferredSize(new Dimension(200,25));
 		oPanel.add(oCampoTxBuscar);
 
 		JButton oBotonBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa.png")));
+		oBotonBuscar.addActionListener(oControl);
+		oBotonBuscar.setActionCommand("btBuscar");
 		oBotonBuscar.setPreferredSize(new Dimension(32,32));
 		
 
@@ -265,7 +269,24 @@ public class IGUInsumo extends JFrame{
 
 		return oDTOInsumo;
 	}
-		
-		
+
+
+	public int getID(){
+
+		return Integer.valueOf(oCampoTxBuscar.getText());
+
+	}
+
+
+	public void mostrarDTO(DTOInsumo oInsumo){
+
+		aCamposTextoDatos[0].setText( String.valueOf(oInsumo.getId()) );
+		aCamposTextoDatos[1].setText( oInsumo.getNombre() );
+		oComboUnidadMedida.setSelectedItem( String.valueOf(oInsumo.getUnidadMedida()) );
+		aCamposTextoExistencias[0].setText( String.valueOf(oInsumo.getExistenciaActual()) );
+		aCamposTextoExistencias[1].setText( String.valueOf(oInsumo.getExistenciaMinima()) );
+		aCamposTextoExistencias[2].setText( String.valueOf(oInsumo.getExistenciaMaxima()) );
+
+	}	
 		 
 }
