@@ -35,14 +35,20 @@ public class ControlInsumo implements ActionListener{
 
 	public void actionPerformed(ActionEvent oEvento){
 
-		oDTO = oIGU.leerDTO();
 		oDAO = new DAOInsumo();
 
 		switch(oEvento.getActionCommand()){
 
 			case "btAgregar":
-				//JOptionPane.showMessageDialog(null, " con amor");
-				oDAO.agregarInsumo(oDTO);
+				oDTO = oIGU.leerDTO();
+
+				oDAO.agregar(oDTO);
+
+			break;
+
+			case "btBuscar":
+				oDTO = oDAO.buscar(oIGU.getID());
+				oIGU.mostrarDTO(oDTO);
 
 			break;
 		}

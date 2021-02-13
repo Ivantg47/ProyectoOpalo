@@ -2,12 +2,16 @@ package ProyectoOpalo.dto;
 
 public class DTOInsumo{
 
-	private int eId = 0;
+	private int eId;
 	private String sNombre;
 	private String sUnidadMedida;
 	private float fExistenciaActual;
 	private float fExistenciaMinima;
 	private float fExistenciaMaxima;
+
+	public DTOInsumo(){
+		
+	}
 
 	public DTOInsumo(String sNombre, String sUnidadMedida, float fExistenciaActual, float fExistenciaMinima, float fExistenciaMaxima){
 
@@ -16,6 +20,12 @@ public class DTOInsumo{
 		this.fExistenciaActual = fExistenciaActual;
 		this.fExistenciaMinima = fExistenciaMinima;
 		this.fExistenciaMaxima = fExistenciaMaxima;
+		
+	}
+
+	public DTOInsumo(int eId, String sNombre, String sUnidadMedida, float fExistenciaActual, float fExistenciaMinima, float fExistenciaMaxima){
+		this(sNombre, sUnidadMedida, fExistenciaActual, fExistenciaMinima, fExistenciaMaxima);
+		this.eId = eId;
 		
 	}
 
