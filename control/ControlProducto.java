@@ -13,7 +13,7 @@ import ProyectoOpalo.igu.IGUProducto;
 import ProyectoOpalo.dao.DAOProducto;
 import ProyectoOpalo.dto.DTOProducto;
 
-public class ControlProducto implements ActionListener{
+public class ControlProducto implements ActionListener, FocusListener{
 
 	private DTOProducto producto;
 	private DAOProducto dao;
@@ -31,31 +31,39 @@ public class ControlProducto implements ActionListener{
 		dao = new DAOProducto();
 		
 		switch (fuente.getActionCommand()){
+
 			case "buscar":
-				int buscar = Integer.parseInt(igu.getBuscar());
-				igu.setCampos(dao.getPoducto(buscar));
+				if (isNumeric(igu.getBuscar())) {
+
+					int codigo = Integer.parseInt(igu.getBuscar());
+					igu.setCampos(dao.getPoducto(codigo));
+
+				} else {
+
+					igu.setCampos(dao.getPoducto(igu.getBuscar()));
+
+				}
+				
 				igu.setBuscar();
-				// JOptionPane.showMessageDialog(null, "Busca");
 
 			break;
 
 			case "modificar":
 				dao.actualizarProducto(igu.getCampos());
 				igu.limpiar();
-				// JOptionPane.showMessageDialog(null, "modificar");
+				
 			break;
 
 			case "eliminar":
 				dao.borrarProducto(igu.getCampos());
-				JOptionPane.showMessageDialog(null, "eliminar");
+				igu.limpiar();
+
 			break;
 
 			case "agregar":
 				
-				// producto = igu.getCampos();
 				dao.agregarPoducto(igu.getCampos());
 				igu.limpiar();
-				
 
 			break;
 
@@ -79,36 +87,35 @@ public class ControlProducto implements ActionListener{
 		} 
 	}
 
-	// public void getCampos(DTOProducto producto){
+	public static boolean isNumeric(String cadena) {
 
-	// 	igu.camposTexto[1];
-	// 	igu.camposTexto[1];
-	// 	igu.camposTexto[1];
-	// }
+        boolean resultado;
 
-	public class EventoRaton extends MouseAdapter{
+        try {
 
-		public void mousePressed(MouseEvent evento){
-			
-			JTextField btboton = (JTextField) evento.getSource();
+            Integer.parseInt(cadena);
+            resultado = true;
 
-			if (btboton.getText().equals("Codigo/Nombre")) {
-								
-				btboton.setText(null);
-				igu.limpiar();
-			}
-		}
+        } catch (NumberFormatException excepcion) {
 
-		public void mouseReleased(MouseEvent evento){
+            resultado = false;
 
-			// JTextField btboton = (JTextField) evento.getSource();
-			
-			// if (btboton.getText() != "+" && btboton.getText() != "-" && btboton.getText() != "*" && btboton.getText() != "/") {
-			// 	System.out.println("paso2");
-			// 	btboton.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+        }
 
-			// }
-				
-		}
-	}
+        return resultado;
+    }
+
+	public void focusGained(FocusEvent e) {
+
+		JTextField campo = (JTextField) e.getSource();
+        campo.setForeground(Color.BLACK);
+        campo.setText(null);
+           
+    }
+
+    public void focusLost(FocusEvent e) {
+
+       igu.setBuscar();
+           
+    }
 }

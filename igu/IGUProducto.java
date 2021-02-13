@@ -72,7 +72,7 @@ public class IGUProducto extends JFrame{
 		panel.setBorder(BorderFactory.createTitledBorder(""));
 		panel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-		JLabel titulo = new JLabel("Producto      ");
+		JLabel titulo = new JLabel("Producto        ");
 		titulo.setFont(new Font("Tahoma", Font.PLAIN, 36));
 		panel.add(titulo);
 
@@ -81,8 +81,9 @@ public class IGUProducto extends JFrame{
 
 		campoBuscar = new JTextField();
 		campoBuscar.setText("Codigo/Nombre");
+		campoBuscar.setForeground(new Color(111,111,111));
 		campoBuscar.setPreferredSize(new Dimension(200,25));
-		campoBuscar.addMouseListener(raton);
+		campoBuscar.addFocusListener(control);
 		panel.add(campoBuscar);
 
 		btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa.png")));
@@ -123,6 +124,7 @@ public class IGUProducto extends JFrame{
         ));
 
         jScroll.setViewportView(tabla);
+
 
 		panel.add(jScroll, BorderLayout.CENTER);
 
@@ -293,6 +295,8 @@ public class IGUProducto extends JFrame{
 
 	public void setCampos(DTOProducto producto){
 
+		if (producto.getCodigo() != 0) {
+			
 			camposTexto[0].setText(String.valueOf(producto.getCodigo()));
 			camposTexto[1].setText(producto.getNombre());
 			camposTexto[2].setText(producto.getDescripcion());
@@ -300,6 +304,13 @@ public class IGUProducto extends JFrame{
 			camposTextoExistencias[0].setText(String.valueOf(producto.getActual()));
 			camposTextoExistencias[1].setText(String.valueOf(producto.getMinimo()));
 			camposTextoExistencias[2].setText(String.valueOf(producto.getMaximo()));
+
+		} else {
+
+			JOptionPane.showMessageDialog(null, "No hay productos registrados con ese nombre o codigo");
+
+		}
+		
 
 		// System.out.println(producto);
 	}
@@ -312,6 +323,7 @@ public class IGUProducto extends JFrame{
 	public void setBuscar(){
 
 		campoBuscar.setText("Codigo/Nombre");
+		campoBuscar.setForeground(new Color(111,111,111));
 		
 	}
 
