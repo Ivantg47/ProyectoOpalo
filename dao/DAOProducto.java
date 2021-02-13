@@ -157,7 +157,7 @@ public class DAOProducto{
 	}
 
 
-	public DTOProducto getPoducto(String nombre){
+	public DTOProducto getPoducto(String nombre, DefaultTableModel modelo){
 
 		DTOProducto producto = new DTOProducto();
 
@@ -165,7 +165,7 @@ public class DAOProducto{
 
 			conexion = getConnection();
 
-			String sql = "SELECT * FROM DatoProducto WHERE nombre = ?;";
+			String sql = "SELECT COUNT(*) AS filas FROM DatoProducto WHERE nombre = ?;";
 	
 			prepared = conexion.prepareStatement(sql);
 	
@@ -175,14 +175,33 @@ public class DAOProducto{
 
 			if (result.next()) {
 				
-				producto.setCodigo(result.getInt("id_producto"));
-				producto.setNombre(result.getString("nombre"));
-				producto.setDescripcion(result.getString("descripcion"));
-				producto.setPrecio(result.getFloat("precio"));
-				producto.setMinimo(result.getInt("existenciaMinima"));
-				producto.setMaximo(result.getInt("existenciaMaxima"));
-				producto.setActual(result.getInt("existenciaActual"));
+				int filas = result.getInt(1);
 
+				if (filas != 0) {
+					
+					sql = "SELECT * FROM DatoProducto WHERE nombre = ?;";
+					prepared = conexion.prepareStatement(sql);
+					prepared.setString(1, nombre);
+					result = prepared.executeQuery();
+
+					if (filas == 1 && result.next()) {
+
+						producto.setCodigo(result.getInt("id_producto"));
+						producto.setNombre(result.getString("nombre"));
+						producto.setDescripcion(result.getString("descripcion"));
+						producto.setPrecio(result.getFloat("precio"));
+						producto.setMinimo(result.getInt("existenciaMinima"));
+						producto.setMaximo(result.getInt("existenciaMaxima"));
+						producto.setActual(result.getInt("existenciaActual"));
+
+					} else {
+						
+						getTabla(modelo, nombre);
+
+					}
+
+				}
+			
 			} 
 
 			conexion.close();
@@ -331,11 +350,13 @@ public class DAOProducto{
 
 			conexion = getConnection();
 
-			String sql = "SELECT id_producto, nombre, descripcion, existenciaActual FROM Producto;";
+			String sql = "SELECT id_producto, nombre, descripcion, existenciaActual FROM Producto ORDER BY id_producto;";
 	
 			prepared = conexion.prepareStatement(sql);
 
 			result = prepared.executeQuery();
+
+			modelo.setRowCount(0);
 
 			while (result.next()) {
 				
@@ -378,7 +399,7 @@ public class DAOProducto{
 
 			conexion = getConnection();
 
-			String sql = "SELECT id_producto, nombre, descripcion, existenciaActual FROM Producto WHERE nombre = ?;";
+			String sql = "SELECT id_producto, nombre, descripcion, existenciaActual FROM Producto WHERE nombre = ? ORDER BY id_producto;";
 	
 			prepared = conexion.prepareStatement(sql);
 
@@ -386,6 +407,8 @@ public class DAOProducto{
 
 			result = prepared.executeQuery();
 
+			modelo.setRowCount(0);
+			
 			while (result.next()) {
 				
 				modelo.addRow(new Object[]{result.getInt("id_producto"), result.getString("nombre"), result.getString("descripcion"), result.getInt("existenciaActual")});

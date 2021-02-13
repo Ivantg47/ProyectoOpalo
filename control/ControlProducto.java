@@ -34,35 +34,38 @@ public class ControlProducto implements ActionListener, FocusListener{
 
 			case "buscar":
 				if (isNumeric(igu.getBuscar())) {
-
+					
 					int codigo = Integer.parseInt(igu.getBuscar());
 					igu.setCampos(dao.getPoducto(codigo));
 
 				} else {
-
-					igu.setCampos(dao.getPoducto(igu.getBuscar()));
+					
+					igu.setCampos(dao.getPoducto(igu.getBuscar(), igu.getModelo()));
 
 				}
-				
+
+				// dao.getTabla(igu.getModelo());
 				igu.setBuscar();
 
 			break;
 
 			case "modificar":
 				dao.actualizarProducto(igu.getCampos());
+				dao.getTabla(igu.getModelo());
 				igu.limpiar();
-				
+
 			break;
 
 			case "eliminar":
 				dao.borrarProducto(igu.getCampos());
+				dao.getTabla(igu.getModelo());
 				igu.limpiar();
 
 			break;
 
 			case "agregar":
-				
 				dao.agregarPoducto(igu.getCampos());
+				dao.getTabla(igu.getModelo());
 				igu.limpiar();
 
 			break;
@@ -115,7 +118,14 @@ public class ControlProducto implements ActionListener, FocusListener{
 
     public void focusLost(FocusEvent e) {
 
-       igu.setBuscar();
-           
+    	JTextField campo = (JTextField) e.getSource();
+
+    	if(campo.getText().equals("")){
+
+    		igu.setBuscar();
+
+    	}
+        
     }
+
 }

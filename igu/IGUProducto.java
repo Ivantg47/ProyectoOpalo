@@ -13,12 +13,15 @@ import javax.swing.*;
 import javax.swing.table.*;
 import ProyectoOpalo.control.ControlProducto;
 import ProyectoOpalo.dto.DTOProducto;
+import ProyectoOpalo.dao.DAOProducto;
 
 public class IGUProducto extends JFrame{
 
  	private JButton btModificar, btEliminar, btAgregar, btFlechaDer, btFlechaDobleDer, btFlechaDobleIzq, btFlechaIzq, btBuscar;
  	private ControlProducto control = new ControlProducto(this);
+ 	private DefaultTableModel modelo;
  	private JTextField campoBuscar;
+ 	private JTable tabla;
 
 	private JTextField camposTexto[] = {
 		new JTextField(), //0 -> codigo
@@ -101,26 +104,16 @@ public class IGUProducto extends JFrame{
 	public JPanel getPanelInventario(){
 
 		JPanel panel = new JPanel();
+		DAOProducto dao = new DAOProducto();
 
 		panel.setBorder(BorderFactory.createTitledBorder("Inventario"));
-
+		modelo = new DefaultTableModel();
+        modelo.setColumnIdentifiers(new Object[]{"Codigo", "Nombre", "Descripcion", "Existencias"});
 		//creacion de la tabla
-		JTable tabla = new JTable();
+		tabla = new JTable(modelo);
 		JScrollPane jScroll = new JScrollPane(tabla);
 
-		String [] nombre = {
-                "Codigo", "Nombre", "Cantidad"
-            };
-
-		tabla.setModel(new DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            }, nombre
-            
-        ));
+		dao.getTabla(modelo);
 
         jScroll.setViewportView(tabla);
 
@@ -274,12 +267,14 @@ public class IGUProducto extends JFrame{
 
 		DTOProducto producto = new DTOProducto();
 		// try{
-		System.out.println(producto);
-		//System.out.println(camposTexto[0].getText());
+		
+		
 			if (!camposTexto[0].getText().equals("")) {
-				System.out.println("pasa");
+
 				producto.setCodigo(Integer.valueOf(camposTexto[0].getText()));
+
 			}
+
 			producto.setNombre(camposTexto[1].getText());
 			producto.setDescripcion(camposTexto[2].getText());
 			producto.setPrecio(Float.valueOf(camposTexto[3].getText()));
@@ -288,7 +283,7 @@ public class IGUProducto extends JFrame{
 			producto.setMaximo(Integer.valueOf(camposTextoExistencias[2].getText()));
 
 		// }
-		System.out.println(producto);
+		
 		return producto;
 	}
 
@@ -325,6 +320,18 @@ public class IGUProducto extends JFrame{
 		campoBuscar.setForeground(new Color(111,111,111));
 		
 	}
+
+	public DefaultTableModel getModelo(){
+
+		return modelo;
+
+	}
+
+	public void actualizarTabla(){
+
+
+	}
+
 
 	public static void main(String[] args) {
 
