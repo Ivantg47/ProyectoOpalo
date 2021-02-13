@@ -18,7 +18,6 @@ public class IGUProducto extends JFrame{
 
  	private JButton btModificar, btEliminar, btAgregar, btFlechaDer, btFlechaDobleDer, btFlechaDobleIzq, btFlechaIzq, btBuscar;
  	private ControlProducto control = new ControlProducto(this);
- 	private ControlProducto.EventoRaton raton = control.new EventoRaton();
  	private JTextField campoBuscar;
 
 	private JTextField camposTexto[] = {
