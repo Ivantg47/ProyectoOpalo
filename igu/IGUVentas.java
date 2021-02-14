@@ -10,28 +10,23 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
+import ProyectoOpalo.control.ControlVenta;
+import ProyectoOpalo.dao.DAOVentas;
+import ProyectoOpalo.dto.DTOVentas;
+
 public class IGUVentas extends JFrame{
 
-	private JLabel dia = new JLabel("D\u00EDa: ");
-	private JTextField texDia = new JTextField();
-
-	private JLabel mes = new JLabel ("Mes: ");
-	private JTextField texMes = new JTextField();
-
-	private JLabel anio = new JLabel("A\u00F1o: ");
-	private JTextField texAnio = new JTextField();
-
+	private ControlVenta control = new ControlVenta(this);
+	
 	private JLabel aDatosCliente[] = {
 
-		new JLabel("ID: "),
-		new JLabel("Nombre: "),
+		new JLabel("ID cliente: "),
 		new JLabel("Forma de Pago: ")
 
 	};
 
-	private JTextField aTextoCliente[] = {
+	public JTextField aTextoCliente[] = {
 
-		new JTextField(),
 		new JTextField(),
 		new JTextField()
 
@@ -41,20 +36,18 @@ public class IGUVentas extends JFrame{
 
 		new JLabel("ID: "),
 		new JLabel("Cantidad: "),
-		new JLabel("Total: ")
 
 	};
 
 	private JTextField aTextoProducto[] = {
 
 		new JTextField(),
-		new JTextField(),
 		new JTextField()
 
 	};
 
-	private JButton btAceptarP = new JButton("Aceptar"), btCancelarP = new JButton("Cancelar");
-	private JButton btAceptarC = new JButton("Aceptar"), btCancelarC = new JButton("Cancelar");
+	private JButton btAceptarP = new JButton("Aceptar"), btLimpiarP = new JButton("Limpiar");
+	private JButton btAceptarC = new JButton("Aceptar"), btLimpiarC = new JButton("Limpiar");
 	private JButton btAgregar = new JButton("Agregar Venta"), btCancelar = new JButton("Cancelar Venta");
 
 	public IGUVentas(){
@@ -75,38 +68,16 @@ public class IGUVentas extends JFrame{
 
 		panelDatos.setLayout(new GridLayout(5,1,10,10));
 		
-		panelDatos.add(getFecha());
 		panelDatos.add(getDatosCliente());
 		panelDatos.add(getDatosProducto());
 
+		panelDatos.add(getTablaProductos());
+
 		panelDatos.add(getEdicionVentas());
 
-		//panelDatos.add(getTablaVentas(), BorderLayout.SOUTH);
+		panelDatos.add(getTablaVentas(), BorderLayout.SOUTH);
 
 		return panelDatos;
-
-	}
-
-	public JPanel getFecha(){
-
-		JPanel panelFecha = new JPanel();
-
-		panelFecha.add(dia);
-		dia.setBounds(550,20,50,20);
-		panelFecha.add(texDia);
-		texDia.setBounds(580,20,20,20);
-
-		panelFecha.add(mes);
-		mes.setBounds(620,20,70,20);
-		panelFecha.add(texMes);
-		texMes.setBounds(660,20,20,20);
-
-		panelFecha.add(anio);
-		anio.setBounds(700,20,70,20);
-		panelFecha.add(texAnio);
-		texAnio.setBounds(730,20,30,20);
-
-		return panelFecha;
 
 	}
 
@@ -116,7 +87,7 @@ public class IGUVentas extends JFrame{
 
 		panelCliente.setBorder(BorderFactory.createTitledBorder("Datos del cliente: "));
 
-		panelCliente.setLayout(new GridLayout(3,2,1,1));
+		panelCliente.setLayout(new GridLayout(2,2,1,1));
 
 		for (int i = 0; i < aDatosCliente.length; i++){
 
@@ -126,7 +97,36 @@ public class IGUVentas extends JFrame{
 
 		}
 
+		btAceptarC.addActionListener(control);
+		btAceptarC.setActionCommand("btAceptarC");
+
+		btLimpiarC.addActionListener(control);
+		btLimpiarC.setActionCommand("btLimpiarC");
+
 		return panelCliente;
+
+	}
+
+	public void leerDatosCliente(){
+
+		DTOVentas dtoVentas = new DTOVentas();
+
+		int idCliente = Integer.valueOf(aTextoCliente[0].getText());
+		String tipoPago = aTextoCliente[1].getText();
+		dtoVentas.setIdCliente(idCliente);
+		dtoVentas.setTipoPago(tipoPago);
+		
+		System.out.println(dtoVentas.getIdCliente());
+		System.out.println(dtoVentas.getTipoPago());
+
+	}
+
+	public void limpiarDatosCliente(){
+
+		aTextoCliente[0].setText(null);
+		aTextoCliente[1].setText(null);
+
+		System.out.println("limpiado");
 
 	}
 
@@ -136,7 +136,7 @@ public class IGUVentas extends JFrame{
 
 		panelProductos.setBorder(BorderFactory.createTitledBorder("Datos del producto: "));
 
-		panelProductos.setLayout(new GridLayout(3,1,1,1));
+		panelProductos.setLayout(new GridLayout(2,2,1,1));
 
 		for (int i = 0; i < aDatosProducto.length; i++){
 
@@ -181,6 +181,41 @@ public class IGUVentas extends JFrame{
 
 	}
 
+	public JPanel getTablaProductos(){
+
+		JPanel panelTabla = new JPanel();
+
+		JTable tablaProducto = new JTable();
+		//JScrollPane jScroll = new JScrollPane(tablaVentas);
+
+		String [] nombre = {
+                "id producto", "nombre", "cantidad", "Total"
+        };
+
+		tablaProducto.setModel(new DefaultTableModel(
+            
+            new Object [][] {
+
+
+            	{"id Producto", "nombre", "cantidad", "Total"},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+
+            }, nombre
+            
+        ));
+
+		//jScroll.setViewportView(tablaVentas);
+
+		//panelTabla.add(jScroll);
+		panelTabla.add(tablaProducto);
+		panelTabla.setBorder(BorderFactory.createTitledBorder("Productos"));
+
+		return panelTabla;
+
+	}
+
     public JPanel getTablaVentas(){
 
 		JPanel panelTabla = new JPanel();
@@ -198,7 +233,6 @@ public class IGUVentas extends JFrame{
 
 
             	{"id Venta", "id Cliente", "nombre", "id Producto", "producto", "Cantidad", "Estado", "Descripci\u00F3n", "Total"},
-                {null, null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null, null},
@@ -224,7 +258,7 @@ public class IGUVentas extends JFrame{
 
 		botones.setLayout(new GridLayout(1,1));
 		botones.add(btAceptarC);
-		botones.add(btCancelarC);
+		botones.add(btLimpiarC);
 		
 		return botones;
 	}
@@ -235,7 +269,7 @@ public class IGUVentas extends JFrame{
 
 		botones.setLayout(new GridLayout(1,1));
 		botones.add(btAceptarP);
-		botones.add(btCancelarP);
+		botones.add(btLimpiarP);
 		
 		return botones;
 	}
@@ -247,10 +281,13 @@ public class IGUVentas extends JFrame{
 
 		botones.setLayout(new GridLayout(1,1,10,10));
 		botones.add(btAgregar);
+		btAgregar.addActionListener(control);
+		btAgregar.setActionCommand("btAgregar");
 		botones.add(btCancelar);
 		
 		return botones;
 	}
+
 /*
 	public static void main(String[] args) {
 		

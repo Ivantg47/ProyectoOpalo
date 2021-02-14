@@ -22,7 +22,7 @@ public class IGUAplicacionMenu extends JFrame{
 
 	//	setJMenuBar(getBarraMenu());
 		setJTabbedPane();
-		setSize(750, 670);
+		setSize(800, 670);
 		setLocationRelativeTo(null);
 		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
