@@ -1,7 +1,7 @@
 /**
  * Clase que implementa una interfaz para el modulo de compras.
  * @author Diego Puebla Aldama
- * @version 1.0
+ * @version 2.0
  */
 
 package ProyectoOpalo.igu;
