@@ -25,6 +25,7 @@ public class ControlInsumo implements ActionListener{
 	public void actionPerformed(ActionEvent oEvento){
 
 		oDAO = new DAOInsumo();
+		oDAO.getTabla(oIGU.getModelo());
 
 		switch(oEvento.getActionCommand()){
 
@@ -34,6 +35,7 @@ public class ControlInsumo implements ActionListener{
 
 					oDTO = oIGU.leerDTO();
 					oDAO.agregar(oDTO);
+					oDAO.getTabla(oIGU.getModelo());
 				}
 				
 			break;
@@ -44,6 +46,7 @@ public class ControlInsumo implements ActionListener{
 
 					oDTO = oDAO.buscar(oIGU.getID());
 					oIGU.mostrarDTO(oDTO);
+					oDAO.getTabla(oIGU.getModelo());
 				} else {
 
 					JOptionPane.showMessageDialog(null, "Error. Cambo vacio, escriba un codigo.");
@@ -57,6 +60,7 @@ public class ControlInsumo implements ActionListener{
 
 					oDAO.eliminar(oDTO);
 					oIGU.limpiarCamposTexto();
+					oDAO.getTabla(oIGU.getModelo());
 
 				} else {
 
@@ -72,6 +76,7 @@ public class ControlInsumo implements ActionListener{
 						oDTO = oIGU.leerDTO();
 						oDTO.setId(oIGU.getID());
 						oDAO.modificarInsumo(oDTO);
+						oDAO.getTabla(oIGU.getModelo());
 
 				} else {
 

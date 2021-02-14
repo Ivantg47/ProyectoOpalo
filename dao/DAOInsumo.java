@@ -8,6 +8,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.*;
+import javax.swing.table.*;
 import javax.swing.JOptionPane;
 
 import ProyectoOpalo.dto.DTOInsumo;
@@ -294,6 +295,59 @@ public class DAOInsumo{
 
 			} 
 
+
+		} catch (SQLException oExcepcion) {
+
+	        oExcepcion.printStackTrace();
+
+	    } catch (Exception oExcepcion) {
+	         
+	        oExcepcion.printStackTrace();
+
+	    } finally {
+
+	        try {
+
+	            if (oConexion != null) {
+
+	               oConexion.close();
+	               
+	            } 
+
+	        }catch (SQLException oExcepcion){
+
+	            oExcepcion.printStackTrace();
+
+	        }
+	    }
+
+	}//modificarInsumo
+
+	public void getTabla(DefaultTableModel oModelo){
+		
+		String oConsultaTabla;
+		ResultSet oResultado;
+
+		try {
+
+			oConexion = getConexion();
+
+			oConsultaTabla = 	  "SELECT id_Insumo, nombre, unidadMedida, existenciaActual "
+								+ "FROM Insumo ORDER BY id_Insumo;";
+	
+			oSentencia = oConexion.prepareStatement(oConsultaTabla);
+
+			oResultado = oSentencia.executeQuery();
+
+			oModelo.setRowCount(0);
+
+			while (oResultado.next()) {
+				
+				oModelo.addRow(new Object[]{oResultado.getInt("id_Insumo"), oResultado.getString("nombre"), oResultado.getString("unidadMedida"), oResultado.getInt("existenciaActual")});
+
+			} 
+
+			oConexion.close();
 
 		} catch (SQLException oExcepcion) {
 
