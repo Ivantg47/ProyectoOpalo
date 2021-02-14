@@ -124,7 +124,11 @@ public class DAOProducto{
 				producto.setMaximo(result.getInt("existenciaMaxima"));
 				producto.setActual(result.getInt("existenciaActual"));
 
-			} 
+			} else {
+
+				JOptionPane.showMessageDialog(null, "No hay productos registrados con ese codigo");
+
+			}
 
 			conexion.close();
 
@@ -199,6 +203,10 @@ public class DAOProducto{
 						getTabla(modelo, nombre);
 
 					}
+
+				} else {
+
+					JOptionPane.showMessageDialog(null, "No hay productos registrados con ese nombre");
 
 				}
 			
