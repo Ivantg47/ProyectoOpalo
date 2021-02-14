@@ -26,7 +26,7 @@ public class DAOClientes{
 
 	}
 
-	public void Connection getConexion(){
+	public Connection getConexion(){
 
 		try{
 
