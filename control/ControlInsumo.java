@@ -34,8 +34,13 @@ public class ControlInsumo implements ActionListener{
 				if(!oIGU.camposVacios()){
 
 					oDTO = oIGU.leerDTO();
-					oDAO.agregar(oDTO);
-					oDAO.getTabla(oIGU.getModelo());
+
+					if(datosCorrectos(oDTO)){
+
+						oDAO.agregar(oDTO);
+						oDAO.getTabla(oIGU.getModelo());
+					}
+					
 				}
 				
 			break;
@@ -73,10 +78,13 @@ public class ControlInsumo implements ActionListener{
 
 				if(oDTO != null && oIGU.getID() == oDTO.getId() && !oIGU.camposVacios()){
 
-						oDTO = oIGU.leerDTO();
+					oDTO = oIGU.leerDTO();
+
+					if(datosCorrectos(oDTO)){
 						oDTO.setId(oIGU.getID());
 						oDAO.modificarInsumo(oDTO);
 						oDAO.getTabla(oIGU.getModelo());
+					}
 
 				} else {
 
@@ -85,10 +93,21 @@ public class ControlInsumo implements ActionListener{
 
 			break;
 
-
 			
 		}
 
+	}
+
+	public boolean datosCorrectos(DTOInsumo oDTO){
+
+		boolean bDatosCorrectos = false;
+
+		if(oDTO.getNombre().compareTo("") != 0 && oDTO.getExistenciaMinima() > 0 && oDTO.getExistenciaMaxima() > 0 && oDTO.getExistenciaActual() > 0){
+
+			bDatosCorrectos = true;
+		}
+
+		return bDatosCorrectos;
 	}
 
 

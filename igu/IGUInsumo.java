@@ -234,24 +234,45 @@ public class IGUInsumo extends JFrame{
 	public DTOInsumo leerDTO(){
 
 		String sNombre = "", sUnidadMedida ;
-		float  fExistenciaActual, fExistenciaMinima, fExistenciaMaxima;
+		int eCont = 0;
+		boolean bEsFlotante = true;
+		float  fExistenciaActual = 0.0f, fExistenciaMinima = 0.0f, fExistenciaMaxima = 0.0f;
 		DTOInsumo oDTOInsumo;
 
-		//if (!isNumeric(aCamposTextoDatos[1].getText())){
+		if (!isNumeric(aCamposTextoDatos[1].getText())){
 
 			sNombre = aCamposTextoDatos[1].getText();
-			sUnidadMedida = oComboUnidadMedida.getSelectedItem().toString();
-			fExistenciaActual = Float.valueOf(aCamposTextoExistencias[0].getText());
-			fExistenciaMinima = Float.valueOf(aCamposTextoExistencias[1].getText());
-			fExistenciaMaxima = Float.valueOf(aCamposTextoExistencias[2].getText());
 
-		/*} else{
+			while(bEsFlotante && eCont < aCamposTextoExistencias.length){
+
+				if (!isNumericFloat(aCamposTextoExistencias[eCont].getText()) ) {
+
+					bEsFlotante = false;
+					
+				}
+
+				eCont++;
+			}
+
+			if (bEsFlotante){
+
+				fExistenciaActual = Float.valueOf(aCamposTextoExistencias[0].getText());
+				fExistenciaMinima = Float.valueOf(aCamposTextoExistencias[1].getText());
+				fExistenciaMaxima = Float.valueOf(aCamposTextoExistencias[2].getText());
+			} else {
+
+				JOptionPane.showMessageDialog(null, "Error. Existencias no numericas, ingresar nuevamente.");
+
+			}
+			
+
+		} else{
 
 			JOptionPane.showMessageDialog(null, "Error. Nombre numerico, ingresar nuevamente.");
 
 		}
-		*/
-
+		
+		sUnidadMedida = oComboUnidadMedida.getSelectedItem().toString();
 		oDTOInsumo = new DTOInsumo(sNombre, sUnidadMedida, fExistenciaActual, fExistenciaMinima, fExistenciaMaxima);
 
 		
@@ -352,6 +373,42 @@ public class IGUInsumo extends JFrame{
 		return oModelo;
 
 	}
+
+	public static boolean isNumeric(String oCadena) {
+
+        boolean oResultado;
+
+        try {
+
+            Integer.parseInt(oCadena);
+            oResultado = true;
+
+        } catch (NumberFormatException oExcepcion) {
+
+            oResultado = false;
+
+        }
+
+        return oResultado;
+    }
+
+    public static boolean isNumericFloat(String oCadena) {
+
+        boolean oResultado;
+
+        try {
+
+            Float.parseFloat(oCadena);
+            oResultado = true;
+
+        } catch (NumberFormatException oExcepcion) {
+
+            oResultado = false;
+
+        }
+
+        return oResultado;
+    }
 
    		 
 }
