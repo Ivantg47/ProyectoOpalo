@@ -17,7 +17,7 @@ import ProyectoOpalo.dao.DAOProducto;
 
 public class IGUProducto extends JFrame{
 
- 	private JButton btModificar, btEliminar, btAgregar, btFlechaDer, btFlechaDobleDer, btFlechaDobleIzq, btFlechaIzq, btBuscar;
+ 	private JButton btModificar, btEliminar, btAgregar, btBuscar, btLimpiar;
  	private ControlProducto control = new ControlProducto(this);
  	private DefaultTableModel modelo;
  	private JTextField campoBuscar;
@@ -120,33 +120,6 @@ public class IGUProducto extends JFrame{
 
 		panel.add(jScroll, BorderLayout.CENTER);
 
-		btFlechaDer = new JButton(new ImageIcon(getClass().getResource("/iconos/flechaDer.png")));
-		btFlechaDer.setToolTipText("Siguiente");
-		btFlechaDer.addActionListener(control);
-		btFlechaDer.setActionCommand("siguiente");
-
-		btFlechaDobleDer = new JButton(new ImageIcon(getClass().getResource("/iconos/flechaDobleDer.png")));
-		btFlechaDobleDer.setToolTipText("Fin");	
-		btFlechaDobleDer.addActionListener(control);
-		btFlechaDobleDer.setActionCommand("fin");
-
-		btFlechaDobleIzq = new JButton(new ImageIcon(getClass().getResource("/iconos/flechaDobleIzq.png")));
-		btFlechaDobleIzq.setToolTipText("Inicio");
-		btFlechaDobleIzq.addActionListener(control);
-		btFlechaDobleIzq.setActionCommand("inicio");
-
-		btFlechaIzq = new JButton(new ImageIcon(getClass().getResource("/iconos/flechaIzq.png")));
-		btFlechaIzq.setToolTipText("anterior");
-		btFlechaIzq.addActionListener(control);
-		btFlechaIzq.setActionCommand("anterior");
-		
-
-		panel.add(btFlechaDobleIzq, BorderLayout.SOUTH);
-		panel.add(btFlechaIzq, BorderLayout.SOUTH);
-		panel.add(btFlechaDer, BorderLayout.SOUTH);
-		panel.add(btFlechaDobleDer, BorderLayout.SOUTH);
-
-
 		return panel;
 
 	}
@@ -226,20 +199,30 @@ public class IGUProducto extends JFrame{
 		btAgregar.setToolTipText("Agregar");
 		btAgregar.addActionListener(control);
 		btAgregar.setActionCommand("agregar");
+		btAgregar.setPreferredSize(new Dimension(48, 48));
 
 		btEliminar = new JButton(new ImageIcon(getClass().getResource("/iconos/eliminar.png")));
 		btEliminar.setToolTipText("Eliminar");
 		btEliminar.addActionListener(control);
 		btEliminar.setActionCommand("eliminar");
+		btEliminar.setPreferredSize(new Dimension(48, 48));
 
 		btModificar = new JButton(new ImageIcon(getClass().getResource("/iconos/modificar.png")));
 		btModificar.setToolTipText("Modificar");
 		btModificar.addActionListener(control);
 		btModificar.setActionCommand("modificar");
+		btModificar.setPreferredSize(new Dimension(48, 48));
+
+		btLimpiar = new JButton(new ImageIcon(getClass().getResource("/iconos/borrador.png")));
+		btLimpiar.setToolTipText("Limpiar");
+		btLimpiar.addActionListener(control);
+		btLimpiar.setActionCommand("limpiar");
+		btLimpiar.setPreferredSize(new Dimension(48, 48));
 
 		panelBotones.add(btAgregar);
 		panelBotones.add(btEliminar);
 		panelBotones.add(btModificar);
+		panelBotones.add(btLimpiar);
 
 		// panelBotones.setPreferredSize(new Dimension(210, 40));
 
@@ -266,28 +249,60 @@ public class IGUProducto extends JFrame{
 	public DTOProducto getCampos(){
 
 		DTOProducto producto = new DTOProducto();
-		// try{
-		
-		
-			if (!camposTexto[0].getText().equals("")) {
 
-				producto.setCodigo(Integer.valueOf(camposTexto[0].getText()));
+		if (!camposTexto[0].getText().equals("")) {
 
-			}
+			producto.setCodigo(Integer.valueOf(camposTexto[0].getText()));
 
-			producto.setNombre(camposTexto[1].getText());
-			producto.setDescripcion(camposTexto[2].getText());
-			producto.setPrecio(Float.valueOf(camposTexto[3].getText()));
-			producto.setActual(Integer.valueOf(camposTextoExistencias[0].getText()));
-			producto.setMinimo(Integer.valueOf(camposTextoExistencias[1].getText()));
-			producto.setMaximo(Integer.valueOf(camposTextoExistencias[2].getText()));
+		}
 
-		// }
+		producto.setNombre(camposTexto[1].getText());
+		producto.setDescripcion(camposTexto[2].getText());
+		producto.setPrecio(Float.valueOf(camposTexto[3].getText()));
+		producto.setActual(Integer.valueOf(camposTextoExistencias[0].getText()));
+		producto.setMinimo(Integer.valueOf(camposTextoExistencias[1].getText()));
+		producto.setMaximo(Integer.valueOf(camposTextoExistencias[2].getText()));
 		
 		return producto;
 	}
 
+	public boolean campoVacio(){
+
+		boolean vacio = false;
+		int pos = 1;
+
+		do {
+
+			if (camposTexto[pos].getText().compareTo("") == 0) {
+				
+				vacio = true;
+
+			}
+
+			pos++;
+
+		} while (!vacio || pos < camposTexto.length);
+
+		pos = 0;
+
+		while(!vacio || pos < camposTextoExistencias.length){
+
+			if (camposTextoExistencias[pos].getText().compareTo("") == 0) {
+				
+				vacio = true;
+
+			}
+
+			pos++;
+		}
+
+		return vacio;
+
+	}
+
 	public void setCampos(DTOProducto producto){
+
+		limpiar();
 
 		if (producto.getCodigo() != 0) {
 			
@@ -299,12 +314,7 @@ public class IGUProducto extends JFrame{
 			camposTextoExistencias[1].setText(String.valueOf(producto.getMinimo()));
 			camposTextoExistencias[2].setText(String.valueOf(producto.getMaximo()));
 
-		} else {
-
-			JOptionPane.showMessageDialog(null, "No hay productos registrados con ese nombre o codigo");
-
-		}
-		
+		} 
 
 		// System.out.println(producto);
 	}
@@ -324,11 +334,6 @@ public class IGUProducto extends JFrame{
 	public DefaultTableModel getModelo(){
 
 		return modelo;
-
-	}
-
-	public void actualizarTabla(){
-
 
 	}
 

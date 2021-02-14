@@ -1,179 +1,296 @@
-
-package ProyectoOpalo.igu;
-
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-
 /**
  * Clase que implementa una interfaz para el modulo de compras.
  * @author Diego Puebla Aldama
- * @version 1.0
+ * @version 2.0
  */
+
+package ProyectoOpalo.igu;
+
+import java.awt.*;
+import javax.swing.*;
+import javax.swing.table.*;
 
 public class IGUCompras extends JFrame{
 
-    private JComboBox<String> unidadesMedida;
+	private JLabel dia = new JLabel("D\u00EDa: ");
+	private JTextField texDia = new JTextField();
 
-    /**
-     * Método que genera la interfaz para ser instanciada
-     */
-    public IGUCompras(){
+	private JLabel mes = new JLabel ("Mes: ");
+	private JTextField texMes = new JTextField();
 
-    }
+	private JLabel anio = new JLabel("A\u00F1o: ");
+	private JTextField texAnio = new JTextField();
 
-    public JPanel getIGUCompras(){
+	private JLabel aDatosCliente[] = {
 
-        JPanel panel = new JPanel();
+		new JLabel("Insumo: "),
+		new JLabel("Cantidad: "),
+		new JLabel("Costo: ")
 
-        panel.setLayout(new GridLayout(3,0));
-        panel.add(getBarraHtas());
-        panel.add(getFormulario()); //, BorderLayout.NORTH);
-        panel.add(getTablaCompras());//, BorderLayout.PAGE_END);
+	};
 
-        return panel;
-    }
-    /**
-     * Método que crea una barra de herramientas con los botones de la sección.
-     * @return La barra de herramientas para ser agregada a la interfaz.
-     */
-    public JToolBar getBarraHtas(){
+	private JTextField aTextoCliente[] = {
 
-        //Creamos los botones
-        JToolBar barraHtas = new JToolBar();
-        JButton btSalir = new JButton();
-        JButton btRegistrar = new JButton();
-        JButton btModificar = new JButton();
-        JButton btConsultar = new JButton();
-        JButton btListar = new JButton();
+		new JTextField(),
+		new JTextField(),
+		new JTextField()
 
-        //Colocamos el texto a los botones
-        btSalir.setText("Salir");
-        btRegistrar.setText("Registrar");
-        btModificar.setText("Modificar");
-        btConsultar.setText("Consultar");
-        btListar.setText("Listar");
+	};
 
-        //Agregamos los botones
-        barraHtas.add(btRegistrar);
-        barraHtas.add(btModificar);
-        barraHtas.add(btConsultar);
-        barraHtas.add(btListar);
-        barraHtas.add(btSalir);
+	private JLabel aDatosProducto[] = {
 
-        return barraHtas;
+		new JLabel("Insumo: "),
+		new JLabel("Cantidad: "),
+		new JLabel("Costo: ")
 
-    }
+	};
 
-    /**
-     * Método que obtiene el formulario con los paneles y los campos de texto, además de los botones.
-     * @return Regresa el formulario enh un panel.
-     */
-    public JPanel getFormulario(){
+	private JTextField aTextoProducto[] = {
 
-        //Declaramos nuestras columnas
-        JPanel labels = new JPanel();
-        JPanel textFields = new JPanel();
-        JPanel botones = new JPanel();
-        JPanel formulario = new JPanel();
+		new JTextField(),
+		new JTextField(),
+		new JTextField()
 
-        //Declaramos los botones
-        JButton btAceptar = new JButton();
-        btAceptar.setText("Aceptar");
-        JButton btCancelar = new JButton();
-        btCancelar.setText("Cancelar");
-        JButton btBorrar = new JButton();
-        btBorrar.setText("Borrar");
+	};
 
-        //Declaramos nuestros labels
-        JLabel etiquetas[] = {
-            new JLabel("Producto"),
-            new JLabel ("Fecha de Compra"),
-            new JLabel("Cantidad"),
-            new JLabel("Total")
-        };
+	private JButton btAceptarP = new JButton("Aceptar"), btCancelarP = new JButton("Cancelar");
+	private JButton btAceptarC = new JButton("Aceptar"), btCancelarC = new JButton("Cancelar");
+	private JButton btAgregar = new JButton("Registrar Compras"), btCancelar = new JButton("Cancelar Registro");
 
-        //Declaramos los textFields
-        JTextField camposTexto[] = {
-            new JTextField(),
-            new JTextField(),
-            new JTextField(),
-            new JTextField()
-        };
-        
+	public IGUCompras(){
+	/*
+		super("Registro de Compra");
 
-        //Establecemos las columnas
-        labels.setLayout(new GridLayout(0, 1));
-        textFields.setLayout(new GridLayout(0, 1));
-        botones.setLayout(new GridLayout(3, 1));
-        formulario.setLayout(new GridLayout(1,3));
-        
-        //Agregamos los labels
-        for (int i = 0; i < etiquetas.length; i++){
-			labels.add(etiquetas[i]);
-        }
-        
-        //Agregamos los txtfields
-        for (int i = 0; i < camposTexto.length; i++){
-			textFields.add(camposTexto[i]);
-        }
+		add(getPanelDatos());
+		setLocation(300,30);
+		setSize(800,600);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+	*/
+	}
 
-        //Agregamos los botones
-        botones.add(btAceptar);
-        botones.add(btCancelar);
-        botones.add(btBorrar);
+	public JPanel getPanelDatos(){
 
-        //Preparamos el formulario
-        formulario.add(labels);
-        formulario.add(textFields);
-        formulario.add(botones);
+		JPanel panelDatos = new JPanel();
 
-        formulario.setBorder(BorderFactory.createTitledBorder("Formulario de Registro de Compras"));
+		panelDatos.setLayout(new GridLayout(5,1,10,10));
+		
+		//panelDatos.add(getFecha());
+		//panelDatos.add(getDatosCliente());
+		panelDatos.add(getDatosProducto());
+		panelDatos.add(getTablaCompras());
+        panelDatos.add(getEdicionCompras());
+        panelDatos.add(getTablaListado(), BorderLayout.SOUTH);
+		return panelDatos;
 
-        return formulario;
+	}
 
-    }
+	public JPanel getFecha(){
 
-    /**
-     * Método que genera la tabla de registros.
-     * @return Regresa una tabla para ser mostrada en la interfaz.
-     */
+		JPanel panelFecha = new JPanel();
+
+		panelFecha.add(dia);
+		dia.setBounds(550,20,50,20);
+		panelFecha.add(texDia);
+		texDia.setBounds(580,20,20,20);
+
+		panelFecha.add(mes);
+		mes.setBounds(620,20,70,20);
+		panelFecha.add(texMes);
+		texMes.setBounds(660,20,20,20);
+
+		panelFecha.add(anio);
+		anio.setBounds(700,20,70,20);
+		panelFecha.add(texAnio);
+		texAnio.setBounds(730,20,30,20);
+
+		return panelFecha;
+
+	}
+
+	public JPanel getDatosCliente(){
+
+		JPanel panelCliente = new JPanel();
+
+		panelCliente.setBorder(BorderFactory.createTitledBorder("Datos del cliente: "));
+
+		panelCliente.setLayout(new GridLayout(3,2,1,1));
+
+		for (int i = 0; i < aDatosCliente.length; i++){
+
+			panelCliente.add(aDatosCliente[i]);
+			panelCliente.add(aTextoCliente[i]);
+			panelCliente.add(getBotonesCliente()); 
+
+		}
+
+		return panelCliente;
+
+	}
+
+	public JPanel getDatosProducto(){
+
+		JPanel panelProductos = new JPanel();
+
+		panelProductos.setBorder(BorderFactory.createTitledBorder("Datos de la compra: "));
+
+		panelProductos.setLayout(new GridLayout(3,1,1,1));
+
+		for (int i = 0; i < aDatosProducto.length; i++){
+
+			panelProductos.add(aDatosProducto[i]);
+			panelProductos.add(aTextoProducto[i]);
+			panelProductos.add(getBotonesProducto()); 
+
+		}
+
+		return panelProductos;
+
+	}
+
+	public JPanel getEdicionCompras(){
+
+		JPanel panelEdicion = new JPanel();
+
+		panelEdicion.add(getBotonesCompra()/*, BorderLayout.EAST*/); 
+		panelEdicion.add(getBuscarCompra());
+
+		return panelEdicion;
+
+	}
+
+	public JPanel getBuscarCompra(){
+
+		JPanel panelBuscar = new JPanel();
+
+		JLabel buscar = new JLabel("Buscar");
+		panelBuscar.add(buscar);
+
+		JTextField campoBuscar = new JTextField();
+		campoBuscar.setText(" Ingrese fecha e.j. 01-01-2000");
+		campoBuscar.setPreferredSize(new Dimension(200,20));
+		panelBuscar.add(campoBuscar);
+
+		JButton btBuscar = new JButton(new ImageIcon("lupa.png"));
+		btBuscar.setPreferredSize(new Dimension(32,32));
+		panelBuscar.add(btBuscar);
+
+		return panelBuscar;
+
+	}
+
     public JPanel getTablaCompras(){
 
-        JPanel panelTabla = new JPanel();
-       
-        //creacion de la tabla
-		JTable tablaCompras = new JTable();
+		JPanel panelTabla = new JPanel();
 
-        //Parte del código de Frida
+		JTable tablaCompras = new JTable();
+		//JScrollPane jScroll = new JScrollPane(tablaCompras);
+
 		String [] nombre = {
-                "ID", "Fecha", "Producto", "Cantidad", "Total" 
-            };
-        
-        //Más código de Frida pero funciona
+                "#", "Nombre", "Cantidad", "Costo", "Fecha de Compra","Total"
+        };
+
 		tablaCompras.setModel(new DefaultTableModel(
+            
             new Object [][] {
-                {"ID Compra", "Fecha Compra", "Producto", "Cantidad", "Total"},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
+
+            	{"#", "Nombre", "Cantidad", "Costo", "Fecha de Compra","Total"},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+
             }, nombre
             
         ));
-        
-        //Agregamos la tabla al panel
-        panelTabla.add(tablaCompras);
 
-        panelTabla.setBorder(BorderFactory.createTitledBorder("Registros de Compras"));
+		//jScroll.setViewportView(tablaCompras);
 
-        return panelTabla;
+		//panelTabla.add(jScroll);
+		panelTabla.add(tablaCompras);
+		panelTabla.setBorder(BorderFactory.createTitledBorder("Compras a Registrar:"));
 
-    }
+		return panelTabla;
+
+	}
+
+    public JPanel getTablaListado(){
+
+		JPanel panelTabla = new JPanel();
+
+		JTable tablaCompras = new JTable();
+		//JScrollPane jScroll = new JScrollPane(tablaCompras);
+
+		String [] nombre = {
+                "#", "Nombre", "Cantidad", "Costo", "Fecha de Compra","Total"
+        };
+
+		tablaCompras.setModel(new DefaultTableModel(
+            
+            new Object [][] {
+
+
+            	{"#", "Nombre", "Cantidad", "Costo", "Fecha de Compra","Total"},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+
+            }, nombre
+            
+        ));
+
+		//jScroll.setViewportView(tablaCompras);
+
+		//panelTabla.add(jScroll);
+		panelTabla.add(tablaCompras);
+		panelTabla.setBorder(BorderFactory.createTitledBorder("Resultados de la busqueda"));
+
+		return panelTabla;
+
+	}
+
+	public JPanel getBotonesCliente(){
+
+		JPanel botones = new JPanel();
+
+		botones.setLayout(new GridLayout(1,1));
+		botones.add(btAceptarC);
+		botones.add(btCancelarC);
+		
+		return botones;
+	}
+	
+	public JPanel getBotonesProducto(){
+
+		JPanel botones = new JPanel();
+
+		botones.setLayout(new GridLayout(1,1));
+		botones.add(btAceptarP);
+		botones.add(btCancelarP);
+		
+		return botones;
+	}
+
+
+	public JPanel getBotonesCompra(){
+
+		JPanel botones = new JPanel();
+
+		botones.setLayout(new GridLayout(1,1,10,10));
+		botones.add(btAgregar);
+		botones.add(btCancelar);
+		
+		return botones;
+	}
 /*
-    public static void main(String[] args) {
-     
-        IGUCompras oIguMenu = new IGUCompras();
-
-    }
+	public static void main(String[] args) {
+		
+		IGUCompras Comprana = new IGUCompras();
+	
+	}
 */
 }

@@ -22,15 +22,7 @@ public class IGUReporte extends JFrame{
 	};
 
 	public IGUReporte(){
-/*
-		super("Insumo");
 
-		add(getIGUReporte());
-
-		setSize(700, 600);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setVisible(true);
-*/
 	}
 
 	public JPanel getIGUReporte(){
@@ -103,7 +95,7 @@ public class IGUReporte extends JFrame{
 		panel.add(campo);
 
 
-		JButton btImprimir = new JButton(new ImageIcon(ICONOS + "impresora (2).png"));
+		JButton btImprimir = new JButton(new ImageIcon(getClass().getResource("/iconos/impresora (2).png")));
 		panel.add(btImprimir);
 		return panel;
 
@@ -155,10 +147,10 @@ public class IGUReporte extends JFrame{
 		return panel;
 
 	}
-/*
+
 	public static void main(String[] args) {
 		IGUReporte ventana = new IGUReporte();
 		
 	}
-*/	
+	
 }

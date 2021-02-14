@@ -13,6 +13,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 import ProyectoOpalo.dto.DTOInsumo;
+import ProyectoOpalo.dao.DAOInsumo;
 import ProyectoOpalo.control.ControlInsumo;
 
 public class IGUInsumo extends JFrame{
@@ -34,7 +35,7 @@ public class IGUInsumo extends JFrame{
 
 	private JLabel aEtiquetasDatos[] = {
 		new JLabel("Codigo"),
-		new JLabel("Nombres"),
+		new JLabel("Nombre"),
 		new JLabel("Unidad medida"),
 	};
 
@@ -46,6 +47,8 @@ public class IGUInsumo extends JFrame{
 
 	private JTextField oCampoTxBuscar;
 
+	private DefaultTableModel oModelo;
+ 	private JTable oTabla;
 	
 	private ControlInsumo oControl = new ControlInsumo(this);
 
@@ -107,47 +110,22 @@ public class IGUInsumo extends JFrame{
 	public JPanel getPanelInventario(){
 
 		JPanel oPanel = new JPanel();
+		DAOInsumo oDAO = new DAOInsumo();
 
 		oPanel.setBorder(BorderFactory.createTitledBorder("Inventario"));
+		oModelo = new DefaultTableModel();
+		oModelo.setColumnIdentifiers(new Object[]{"Codigo", "Nombre", "Unidad", "Existencias"});
 		//oPanel.setLayout(new GridLayout(1,4));
 
 		//creacion de la oTabla
-		JTable oTabla = new JTable();
+		oTabla = new JTable(oModelo);
 		JScrollPane jScroll = new JScrollPane(oTabla);
 
-		String [] aNombres = {
-                "Codigo", "Nombre", "Cantidad"
-            };
+		oDAO.getTabla(oModelo);
 
-		oTabla.setModel(new DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            }, aNombres
-            
-        ));
-
-        jScroll.setViewportView(oTabla);
+		jScroll.setViewportView(oTabla);
 
 		oPanel.add(jScroll, BorderLayout.CENTER);
-
-		JButton btFlechaDer = new JButton(new ImageIcon(getClass().getResource("/iconos/flechaDer.png")));
-		btFlechaDer.setToolTipText("Siguiente");		
-		JButton btFlechaDobleDer = new JButton(new ImageIcon(getClass().getResource("/iconos/flechaDobleDer.png")));
-		btFlechaDobleDer.setToolTipText("Fin");		
-		JButton btFlechaDobleIzq = new JButton(new ImageIcon(getClass().getResource("/iconos/flechaDobleIzq.png")));
-		btFlechaDobleIzq.setToolTipText("Inicio");
-		JButton btFlechaIzq = new JButton(new ImageIcon(getClass().getResource("/iconos/flechaIzq.png")));
-		btFlechaIzq.setToolTipText("Anterior");
-		
-
-		oPanel.add(btFlechaDobleIzq, BorderLayout.SOUTH);
-		oPanel.add(btFlechaIzq, BorderLayout.SOUTH);
-		oPanel.add(btFlechaDer, BorderLayout.SOUTH);
-		oPanel.add(btFlechaDobleDer, BorderLayout.SOUTH);
-
 
 		return oPanel;
 
@@ -255,23 +233,46 @@ public class IGUInsumo extends JFrame{
 
 	public DTOInsumo leerDTO(){
 
-		String sNombre, sUnidadMedida;
-		float  fExistenciaActual, fExistenciaMinima, fExistenciaMaxima;
+		String sNombre = "", sUnidadMedida ;
+		int eCont = 0;
+		boolean bEsFlotante = true;
+		float  fExistenciaActual = 0.0f, fExistenciaMinima = 0.0f, fExistenciaMaxima = 0.0f;
 		DTOInsumo oDTOInsumo;
 
-		/*
-		if(!aCamposTextoDatos[0].equals("")){
+		if (!isNumeric(aCamposTextoDatos[1].getText())){
 
-			eId = Integer.valueOf(aCamposTextoDatos[0].getText());
+			sNombre = aCamposTextoDatos[1].getText();
 
-		} 
-		*/
-		sNombre = aCamposTextoDatos[1].getText();
+			while(bEsFlotante && eCont < aCamposTextoExistencias.length){
+
+				if (!isNumericFloat(aCamposTextoExistencias[eCont].getText()) ) {
+
+					bEsFlotante = false;
+					
+				}
+
+				eCont++;
+			}
+
+			if (bEsFlotante){
+
+				fExistenciaActual = Float.valueOf(aCamposTextoExistencias[0].getText());
+				fExistenciaMinima = Float.valueOf(aCamposTextoExistencias[1].getText());
+				fExistenciaMaxima = Float.valueOf(aCamposTextoExistencias[2].getText());
+			} else {
+
+				JOptionPane.showMessageDialog(null, "Error. Existencias no numericas, ingresar nuevamente.");
+
+			}
+			
+
+		} else{
+
+			JOptionPane.showMessageDialog(null, "Error. Nombre numerico, ingresar nuevamente.");
+
+		}
+		
 		sUnidadMedida = oComboUnidadMedida.getSelectedItem().toString();
-		fExistenciaActual = Float.valueOf(aCamposTextoExistencias[0].getText());
-		fExistenciaMinima = Float.valueOf(aCamposTextoExistencias[1].getText());
-		fExistenciaMaxima = Float.valueOf(aCamposTextoExistencias[2].getText());
-
 		oDTOInsumo = new DTOInsumo(sNombre, sUnidadMedida, fExistenciaActual, fExistenciaMinima, fExistenciaMaxima);
 
 		
@@ -328,7 +329,7 @@ public class IGUInsumo extends JFrame{
 
    		boolean bCamposVacios = false;
    		String sMensaje = "Error. Llenar campos vacios: ";
-   		
+	
    		if (aCamposTextoDatos[1].getText().compareTo("") == 0){
 
    			bCamposVacios = true;
@@ -343,27 +344,19 @@ public class IGUInsumo extends JFrame{
 
    		}
 
-   		if (aCamposTextoExistencias[0].getText().compareTo("") == 0){
+		for(int ePos = 0; ePos < aCamposTextoExistencias.length; ePos++) {
 
-   			bCamposVacios = true;
-   			sMensaje += "Existencia actual ";
+			if (aCamposTextoExistencias[ePos].getText().compareTo("") == 0){
 
-   		}
+				bCamposVacios = true;
 
-   		if (aCamposTextoExistencias[1].getText().compareTo("") == 0){
+				sMensaje += "Existencia ";
+				sMensaje += aEtiquetasExistencias[ePos].getText();
+				sMensaje += " ";
 
-   			bCamposVacios = true;
-   			sMensaje += "Existencia m\u00EDnima ";
+			}
 
-   		}
-
-   		if (aCamposTextoExistencias[2].getText().compareTo("") == 0){
-
-   			bCamposVacios = true;
-   			sMensaje += "Existencia m\u00E1xima ";
-
-   		}
-
+       	}
 
    		if (bCamposVacios == true){
 
@@ -374,6 +367,48 @@ public class IGUInsumo extends JFrame{
 
    		return bCamposVacios;
    }
+
+   	public DefaultTableModel getModelo(){
+
+		return oModelo;
+
+	}
+
+	public static boolean isNumeric(String oCadena) {
+
+        boolean oResultado;
+
+        try {
+
+            Integer.parseInt(oCadena);
+            oResultado = true;
+
+        } catch (NumberFormatException oExcepcion) {
+
+            oResultado = false;
+
+        }
+
+        return oResultado;
+    }
+
+    public static boolean isNumericFloat(String oCadena) {
+
+        boolean oResultado;
+
+        try {
+
+            Float.parseFloat(oCadena);
+            oResultado = true;
+
+        } catch (NumberFormatException oExcepcion) {
+
+            oResultado = false;
+
+        }
+
+        return oResultado;
+    }
 
    		 
 }

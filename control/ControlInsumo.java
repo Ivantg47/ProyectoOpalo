@@ -25,6 +25,7 @@ public class ControlInsumo implements ActionListener{
 	public void actionPerformed(ActionEvent oEvento){
 
 		oDAO = new DAOInsumo();
+		oDAO.getTabla(oIGU.getModelo());
 
 		switch(oEvento.getActionCommand()){
 
@@ -33,7 +34,13 @@ public class ControlInsumo implements ActionListener{
 				if(!oIGU.camposVacios()){
 
 					oDTO = oIGU.leerDTO();
-					oDAO.agregar(oDTO);
+
+					if(datosCorrectos(oDTO)){
+
+						oDAO.agregar(oDTO);
+						oDAO.getTabla(oIGU.getModelo());
+					}
+					
 				}
 				
 			break;
@@ -44,6 +51,7 @@ public class ControlInsumo implements ActionListener{
 
 					oDTO = oDAO.buscar(oIGU.getID());
 					oIGU.mostrarDTO(oDTO);
+					oDAO.getTabla(oIGU.getModelo());
 				} else {
 
 					JOptionPane.showMessageDialog(null, "Error. Cambo vacio, escriba un codigo.");
@@ -57,6 +65,7 @@ public class ControlInsumo implements ActionListener{
 
 					oDAO.eliminar(oDTO);
 					oIGU.limpiarCamposTexto();
+					oDAO.getTabla(oIGU.getModelo());
 
 				} else {
 
@@ -69,9 +78,13 @@ public class ControlInsumo implements ActionListener{
 
 				if(oDTO != null && oIGU.getID() == oDTO.getId() && !oIGU.camposVacios()){
 
-						oDTO = oIGU.leerDTO();
+					oDTO = oIGU.leerDTO();
+
+					if(datosCorrectos(oDTO)){
 						oDTO.setId(oIGU.getID());
 						oDAO.modificarInsumo(oDTO);
+						oDAO.getTabla(oIGU.getModelo());
+					}
 
 				} else {
 
@@ -80,10 +93,21 @@ public class ControlInsumo implements ActionListener{
 
 			break;
 
-
 			
 		}
 
+	}
+
+	public boolean datosCorrectos(DTOInsumo oDTO){
+
+		boolean bDatosCorrectos = false;
+
+		if(oDTO.getNombre().compareTo("") != 0 && oDTO.getExistenciaMinima() > 0 && oDTO.getExistenciaMaxima() > 0 && oDTO.getExistenciaActual() > 0){
+
+			bDatosCorrectos = true;
+		}
+
+		return bDatosCorrectos;
 	}
 
 
