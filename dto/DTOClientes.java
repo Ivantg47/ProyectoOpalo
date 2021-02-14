@@ -1,3 +1,9 @@
+/**
+ * Clase DTO de los clientes
+ * @author Ximena Rojas
+ * @version 1.0
+ */
+
 package ProyectoOpalo.dto;
 
 public class DTOClientes {
