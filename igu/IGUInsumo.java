@@ -35,7 +35,7 @@ public class IGUInsumo extends JFrame{
 
 	private JLabel aEtiquetasDatos[] = {
 		new JLabel("Codigo"),
-		new JLabel("Nombres"),
+		new JLabel("Nombre"),
 		new JLabel("Unidad medida"),
 	};
 
@@ -233,22 +233,24 @@ public class IGUInsumo extends JFrame{
 
 	public DTOInsumo leerDTO(){
 
-		String sNombre, sUnidadMedida;
+		String sNombre = "", sUnidadMedida ;
 		float  fExistenciaActual, fExistenciaMinima, fExistenciaMaxima;
 		DTOInsumo oDTOInsumo;
 
-		/*
-		if(!aCamposTextoDatos[0].equals("")){
+		//if (!isNumeric(aCamposTextoDatos[1].getText())){
 
-			eId = Integer.valueOf(aCamposTextoDatos[0].getText());
+			sNombre = aCamposTextoDatos[1].getText();
+			sUnidadMedida = oComboUnidadMedida.getSelectedItem().toString();
+			fExistenciaActual = Float.valueOf(aCamposTextoExistencias[0].getText());
+			fExistenciaMinima = Float.valueOf(aCamposTextoExistencias[1].getText());
+			fExistenciaMaxima = Float.valueOf(aCamposTextoExistencias[2].getText());
 
-		} 
+		/*} else{
+
+			JOptionPane.showMessageDialog(null, "Error. Nombre numerico, ingresar nuevamente.");
+
+		}
 		*/
-		sNombre = aCamposTextoDatos[1].getText();
-		sUnidadMedida = oComboUnidadMedida.getSelectedItem().toString();
-		fExistenciaActual = Float.valueOf(aCamposTextoExistencias[0].getText());
-		fExistenciaMinima = Float.valueOf(aCamposTextoExistencias[1].getText());
-		fExistenciaMaxima = Float.valueOf(aCamposTextoExistencias[2].getText());
 
 		oDTOInsumo = new DTOInsumo(sNombre, sUnidadMedida, fExistenciaActual, fExistenciaMinima, fExistenciaMaxima);
 
@@ -306,7 +308,7 @@ public class IGUInsumo extends JFrame{
 
    		boolean bCamposVacios = false;
    		String sMensaje = "Error. Llenar campos vacios: ";
-   		
+	
    		if (aCamposTextoDatos[1].getText().compareTo("") == 0){
 
    			bCamposVacios = true;
@@ -321,27 +323,19 @@ public class IGUInsumo extends JFrame{
 
    		}
 
-   		if (aCamposTextoExistencias[0].getText().compareTo("") == 0){
+		for(int ePos = 0; ePos < aCamposTextoExistencias.length; ePos++) {
 
-   			bCamposVacios = true;
-   			sMensaje += "Existencia actual ";
+			if (aCamposTextoExistencias[ePos].getText().compareTo("") == 0){
 
-   		}
+				bCamposVacios = true;
 
-   		if (aCamposTextoExistencias[1].getText().compareTo("") == 0){
+				sMensaje += "Existencia ";
+				sMensaje += aEtiquetasExistencias[ePos].getText();
+				sMensaje += " ";
 
-   			bCamposVacios = true;
-   			sMensaje += "Existencia m\u00EDnima ";
+			}
 
-   		}
-
-   		if (aCamposTextoExistencias[2].getText().compareTo("") == 0){
-
-   			bCamposVacios = true;
-   			sMensaje += "Existencia m\u00E1xima ";
-
-   		}
-
+       	}
 
    		if (bCamposVacios == true){
 
