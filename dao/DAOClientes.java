@@ -22,7 +22,7 @@ public class DAOClientes{
     private ResultSet result;
 	DTOClientes cliente;
 
-	public DTOClientes(){
+	public DAOClientes(){
 
 	}
 
