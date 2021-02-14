@@ -116,13 +116,13 @@ public class IGUClientes extends JFrame{
 
 		panel.add(jScroll, BorderLayout.CENTER);
 
-		JButton btFlechaDer = new JButton(new ImageIcon(ICONOS + "flechaDer.png"));
+		JButton btFlechaDer = new JButton(new ImageIcon(getClass().getResource("/iconos/flechaDer.png")));
 		btFlechaDer.setToolTipText("Siguiente");		
-		JButton btFlechaDobleDer = new JButton(new ImageIcon(ICONOS + "flechaDobleDer.png"));
+		JButton btFlechaDobleDer = new JButton(new ImageIcon(getClass().getResource("/iconos/flechaDobleDer.png")));
 		btFlechaDobleDer.setToolTipText("Fin");		
-		JButton btFlechaDobleIzq = new JButton(new ImageIcon(ICONOS + "flechaDobleIzq.png"));
+		JButton btFlechaDobleIzq = new JButton(new ImageIcon(getClass().getResource("/iconos/flechaDobleIzq.png")));
 		btFlechaDobleIzq.setToolTipText("Inicio");
-		JButton btFlechaIzq = new JButton(new ImageIcon(ICONOS + "flechaIzq.png"));
+		JButton btFlechaIzq = new JButton(new ImageIcon(getClass().getResource("/iconos/flechaIzq.png")));
 		btFlechaIzq.setToolTipText("Anterior");
 		
 
@@ -175,13 +175,13 @@ public class IGUClientes extends JFrame{
 
 		panelBotones.setLayout(new FlowLayout());
 
-		JButton btAgregar = new JButton(new ImageIcon(ICONOS + "/iconos/agregar.png"));
+		JButton btAgregar = new JButton(new ImageIcon(getClass().getResource("/iconos/agregar.png")));
 		btAgregar.setToolTipText("Agregar");
 
-		JButton btEliminar = new JButton(new ImageIcon(ICONOS + "/iconos/eliminar.png"));
+		JButton btEliminar = new JButton(new ImageIcon(getClass().getResource("/iconos/eliminar.png")));
 		btEliminar.setToolTipText("Eliminar");
 
-		JButton btModificar = new JButton(new ImageIcon(ICONOS + "/iconos/modificar.png"));
+		JButton btModificar = new JButton(new ImageIcon(getClass().getResource("/iconos/modificar.png")));
 		btModificar.setToolTipText("Modificar");
 
 		panelBotones.add(btAgregar);
