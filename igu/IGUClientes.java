@@ -175,13 +175,13 @@ public class IGUClientes extends JFrame{
 
 		panelBotones.setLayout(new FlowLayout());
 
-		JButton btAgregar = new JButton(new ImageIcon(ICONOS + "agregar.png"));
+		JButton btAgregar = new JButton(new ImageIcon(ICONOS + "/iconos/agregar.png"));
 		btAgregar.setToolTipText("Agregar");
 
-		JButton btEliminar = new JButton(new ImageIcon(ICONOS + "eliminar.png"));
+		JButton btEliminar = new JButton(new ImageIcon(ICONOS + "/iconos/eliminar.png"));
 		btEliminar.setToolTipText("Eliminar");
 
-		JButton btModificar = new JButton(new ImageIcon(ICONOS + "modificar.png"));
+		JButton btModificar = new JButton(new ImageIcon(ICONOS + "/iconos/modificar.png"));
 		btModificar.setToolTipText("Modificar");
 
 		panelBotones.add(btAgregar);
