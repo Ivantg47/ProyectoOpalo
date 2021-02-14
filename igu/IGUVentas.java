@@ -1,3 +1,8 @@
+/**
+ * Clase IGU de Ventas.
+ * @author Pamela Stephanie Moreno Parker
+ * @version 1.0
+ */
 
 package ProyectoOpalo.igu;
 
@@ -53,7 +58,7 @@ public class IGUVentas extends JFrame{
 	private JButton btAgregar = new JButton("Agregar Venta"), btCancelar = new JButton("Cancelar Venta");
 
 	public IGUVentas(){
-/*
+	/*
 		super("Registro de Venta");
 
 		add(getPanelDatos());
@@ -61,7 +66,7 @@ public class IGUVentas extends JFrame{
 		setSize(800,600);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
-*/
+	*/
 	}
 
 	public JPanel getPanelDatos(){
@@ -76,7 +81,7 @@ public class IGUVentas extends JFrame{
 
 		panelDatos.add(getEdicionVentas());
 
-		panelDatos.add(getTablaVentas(), BorderLayout.SOUTH);
+		//panelDatos.add(getTablaVentas(), BorderLayout.SOUTH);
 
 		return panelDatos;
 
@@ -176,7 +181,7 @@ public class IGUVentas extends JFrame{
 
 	}
 
-      public JPanel getTablaVentas(){
+    public JPanel getTablaVentas(){
 
 		JPanel panelTabla = new JPanel();
 
@@ -212,7 +217,6 @@ public class IGUVentas extends JFrame{
 		return panelTabla;
 
 	}
-
 
 	public JPanel getBotonesCliente(){
 
