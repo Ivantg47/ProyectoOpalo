@@ -79,9 +79,9 @@ public class DAOInsumo{
 
             oSentencia.setString(1, oInsumo.getUnidadMedida());
             oSentencia.setString(2, oInsumo.getNombre());
-            oSentencia.setDouble(3, oInsumo.getExistenciaMinima());
-            oSentencia.setDouble(4, oInsumo.getExistenciaMaxima());
-            oSentencia.setDouble(5, oInsumo.getExistenciaActual());
+            oSentencia.setFloat(3, oInsumo.getExistenciaMinima());
+            oSentencia.setFloat(4, oInsumo.getExistenciaMaxima());
+            oSentencia.setFloat(5, oInsumo.getExistenciaActual());
 
             oResultado = oSentencia.executeQuery();
 
@@ -95,9 +95,9 @@ public class DAOInsumo{
 
 	            oSentencia.setString(1, oInsumo.getUnidadMedida());
 	            oSentencia.setString(2, oInsumo.getNombre());
-	            oSentencia.setDouble(3, oInsumo.getExistenciaMinima());
-	            oSentencia.setDouble(4, oInsumo.getExistenciaMaxima());
-	            oSentencia.setDouble(5, oInsumo.getExistenciaActual());
+	            oSentencia.setFloat(3, oInsumo.getExistenciaMinima());
+	            oSentencia.setFloat(4, oInsumo.getExistenciaMaxima());
+	            oSentencia.setFloat(5, oInsumo.getExistenciaActual());
 
 	            eExecucion = oSentencia.executeUpdate();
 
@@ -216,16 +216,109 @@ public class DAOInsumo{
 		
 	}//Buscar
 
+	public void eliminar(DTOInsumo oInsumo){
+
+		String sConsultaEliminar;
+
+		try { 
+
+			oConexion = getConexion();
+
+			sConsultaEliminar = "DELETE FROM Insumo WHERE id_Insumo = ?;";
+	
+			oSentencia = oConexion.prepareStatement(sConsultaEliminar);
+	
+			oSentencia.setInt(1, oInsumo.getId());
+
+			if (oSentencia.executeUpdate() != 0) {
+				
+				JOptionPane.showMessageDialog(null, "Insumo borrado");
+
+			} 
+
+			oConexion.close();
+
+		} catch (SQLException oExcepcion) {
+
+	        oExcepcion.printStackTrace();
+
+	    } catch (Exception oExcepcion) {
+	         
+	        oExcepcion.printStackTrace();
+
+	    } finally {
+
+	        try {
+
+	            if (oConexion != null) {
+
+	               oConexion.close();
+	               
+	            } 
+
+	        }catch (SQLException oExcepcion){
+
+	            oExcepcion.printStackTrace();
+
+	        }
+	    }
+	}
+
+	public void modificarInsumo(DTOInsumo oInsumo){
+
+		String oConsultaModificar;
+
+		try {
+
+			oConexion = getConexion();
+			
+
+			oConsultaModificar = 	  "UPDATE Insumo "  
+									+ "SET unidadMedida = ?, nombre = ?, "
+									+ "existenciaMinima = ?, existenciaMaxima = ?, existenciaActual = ? " 
+									+ "WHERE id_Insumo = ?;";
+	
+			oSentencia = oConexion.prepareStatement(oConsultaModificar);
+			
+			oSentencia.setString(1, oInsumo.getUnidadMedida());
+			oSentencia.setString(2, oInsumo.getNombre());
+			oSentencia.setFloat(3, oInsumo.getExistenciaMinima());
+			oSentencia.setFloat(4, oInsumo.getExistenciaMaxima());
+			oSentencia.setFloat(5, oInsumo.getExistenciaActual());
+			oSentencia.setFloat(6, oInsumo.getId());
+
+			
+			if (oSentencia.executeUpdate() != 0) {
+				
+				JOptionPane.showMessageDialog(null, "Insumo actualizado");
+
+			} 
+
+
+		} catch (SQLException oExcepcion) {
+
+	        oExcepcion.printStackTrace();
+
+	    } catch (Exception oExcepcion) {
+	         
+	        oExcepcion.printStackTrace();
+
+	    } finally {
+
+	        try {
+
+	            if (oConexion != null) {
+
+	               oConexion.close();
+	               
+	            } 
+
+	        }catch (SQLException oExcepcion){
+
+	            oExcepcion.printStackTrace();
+
+	        }
+	    }
+	}
+
 }
-
-/*
-
-
-+consultar(in eIdInsumo: int): void
-+modificarInsumo(in eIdProducto: int): void
-+mostrarDatosInsumo(): String
-+getInsumo(): String
-+getInsumoss():String
-+buscarInsumo(in eIdProducto: int): int
-+modificarExistencias(in CantidadModificar: float): void
-*/

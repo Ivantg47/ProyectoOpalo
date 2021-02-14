@@ -20,18 +20,7 @@ public class ControlInsumo implements ActionListener{
 		this.oIGU = oIGU;
 
 	}
-/*
-	public ControlInsumo(DAOInsumo oDAO){
 
-		this.oDAO = oDAO;
-
-	}
-
-	public ControlInsumo(DTOInsumo oDTO){
-
-		this.oDTO = oDTO;
-
-	}*/
 
 	public void actionPerformed(ActionEvent oEvento){
 
@@ -40,17 +29,59 @@ public class ControlInsumo implements ActionListener{
 		switch(oEvento.getActionCommand()){
 
 			case "btAgregar":
-				oDTO = oIGU.leerDTO();
 
-				oDAO.agregar(oDTO);
+				if(!oIGU.camposVacios()){
 
+					oDTO = oIGU.leerDTO();
+					oDAO.agregar(oDTO);
+				}
+				
 			break;
 
 			case "btBuscar":
-				oDTO = oDAO.buscar(oIGU.getID());
-				oIGU.mostrarDTO(oDTO);
+
+				if (oIGU.getID() != 0){
+
+					oDTO = oDAO.buscar(oIGU.getID());
+					oIGU.mostrarDTO(oDTO);
+				} else {
+
+					JOptionPane.showMessageDialog(null, "Error. Cambo vacio, escriba un codigo.");
+				}
+				
+			break;
+
+			case "btEliminar":
+				
+				if(oDTO != null && oIGU.getID() == oDTO.getId()){
+
+					oDAO.eliminar(oDTO);
+					oIGU.limpiarCamposTexto();
+
+				} else {
+
+					JOptionPane.showMessageDialog(null, "Error. Primero busque el insumo a eliminar.");
+				}
 
 			break;
+
+			case "btModificar":
+
+				if(oDTO != null && oIGU.getID() == oDTO.getId() && !oIGU.camposVacios()){
+
+						oDTO = oIGU.leerDTO();
+						oDTO.setId(oIGU.getID());
+						oDAO.modificarInsumo(oDTO);
+
+				} else {
+
+					JOptionPane.showMessageDialog(null, "Error. Primero busque el insumo a modificar.");
+				}
+
+			break;
+
+
+			
 		}
 
 	}
