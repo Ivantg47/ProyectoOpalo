@@ -59,16 +59,16 @@ public class DTOCompra {
 		this.eIdCompra = eIdCompra;
 	}
 
-	public void setIdCompra(float fCantidad){
+	public void setCantidad(float fCantidad){
 		this.fCantidad = fCantidad;
 	}
 
-	public void setIdCompra(float fTotal){
+	public void setTotal(float fTotal){
 		this.fTotal = fTotal;
 	}
 
-	public void setIdCompra(String sFechaCompra){
+	public void setFechaCompra(String sFechaCompra){
 		this.sFechaCompra = sFechaCompra;
 	}
-	
+
 }
