@@ -75,7 +75,7 @@ public class IGUClientes extends JFrame{
 		panel.add(buscar);
 
 		JTextField campoBuscar = new JTextField();
-		campoBuscar.setText("ID del Cliente");
+		campoBuscar.setText("");
 		campoBuscar.setPreferredSize(new Dimension(200,25));
 		panel.add(campoBuscar);
 
