@@ -33,18 +33,22 @@ public class ControlProducto implements ActionListener, FocusListener{
 		switch (fuente.getActionCommand()){
 
 			case "buscar":
+
+				dao.getTabla(igu.getModelo());
+				// igu.setBuscar();
+
 				if (isNumeric(igu.getBuscar())) {
 					
 					int codigo = Integer.parseInt(igu.getBuscar());
 					igu.setCampos(dao.getPoducto(codigo));
+					
 
 				} else {
 					
 					igu.setCampos(dao.getPoducto(igu.getBuscar(), igu.getModelo()));
 
 				}
-
-				// dao.getTabla(igu.getModelo());
+				
 				igu.setBuscar();
 
 			break;
@@ -70,22 +74,11 @@ public class ControlProducto implements ActionListener, FocusListener{
 
 			break;
 
-			case "siguiente":
-				JOptionPane.showMessageDialog(null, "siguiente");
-			break;
+			case "limpiar":
+				
+				igu.limpiar();
 
-			case "fin":
-				JOptionPane.showMessageDialog(null, "fin");
 			break;
-
-			case "anterior":
-				JOptionPane.showMessageDialog(null, "anterior");
-			break;
-
-			case "inicio":
-				JOptionPane.showMessageDialog(null, "inicio");
-			break;
-			
 
 		} 
 	}
@@ -111,8 +104,13 @@ public class ControlProducto implements ActionListener, FocusListener{
 	public void focusGained(FocusEvent e) {
 
 		JTextField campo = (JTextField) e.getSource();
-        campo.setForeground(Color.BLACK);
-        campo.setText(null);
+
+		if(campo.getText().equals("Codigo/Nombre")){
+
+	        campo.setForeground(Color.BLACK);
+	        campo.setText(null);
+
+    	}
            
     }
 
