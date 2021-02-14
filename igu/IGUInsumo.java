@@ -13,6 +13,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 import ProyectoOpalo.dto.DTOInsumo;
+import ProyectoOpalo.dao.DAOInsumo;
 import ProyectoOpalo.control.ControlInsumo;
 
 public class IGUInsumo extends JFrame{
@@ -46,6 +47,8 @@ public class IGUInsumo extends JFrame{
 
 	private JTextField oCampoTxBuscar;
 
+	private DefaultTableModel oModelo;
+ 	private JTable oTabla;
 	
 	private ControlInsumo oControl = new ControlInsumo(this);
 
@@ -107,47 +110,22 @@ public class IGUInsumo extends JFrame{
 	public JPanel getPanelInventario(){
 
 		JPanel oPanel = new JPanel();
+		DAOInsumo oDAO = new DAOInsumo();
 
 		oPanel.setBorder(BorderFactory.createTitledBorder("Inventario"));
+		oModelo = new DefaultTableModel();
+		oModelo.setColumnIdentifiers(new Object[]{"Codigo", "Nombre", "Unidad", "Existencias"});
 		//oPanel.setLayout(new GridLayout(1,4));
 
 		//creacion de la oTabla
-		JTable oTabla = new JTable();
+		oTabla = new JTable(oModelo);
 		JScrollPane jScroll = new JScrollPane(oTabla);
 
-		String [] aNombres = {
-                "Codigo", "Nombre", "Cantidad"
-            };
+		oDAO.getTabla(oModelo);
 
-		oTabla.setModel(new DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            }, aNombres
-            
-        ));
-
-        jScroll.setViewportView(oTabla);
+		jScroll.setViewportView(oTabla);
 
 		oPanel.add(jScroll, BorderLayout.CENTER);
-
-		JButton btFlechaDer = new JButton(new ImageIcon(getClass().getResource("/iconos/flechaDer.png")));
-		btFlechaDer.setToolTipText("Siguiente");		
-		JButton btFlechaDobleDer = new JButton(new ImageIcon(getClass().getResource("/iconos/flechaDobleDer.png")));
-		btFlechaDobleDer.setToolTipText("Fin");		
-		JButton btFlechaDobleIzq = new JButton(new ImageIcon(getClass().getResource("/iconos/flechaDobleIzq.png")));
-		btFlechaDobleIzq.setToolTipText("Inicio");
-		JButton btFlechaIzq = new JButton(new ImageIcon(getClass().getResource("/iconos/flechaIzq.png")));
-		btFlechaIzq.setToolTipText("Anterior");
-		
-
-		oPanel.add(btFlechaDobleIzq, BorderLayout.SOUTH);
-		oPanel.add(btFlechaIzq, BorderLayout.SOUTH);
-		oPanel.add(btFlechaDer, BorderLayout.SOUTH);
-		oPanel.add(btFlechaDobleDer, BorderLayout.SOUTH);
-
 
 		return oPanel;
 
@@ -374,6 +352,12 @@ public class IGUInsumo extends JFrame{
 
    		return bCamposVacios;
    }
+
+   	public DefaultTableModel getModelo(){
+
+		return oModelo;
+
+	}
 
    		 
 }
