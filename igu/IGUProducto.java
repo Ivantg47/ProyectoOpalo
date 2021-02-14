@@ -266,6 +266,40 @@ public class IGUProducto extends JFrame{
 		return producto;
 	}
 
+	public boolean campoVacio(){
+
+		boolean vacio = false;
+		int pos = 1;
+
+		do {
+
+			if (camposTexto[pos].getText().compareTo("") == 0) {
+				
+				vacio = true;
+
+			}
+
+			pos++;
+
+		} while (!vacio || pos < camposTexto.length);
+
+		pos = 0;
+
+		while(!vacio || pos < camposTextoExistencias.length){
+
+			if (camposTextoExistencias[pos].getText().compareTo("") == 0) {
+				
+				vacio = true;
+
+			}
+
+			pos++;
+		}
+
+		return vacio;
+
+	}
+
 	public void setCampos(DTOProducto producto){
 
 		limpiar();

@@ -34,22 +34,24 @@ public class ControlProducto implements ActionListener, FocusListener{
 
 			case "buscar":
 
-				dao.getTabla(igu.getModelo());
-				// igu.setBuscar();
-
-				if (isNumeric(igu.getBuscar())) {
+				if (!igu.getBuscar().equals("Codigo/Nombre")) {
 					
-					int codigo = Integer.parseInt(igu.getBuscar());
-					igu.setCampos(dao.getPoducto(codigo));
-					
-
-				} else {
-					
-					igu.setCampos(dao.getPoducto(igu.getBuscar(), igu.getModelo()));
-
-				}
+					dao.getTabla(igu.getModelo());
 				
-				igu.setBuscar();
+					if (isNumeric(igu.getBuscar())) {
+									
+						int codigo = Integer.parseInt(igu.getBuscar());
+						igu.setCampos(dao.getPoducto(codigo));
+						
+	
+					} else {
+						
+						igu.setCampos(dao.getPoducto(igu.getBuscar(), igu.getModelo()));
+	
+					}
+					
+					igu.setBuscar();
+				}
 
 			break;
 
@@ -92,7 +94,7 @@ public class ControlProducto implements ActionListener, FocusListener{
             Integer.parseInt(cadena);
             resultado = true;
 
-        } catch (NumberFormatException excepcion) {
+        } catch (NumberFormatException e) {
 
             resultado = false;
 
