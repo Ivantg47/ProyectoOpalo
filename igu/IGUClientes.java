@@ -63,7 +63,7 @@ public class IGUClientes extends JFrame{
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 		panel.add(getPanelBuscar(), BorderLayout.NORTH);
-		panel.add(getPanelListaClientes(), BorderLayout.CENTER);
+		panel.add(getPanelListaClientes(), BorderLayout.CENTER); //
 		panel.add(getPanelGeneral(), BorderLayout.WEST);
 
 		return panel;
@@ -114,7 +114,7 @@ public class IGUClientes extends JFrame{
 		JTable tabla = new JTable(modelo);
 		JScrollPane jScroll = new JScrollPane(tabla);
 
-		dao.getTabla(modelo);
+		dao.getTabla(modelo); //error
 
 		jScroll.setViewportView(tabla);
 
@@ -188,21 +188,22 @@ public class IGUClientes extends JFrame{
 
 	public DTOClientes getDTO(){
 
-		DTOClientes oCliente = new DTOClientes();
+		String sNombre = "", sPaterno = "", sMaterno = "", sCorreo = "", sTelefono = "", sDireccion = "";
 
-		if(!camposTexto[0].getText().equals("")){
+		DTOClientes oCliente;
 
-			//oCliente.setId(Integer.valueOf(camposTexto[0].getText()));
+		sNombre =  camposTexto[1].getText();
+		sPaterno = camposTexto[2].getText();
+		sMaterno = camposTexto[3].getText();
+		sCorreo = camposTexto[4].getText();
+		sTelefono = camposTexto[5].getText();
+		sDireccion = camposTexto[6].getText();
 
-		}
 
-		oCliente.setNombre(camposTexto[1].getText());
-		oCliente.setPaterno(camposTexto[2].getText());
-		oCliente.setMaterno(camposTexto[3].getText());
-		oCliente.setCorreo(camposTexto[4].getText());
-		oCliente.setTelefono(camposTexto[5].getText());
-		oCliente.setDireccion(camposTexto[6].getText());
-		
+
+		oCliente = new DTOClientes(sNombre, sPaterno, sMaterno, sCorreo, sTelefono, sDireccion);
+
+
 		return oCliente;	
 
 	}

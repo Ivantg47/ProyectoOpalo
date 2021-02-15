@@ -68,37 +68,33 @@ public class DAOClientes{
 		try{
 
 			conexion = getConexion() ;
-
+			/*
 			buscar =  	"SELECT id_cliente " +
           				"FROM Cliente " 
-                         		+ "WHERE nombre = ? AND aPaterno = ? AND aMaterno = ?"
-                         		+ "AND correo = ? AND telefono = ? AND direccion =?;";
+                         		+ "WHERE nombre = ? AND aPaterno = ? AND aMaterno = ?;";
 
             prepared = conexion.prepareStatement(buscar);
 
-            /**prepared.setString(1, oCliente.getNombre());
+            prepared.setString(1, oCliente.getNombre());
             prepared.setString(2, oCliente.getPaterno());
             prepared.setString(3, oCliente.getMaterno());
-            prepared.setString(4, oCliente.getCorreo());
-            prepared.setString(5, oCliente.getTelefono());
-            prepared.setString(6, oCliente.getDireccion());
-*/
+
             oResultado = prepared.executeQuery();
 
-            if (!oResultado.next()){
+            if (!oResultado.next()){*/
 
-         		insertar =  "INSERT INTO Cliente (nombre, aPaterno, aMaterno, correo, telefono, direccion)"
+         		insertar =  "INSERT INTO Cliente (nombre, aPaterno, aMaterno, correo, telefono, direccion) "
          						+ "VALUES (?, ?, ?, ?, ?, ?);";
 
          		prepared = conexion.prepareStatement(insertar);
 
-         		 /**prepared.setString(1, oCliente.getNombre());
+         		prepared.setString(1, oCliente.getNombre());
             	prepared.setString(2, oCliente.getPaterno());
             	prepared.setString(3, oCliente.getMaterno());
             	prepared.setString(4, oCliente.getCorreo());
             	prepared.setString(5, oCliente.getTelefono());
             	prepared.setString(6, oCliente.getDireccion());
-*/
+
             	eExecucion = prepared.executeUpdate();
 
          		if (eExecucion == 1){
@@ -107,10 +103,10 @@ public class DAOClientes{
 
          		}
 
-            } else {
+            //} else {
 
             	JOptionPane.showMessageDialog(null, "Error. El cliente ya existe, ingresar datos nuevamente.");
-            }
+            //}
 
 		} catch(SQLException oExcepcionSQL) {
 
@@ -251,13 +247,13 @@ public class DAOClientes{
 
 			prepared = conexion.prepareStatement(buscar);
 
-			//prepared.setInt(1, eId);
+			prepared.setInt(1, eId);
 
 			resultado = prepared.executeQuery();
 
 			if (resultado.next()) {
 
-				cliente = new DTOClientes (resultado.getInt("id_cliente"),
+				cliente = new DTOClientes (
 											resultado.getString("nombre"),
 											resultado.getString("aPaterno"),
 											resultado.getString("aMaterno"),
