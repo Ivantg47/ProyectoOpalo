@@ -168,7 +168,7 @@ public class IGUVentas extends JFrame{
 		int idProdcuto = Integer.valueOf(aTextoProducto[0].getText());
 		float cantidad = Float.valueOf(aTextoProducto[1].getText());
 
-	//	productoB = producto.getPoducto(idProdcuto);
+		productoB = producto.getProducto(idProdcuto);
 
 		if (productoB.getCodigo() == idProdcuto) {
 			
