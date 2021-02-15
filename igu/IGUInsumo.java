@@ -16,9 +16,7 @@ import ProyectoOpalo.dto.DTOInsumo;
 import ProyectoOpalo.dao.DAOInsumo;
 import ProyectoOpalo.control.ControlInsumo;
 
-public class IGUInsumo extends JFrame{
-
-	public static final String ICONOS = "/iconos/"; 
+public class IGUInsumo extends JFrame{ 
 
 	private JComboBox<String> oComboUnidadMedida;
 
@@ -81,9 +79,9 @@ public class IGUInsumo extends JFrame{
 		JPanel oPanel = new JPanel();
 
 		oPanel.setBorder(BorderFactory.createTitledBorder(""));
-		oPanel.setLayout(new FlowLayout());
+		oPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-		JLabel oEtiquetaInsumos = new JLabel("Insumos");
+		JLabel oEtiquetaInsumos = new JLabel("Insumos        ");
 		oEtiquetaInsumos.setFont(new Font("Tahoma", Font.PLAIN, 36));
 		oPanel.add(oEtiquetaInsumos);
 
@@ -91,8 +89,10 @@ public class IGUInsumo extends JFrame{
 		oPanel.add(oEtiquetaBuscar);
 
 		oCampoTxBuscar = new JTextField();
-		oCampoTxBuscar.setText("Codigo/aNombres");
+		oCampoTxBuscar.setText("Codigo/Nombre");
+		oCampoTxBuscar.setForeground(new Color(111,111,111));
 		oCampoTxBuscar.setPreferredSize(new Dimension(200,25));
+		oCampoTxBuscar.addFocusListener(oControl);
 		oPanel.add(oCampoTxBuscar);
 
 		JButton oBotonBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa.png")));
@@ -135,12 +135,12 @@ public class IGUInsumo extends JFrame{
 
 		JPanel oPanel = new JPanel();
 
-		oPanel.setLayout(new GridLayout(3, 1, 50, 10));
+		oPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0,10));
 
 		oPanel.add(getPanelCombo());
 		oPanel.add(getPanelExistencias());
 		oPanel.add(getPanelBotonesCrud());
-		
+		oPanel.setPreferredSize(new Dimension(230, 670));
 
 		oPanel.setBorder(BorderFactory.createTitledBorder("Datos insumo"));
 
@@ -162,6 +162,8 @@ public class IGUInsumo extends JFrame{
 			oPanel.add(aCamposTextoDatos[i]);
 		}
 
+		aCamposTextoDatos[0].setEnabled(false);
+
 		oPanel.add(aEtiquetasDatos[aEtiquetasDatos.length - 1]);
 		oPanel.add(oComboUnidadMedida);
 
@@ -173,6 +175,8 @@ public class IGUInsumo extends JFrame{
         oComboUnidadMedida.addItem("Onza");
         oComboUnidadMedida.addItem("Galon");
         oComboUnidadMedida.addItem("Pieza");
+
+        oPanel.setPreferredSize(new Dimension(210, 150));
 
 		return oPanel;
 
@@ -197,6 +201,7 @@ public class IGUInsumo extends JFrame{
 		}
 
 		oPanel.setBorder(BorderFactory.createTitledBorder("Existencias"));
+		oPanel.setPreferredSize(new Dimension(210, 80));
 
 		return oPanel;
 
@@ -213,20 +218,30 @@ public class IGUInsumo extends JFrame{
 		btAgregar.addActionListener(oControl);
 		btAgregar.setActionCommand("btAgregar");
 		btAgregar.setToolTipText("Agregar");
+		btAgregar.setPreferredSize(new Dimension(48, 48));
 
 		JButton btEliminar = new JButton(new ImageIcon(getClass().getResource("/iconos/eliminar.png")));
 		btEliminar.addActionListener(oControl);
 		btEliminar.setActionCommand("btEliminar");
 		btEliminar.setToolTipText("Eliminar");
+		btEliminar.setPreferredSize(new Dimension(48, 48));
 
 		JButton btModificar = new JButton(new ImageIcon(getClass().getResource("/iconos/modificar.png")));
 		btModificar.addActionListener(oControl);
 		btModificar.setActionCommand("btModificar");
 		btModificar.setToolTipText("Modificar");
+		btModificar.setPreferredSize(new Dimension(48, 48));
+
+		JButton btLimpiar = new JButton(new ImageIcon(getClass().getResource("/iconos/borrador.png")));
+		btLimpiar.setToolTipText("Limpiar");
+		btLimpiar.addActionListener(oControl);
+		btLimpiar.setActionCommand("btLimpiar");
+		btLimpiar.setPreferredSize(new Dimension(48, 48));
 
 		oPanel.add(btAgregar);
 		oPanel.add(btEliminar);
 		oPanel.add(btModificar);
+		oPanel.add(btLimpiar);
 
 		return oPanel;
 	}
@@ -321,7 +336,7 @@ public class IGUInsumo extends JFrame{
 
        }
 
-       oCampoTxBuscar.setText(null);
+       oCampoTxBuscar.setText("Codigo/Nombre");
        oComboUnidadMedida.setSelectedItem( null );
    }
 

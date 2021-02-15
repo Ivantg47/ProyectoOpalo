@@ -8,7 +8,7 @@ import ProyectoOpalo.igu.IGUInsumo;
 import ProyectoOpalo.dao.DAOInsumo;
 import ProyectoOpalo.dto.DTOInsumo;
 
-public class ControlInsumo implements ActionListener{
+public class ControlInsumo implements ActionListener, FocusListener{
 
 	private DTOInsumo oDTO;
 	private IGUInsumo oIGU;
@@ -93,6 +93,12 @@ public class ControlInsumo implements ActionListener{
 
 			break;
 
+			case "btLimpiar":
+
+				oIGU.limpiarCamposTexto();
+
+			break;
+
 			
 		}
 
@@ -110,5 +116,30 @@ public class ControlInsumo implements ActionListener{
 		return bDatosCorrectos;
 	}
 
+	public void focusGained(FocusEvent e) {
+		
+		JTextField campo = (JTextField) e.getSource();
+
+		if(campo.getText().equals("Codigo/Nombre")){
+
+	        campo.setForeground(Color.BLACK);
+	        campo.setText(null);
+
+    	}
+           
+    }
+
+    public void focusLost(FocusEvent e) {
+
+    	JTextField campo = (JTextField) e.getSource();
+
+    	if(campo.getText().equals("")){
+
+    		campo.setText("Codigo/Nombre");
+			campo.setForeground(new Color(111,111,111));
+
+    	}
+        
+    }
 
 }

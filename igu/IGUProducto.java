@@ -246,57 +246,52 @@ public class IGUProducto extends JFrame{
 
 	}
 
-	public DTOProducto getCampos(){
+	public DTOProducto getCampos() throws NumberFormatException, NullPointerException{
 
 		DTOProducto producto = new DTOProducto();
 
-		if (!camposTexto[0].getText().equals("")) {
+		if (!campoVacio()) {
 
-			producto.setCodigo(Integer.valueOf(camposTexto[0].getText()));
+			if (!camposTexto[0].getText().equals("")) {
+
+				producto.setCodigo(Integer.valueOf(camposTexto[0].getText()));
+
+			}
+
+			producto.setNombre(camposTexto[1].getText());
+			producto.setDescripcion(camposTexto[2].getText());
+			producto.setPrecio(Float.valueOf(camposTexto[3].getText()));
+			producto.setActual(Integer.valueOf(camposTextoExistencias[0].getText()));
+			producto.setMinimo(Integer.valueOf(camposTextoExistencias[1].getText()));
+			producto.setMaximo(Integer.valueOf(camposTextoExistencias[2].getText()));
 
 		}
-
-		producto.setNombre(camposTexto[1].getText());
-		producto.setDescripcion(camposTexto[2].getText());
-		producto.setPrecio(Float.valueOf(camposTexto[3].getText()));
-		producto.setActual(Integer.valueOf(camposTextoExistencias[0].getText()));
-		producto.setMinimo(Integer.valueOf(camposTextoExistencias[1].getText()));
-		producto.setMaximo(Integer.valueOf(camposTextoExistencias[2].getText()));
+		
 		
 		return producto;
 	}
 
-	public boolean campoVacio(){
+	public boolean campoVacio() throws NullPointerException{
 
-		boolean vacio = false;
-		int pos = 1;
-
-		do {
-
-			if (camposTexto[pos].getText().compareTo("") == 0) {
+		for (int pos = 1; pos < camposTexto.length; pos++) {
+		 	
+		 	if (camposTexto[pos].getText().compareTo("") == 0) {
 				
-				vacio = true;
+				throw new NullPointerException();
 
 			}
-
-			pos++;
-
-		} while (!vacio || pos < camposTexto.length);
-
-		pos = 0;
-
-		while(!vacio || pos < camposTextoExistencias.length){
-
-			if (camposTextoExistencias[pos].getText().compareTo("") == 0) {
-				
-				vacio = true;
-
-			}
-
-			pos++;
 		}
 
-		return vacio;
+		for (int pos = 0; pos < camposTextoExistencias.length; pos++) {
+		 	
+		 	if (camposTextoExistencias[pos].getText().compareTo("") == 0) {
+				
+				throw new NullPointerException();
+
+			}
+		}
+
+		return false;
 
 	}
 
@@ -322,6 +317,7 @@ public class IGUProducto extends JFrame{
 	public String getBuscar(){
 
 		return campoBuscar.getText();
+
 	}
 
 	public void setBuscar(){
@@ -329,6 +325,12 @@ public class IGUProducto extends JFrame{
 		campoBuscar.setText("Codigo/Nombre");
 		campoBuscar.setForeground(new Color(111,111,111));
 		
+	}
+
+	public int getCampoCodigo() throws NumberFormatException{
+
+		return Integer.valueOf(camposTexto[0].getText());
+
 	}
 
 	public DefaultTableModel getModelo(){

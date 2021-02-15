@@ -29,11 +29,11 @@ public class ControlProducto implements ActionListener, FocusListener{
 
 		JButton fuente = (JButton) evento.getSource();
 		dao = new DAOProducto();
-		
-		switch (fuente.getActionCommand()){
 
-			case "buscar":
+		try{
 
+			if (fuente.getActionCommand().equals("buscar")) {
+				
 				if (!igu.getBuscar().equals("Codigo/Nombre")) {
 					
 					dao.getTabla(igu.getModelo());
@@ -53,36 +53,51 @@ public class ControlProducto implements ActionListener, FocusListener{
 					igu.setBuscar();
 				}
 
-			break;
-
-			case "modificar":
-				dao.actualizarProducto(igu.getCampos());
-				dao.getTabla(igu.getModelo());
-				igu.limpiar();
-
-			break;
-
-			case "eliminar":
-				dao.borrarProducto(igu.getCampos());
-				dao.getTabla(igu.getModelo());
-				igu.limpiar();
-
-			break;
-
-			case "agregar":
+			} else if (fuente.getActionCommand().equals("agregar")) {
+				
 				dao.agregarPoducto(igu.getCampos());
 				dao.getTabla(igu.getModelo());
 				igu.limpiar();
 
-			break;
+				JOptionPane.showMessageDialog( null, "Producto registrado",
+               "Registro producto", JOptionPane.INFORMATION_MESSAGEE);
 
-			case "limpiar":
+			} else if (fuente.getActionCommand().equals("eliminar")) {
+				
+				dao.borrarProducto(igu.getCampos());
+				dao.getTabla(igu.getModelo());
+				igu.limpiar();
+
+				JOptionPane.showMessageDialog( null, "Producto eliminado",
+               "Eliminar producto", JOptionPane.INFORMATION_MESSAGEE);
+
+			} else if (fuente.getActionCommand().equals("modificar")) {
+				
+				dao.actualizarProducto(igu.getCampos());
+				dao.getTabla(igu.getModelo());
+				igu.limpiar();
+
+				JOptionPane.showMessageDialog( null, "Producto actualizado",
+               "Actualizar producto", JOptionPane.INFORMATION_MESSAGEE);
+
+			} else if (fuente.getActionCommand().equals("limpiar")) {
 				
 				igu.limpiar();
 
-			break;
+			}
+			
+		} catch (NullPointerException nullEx) {
 
-		} 
+			JOptionPane.showMessageDialog( null, "No debe dejar campos vacios",
+           "Campo vacio", JOptionPane.ERROR_MESSAGE);
+
+		} catch (NumberFormatException numEx) {
+
+			JOptionPane.showMessageDialog( null, "Dato incorrecto",
+           "Error en formato de número", JOptionPane.ERROR_MESSAGE);
+
+		}
+		
 	}
 
 	public static boolean isNumeric(String cadena) {
