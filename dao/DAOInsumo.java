@@ -18,18 +18,33 @@ import ProyectoOpalo.dto.DTOInsumo;
 
 public class DAOInsumo{
 
+	/**
+     * Atributo que guarda la conexion con la base de datos.
+     */
 	private Connection oConexion;
+	/**
+     * Atributo que almacena la consultas a la base de datos.
+     */
 	private PreparedStatement oSentencia;
+	 /**
+     * Atributo que almacena un insumo
+     */
 	private DTOInsumo oDTOInsumo;
 	
-
+	/**
+     * Constructor, que no recibe parametros.
+     */
 	public DAOInsumo(){
 
 		Connection oConexion = null;
 		PreparedStatement oSentencia = null;
 
 	}
-	
+
+	/**
+     * Metodo para establecer una conexion a la base de datos.
+     * @return conexion a la base de datos
+     */	
 	public Connection getConexion(){
 
 		try{
@@ -62,6 +77,10 @@ public class DAOInsumo{
 
 	}//getConexion
 
+	/**
+     * Metodo para agregar un insumo a la base de datos.
+     * @param oInsumo contiene el insumo.
+     */
 	public void agregar(DTOInsumo oInsumo){
 
 		int eExecucion;
@@ -144,7 +163,10 @@ public class DAOInsumo{
 
 	}//Fin agregarInsumo
 
-
+	/**
+     * Metodo para busca un insumo  por id en la base de datos.
+     * @param eID id que se desea buscar 
+     */
 	public DTOInsumo buscar(int eID){
 
 		String sConsultaBuscar;
@@ -215,6 +237,10 @@ public class DAOInsumo{
 		
 	}//Buscar
 
+	/**
+     * Metodo para busca una insumo por nombre en la base de datos.
+     * @param sNombre nombre que se desea buscar 
+     */
 	public DTOInsumo buscarPorNombre(String sNombre){
 
 		String sConsultaBuscar;
@@ -285,6 +311,10 @@ public class DAOInsumo{
 		
 	}//BuscarPorNombre
 
+	/**
+     * Metodo para eliminar un insumo de la base de datos.
+     * @param oInsumo insumo a eliminar
+     */
 	public void eliminar(DTOInsumo oInsumo){
 
 		String sConsultaEliminar;
@@ -333,6 +363,10 @@ public class DAOInsumo{
 	    }
 	}//eliminar
 
+	/**
+     * Metodo para modificar un insumo de la base de datos.
+     * @param oInsumo insumo a actualizar
+     */
 	public void modificarInsumo(DTOInsumo oInsumo){
 
 		String oConsultaModificar;
@@ -391,6 +425,10 @@ public class DAOInsumo{
 
 	}//modificarInsumo
 
+	/**
+     * Metodo para llenar la tabla de inventario insumo.
+     * @param oModelo modelo de la tabla insumo.
+     */
 	public void getTabla(DefaultTableModel oModelo){
 		
 		String oConsultaTabla;
