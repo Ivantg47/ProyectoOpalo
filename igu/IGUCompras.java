@@ -73,7 +73,7 @@ public class IGUCompras extends JFrame{
 		// setVisible(true);
 
 	}
-	//public static JPanel panelDatos = new JPanel();
+
 	public JPanel getPanelCompras(){
 
 		JPanel panelCompras = new JPanel();
@@ -81,13 +81,60 @@ public class IGUCompras extends JFrame{
 		panelCompras.setLayout(new FlowLayout(FlowLayout.CENTER));
 		// panelDatosCompras.setLayout(new GridLayout(5,1,10,10));
 
+		panelCompras.add(getPanelBuscar());
+		panelCompras.add(getPanelCompra());		
+
+		return panelCompras;
+
+	}
+
+	public JPanel getPanelCompra(){
+
+		JPanel panelCompras = new JPanel();
+
+		panelCompras.setLayout(new FlowLayout(FlowLayout.CENTER));
+		panelCompras.setBorder(BorderFactory.createTitledBorder("Detalles de compra"));
+
 		panelCompras.add(getFecha());
 		panelCompras.add(getPanelInsumo());
 		panelCompras.add(getTablaCompras());
 		panelCompras.add(getBotonesCompra());
 		
-
+		panelCompras.setPreferredSize(new Dimension(785, 500));
 		return panelCompras;
+
+	}
+
+	public JPanel getPanelBuscar(){
+
+		JPanel panelBuscar = new JPanel();
+
+		panelBuscar.setBorder(BorderFactory.createTitledBorder(""));
+		panelBuscar.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+		JLabel titulo = new JLabel("Compras        ");
+		titulo.setFont(new Font("Tahoma", Font.PLAIN, 36));
+		panelBuscar.add(titulo);
+
+		JLabel buscar = new JLabel("Buscar");
+		panelBuscar.add(buscar);
+
+		JTextField campoBuscar = new JTextField();
+		campoBuscar.setText("Folio/Fecha (dd-mm-aaaa)");
+		campoBuscar.setForeground(new Color(111,111,111));
+		campoBuscar.setPreferredSize(new Dimension(200,20));
+		panelBuscar.add(campoBuscar);
+		campoBuscar.addFocusListener(control);
+
+		JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa.png")));
+		btBuscar.setPreferredSize(new Dimension(32,32));
+		panelBuscar.add(btBuscar);
+		btBuscar.addActionListener(control);
+        btBuscar.setActionCommand("btBuscar");
+
+        panelBuscar.setPreferredSize(new Dimension(785, 55));
+
+		return panelBuscar;
 
 	}
 
@@ -120,7 +167,7 @@ public class IGUCompras extends JFrame{
 		panelFecha.add(texAnio);
 		texAnio.setBounds(735,4,40,25);
 
-		panelFecha.setPreferredSize(new Dimension(785, 35));
+		panelFecha.setPreferredSize(new Dimension(775, 35));
 		// panelFecha.setBackground(new Color(255,255,100));
 		return panelFecha;
 
@@ -132,28 +179,40 @@ public class IGUCompras extends JFrame{
 
 		panelProductos.setBorder(BorderFactory.createTitledBorder("Datos del insumo: "));
 
-		panelProductos.setLayout(new GridLayout(2,6,1,1));
+		// panelProductos.setLayout(new GridLayout(2,6,1,1));
+
+		// for (int i = 0; i < aDatosProducto.length; i++){
+
+		// 	panelProductos.add(aDatosProducto[i]);
+
+		// }
+
+		// for (int i = 0; i < aTextoProducto.length; i++){
+
+		// 	panelProductos.add(aTextoProducto[i]);
+
+		// }
+
+		// panelProductos.setPreferredSize(new Dimension(620, 75)); 
+
+  //       aTextoProducto[0].addFocusListener(control);
+  //       aTextoProducto[1].setPreferredSize(new Dimension(150, 25));
+  //       aTextoProducto[2].addFocusListener(control);
+  //       aTextoProducto[3].addFocusListener(control);
+
+		panelProductos.setLayout(null);
 
 		for (int i = 0; i < aDatosProducto.length; i++){
 
 			panelProductos.add(aDatosProducto[i]);
-
-		}
-
-		for (int i = 0; i < aTextoProducto.length; i++){
-
 			panelProductos.add(aTextoProducto[i]);
 
 		}
 
-		panelProductos.setPreferredSize(new Dimension(620, 75)); 
+		aDatosProducto[0].setBounds(10, 17, 40, 25);
+        aTextoProducto[0].setBounds(10, 43, 40, 25);
 
-        aTextoProducto[0].addFocusListener(control);
-        aTextoProducto[1].setPreferredSize(new Dimension(150, 25));
-        aTextoProducto[2].addFocusListener(control);
-        aTextoProducto[3].addFocusListener(control);
-
-        
+        panelProductos.setPreferredSize(new Dimension(620, 75));
 
 		return panelProductos;
 
@@ -178,7 +237,7 @@ public class IGUCompras extends JFrame{
 		panel.add(btAceptarP);
 		panel.add(btCancelarP);
 
-		panel.setPreferredSize(new Dimension(785, 85));
+		panel.setPreferredSize(new Dimension(775, 85));
 		// panel.setBackground(new Color(255,100,100));
 		return panel;
 	}
@@ -201,8 +260,8 @@ public class IGUCompras extends JFrame{
 
 		panelTabla.add(jScroll);
 
-		jScroll.setPreferredSize(new Dimension(765, 270));
-		panelTabla.setPreferredSize(new Dimension(785, 300));
+		jScroll.setPreferredSize(new Dimension(755, 230));
+		panelTabla.setPreferredSize(new Dimension(775, 260));
 		// panelTabla.setBackground(new Color(100,100,100));
 		// panelTabla.setBorder(BorderFactory.createTitledBorder("Compras a Registrar:"));
 
@@ -238,44 +297,22 @@ public class IGUCompras extends JFrame{
 		botones.add(total);
 		botones.add(texTotal);
 
-		botones.setPreferredSize(new Dimension(785, 90));
+		botones.setPreferredSize(new Dimension(775, 90));
 		// botones.setBackground(new Color(255,100,255));
 		return botones;
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////
-	public JPanel getEdicionCompras(){
+	// public JPanel getEdicionCompras(){
 
-		JPanel panelEdicion = new JPanel();
+	// 	JPanel panelEdicion = new JPanel();
 
-		panelEdicion.add(getBotonesCompra()/*, BorderLayout.EAST*/); 
-		panelEdicion.add(getBuscarCompra());
+	// 	panelEdicion.add(getBotonesCompra()/*, BorderLayout.EAST*/); 
+	// 	panelEdicion.add(getBuscarCompra());
 
-		return panelEdicion;
+	// 	return panelEdicion;
 
-	}
+	// }
 
-	public JPanel getBuscarCompra(){
-
-		JPanel panelBuscar = new JPanel();
-
-		JLabel buscar = new JLabel("Buscar");
-		panelBuscar.add(buscar);
-
-		JTextField campoBuscar = new JTextField();
-		campoBuscar.setText(" Ingrese fecha e.j. 01-01-2000");
-		campoBuscar.setPreferredSize(new Dimension(200,20));
-		panelBuscar.add(campoBuscar);
-		campoBuscar.addFocusListener(control);
-
-		JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa.png")));
-		btBuscar.setPreferredSize(new Dimension(32,32));
-		panelBuscar.add(btBuscar);
-		btBuscar.addActionListener(control);
-        btBuscar.setActionCommand("btBuscar");
-
-		return panelBuscar;
-
-	}
 
 	//Método que sea un getModelo() como el otro
 
