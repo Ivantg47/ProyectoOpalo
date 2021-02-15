@@ -42,7 +42,7 @@ public class ControlProducto implements ActionListener, FocusListener{
 
 	/**
      * Metodo, que escucha los eventos de los botones.
-     * @param evento indica que boton fue precionado
+     * @param evento indica que un boton fue precionado
      */
 	public void actionPerformed(ActionEvent evento){
 
@@ -59,8 +59,8 @@ public class ControlProducto implements ActionListener, FocusListener{
 				
 					if (isNumeric(igu.getBuscar())) {
 									
-						int codigo = Integer.parseInt(igu.getBuscar());
-						igu.setCampos(dao.getPoducto(codigo));
+						// int codigo = Integer.parseInt(igu.getBuscar());
+						igu.setCampos(dao.getPoducto(Integer.parseInt(igu.getBuscar())));
 						
 	
 					} else {

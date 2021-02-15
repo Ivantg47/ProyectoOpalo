@@ -15,44 +15,77 @@ import ProyectoOpalo.control.ControlProducto;
 import ProyectoOpalo.dto.DTOProducto;
 import ProyectoOpalo.dao.DAOProducto;
 
-public class IGUProducto extends JFrame{
+public class IGUProducto extends JPanel{
 
- 	private JButton btModificar, btEliminar, btAgregar, btBuscar, btLimpiar;
+ 	/**
+     * Atributo que crea la clase control de producto.
+     */
  	private ControlProducto control = new ControlProducto(this);
+ 	
+ 	/**
+     * Atributo que determina el modelo de la tabla.
+     */
  	private DefaultTableModel modelo;
+ 	
+ 	/**
+     * Atributo que genera un campo de texto .
+     */
  	private JTextField campoBuscar;
+ 	
+ 	/**
+     * Atributo que genera una tabla que muestre el inventario del producto.
+     */
  	private JTable tabla;
-
+ 	
+ 	/**
+     * Atributo que genera un campo de texto para los datos del producto.
+     */
 	private JTextField camposTexto[] = {
 		new JTextField(), //0 -> codigo
 		new JTextField(), //1 -> nombre
 		new JTextField(), //2 -> descripcion
 		new JTextField(), //3 -> precio
 	};
-
+	
+	/**
+     * Atributo que genera un campo de texto para las existencias del producto.
+     */
 	private JTextField camposTextoExistencias[] = {
 		new JTextField(), //0 -> actual
 		new JTextField(), //1 -> minima
 		new JTextField(), //2 -> maxima
 	};
-
+	
+	/**
+     * Atributo que almacena las etiquetas de datos del producto.
+     */
 	private JLabel etiquetas[] = {
 		new JLabel("Codigo"),
 		new JLabel("Nombre"),
 		new JLabel("Descripci\u00F3n"),
 		new JLabel("Precio"),
 	};
-
+	
+	/**
+     * Atributo que almacena las etiquetas de existencia en la interfaz.
+     */
 	private JLabel etiquetasExistencias[] = {
 		new JLabel("Actual"),
 		new JLabel("M\u00EDnima"),
 		new JLabel("M\u00E1xima"),
 	};
 
+	/**
+     * Constructor, sin parametros.
+     */
 	public IGUProducto(){
 
 	}
 
+	/**
+     * Metodo para generar el panel de la interfas de producto.
+     * @return panel de igu producto
+     */
 	public JPanel getIGUProducto(){
 
 		JPanel panel = new JPanel();
@@ -67,6 +100,10 @@ public class IGUProducto extends JFrame{
 
 	}
 
+	/**
+     * Metodo para generar el panel de buscar de la interfas de producto.
+     * @return panel buscar
+     */
 	public JPanel getPanelBuscar(){
 
 		JPanel panel = new JPanel();
@@ -88,7 +125,7 @@ public class IGUProducto extends JFrame{
 		campoBuscar.addFocusListener(control);
 		panel.add(campoBuscar);
 
-		btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa.png")));
+		JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa.png")));
 		btBuscar.setPreferredSize(new Dimension(32,32));
 
 		btBuscar.addActionListener(control);
@@ -101,6 +138,10 @@ public class IGUProducto extends JFrame{
 
 	}
 
+	/**
+     * Metodo para generar el panel de inventario de la interfas de producto.
+     * @return panel de inventario
+     */
 	public JPanel getPanelInventario(){
 
 		JPanel panel = new JPanel();
@@ -124,11 +165,14 @@ public class IGUProducto extends JFrame{
 
 	}
 	
+	/**
+     * Metodo para generar el panel de datos generales de la interfas de producto.
+     * @return panel de datos del producto
+     */
 	public JPanel getPanelDatosProducto(){
 
 		JPanel panelDatosProducto = new JPanel();
 
-		// panelDatosProducto.setLayout(new GridLayout(3, 1, 50, 10));
 		panelDatosProducto.setLayout(new FlowLayout(FlowLayout.CENTER, 0,10));
 		
 		panelDatosProducto.add(getPanelDatos());
@@ -143,6 +187,10 @@ public class IGUProducto extends JFrame{
 
 	}
 
+	/**
+     * Metodo para generar el panel de campos de datos de la interfas de producto.
+     * @return panel de campos de datos del producto
+     */
 	public JPanel getPanelDatos(){
 
 		JPanel panel = new JPanel();
@@ -162,6 +210,10 @@ public class IGUProducto extends JFrame{
 
 	}
 
+	/**
+     * Metodo para generar el panel de existencias de la interfas de producto.
+     * @return panel de existencias del producto
+     */
 	public JPanel getPanelExistencias(){
 
 		JPanel panelExistencias = new JPanel();
@@ -188,32 +240,35 @@ public class IGUProducto extends JFrame{
 
 	}
 	
-
+	/**
+     * Metodo para generar el panel de botones de la interfas de producto.
+     * @return panel de botones
+     */
 	public JPanel getPanelBotones(){
 
 		JPanel panelBotones = new JPanel();
 
 		panelBotones.setLayout(new FlowLayout());
 
-		btAgregar = new JButton(new ImageIcon(getClass().getResource("/iconos/agregar.png")));
+		JButton btAgregar = new JButton(new ImageIcon(getClass().getResource("/iconos/agregar.png")));
 		btAgregar.setToolTipText("Agregar");
 		btAgregar.addActionListener(control);
 		btAgregar.setActionCommand("agregar");
 		btAgregar.setPreferredSize(new Dimension(48, 48));
 
-		btEliminar = new JButton(new ImageIcon(getClass().getResource("/iconos/eliminar.png")));
+		JButton btEliminar = new JButton(new ImageIcon(getClass().getResource("/iconos/eliminar.png")));
 		btEliminar.setToolTipText("Eliminar");
 		btEliminar.addActionListener(control);
 		btEliminar.setActionCommand("eliminar");
 		btEliminar.setPreferredSize(new Dimension(48, 48));
 
-		btModificar = new JButton(new ImageIcon(getClass().getResource("/iconos/modificar.png")));
+		JButton btModificar = new JButton(new ImageIcon(getClass().getResource("/iconos/modificar.png")));
 		btModificar.setToolTipText("Modificar");
 		btModificar.addActionListener(control);
 		btModificar.setActionCommand("modificar");
 		btModificar.setPreferredSize(new Dimension(48, 48));
 
-		btLimpiar = new JButton(new ImageIcon(getClass().getResource("/iconos/borrador.png")));
+		JButton btLimpiar = new JButton(new ImageIcon(getClass().getResource("/iconos/borrador.png")));
 		btLimpiar.setToolTipText("Limpiar");
 		btLimpiar.addActionListener(control);
 		btLimpiar.setActionCommand("limpiar");
@@ -224,12 +279,13 @@ public class IGUProducto extends JFrame{
 		panelBotones.add(btModificar);
 		panelBotones.add(btLimpiar);
 
-		// panelBotones.setPreferredSize(new Dimension(210, 40));
-
 		return panelBotones;
 
 	}
 
+	/**
+     * Metodo que limpia los campos de texto de datos del producto.
+     */
 	public void limpiar(){
 
 		for (JTextField campo : camposTextoExistencias) {
@@ -246,6 +302,10 @@ public class IGUProducto extends JFrame{
 
 	}
 
+	/**
+     * Metodo para obtener los datos proporcionados por el usuario.
+     * @return producto con nuevos datos
+     */
 	public DTOProducto getCampos() throws NumberFormatException, NullPointerException{
 
 		DTOProducto producto = new DTOProducto();
@@ -270,6 +330,10 @@ public class IGUProducto extends JFrame{
 		return producto;
 	}
 
+	/**
+     * Metodo para verificar si los campos estan vacios.
+     * @return verdadero o falso
+     */
 	public boolean campoVacio() throws NullPointerException{
 
 		for (int pos = 1; pos < camposTexto.length; pos++) {
@@ -294,6 +358,9 @@ public class IGUProducto extends JFrame{
 
 	}
 
+	/**
+     * Metodo para mostrar los datos de un producto.
+     */
 	public void setCampos(DTOProducto producto){
 
 		limpiar();
@@ -310,15 +377,21 @@ public class IGUProducto extends JFrame{
 
 		} 
 
-		// System.out.println(producto);
 	}
 
+	/**
+     * Metodo para obtener el contenido del campo buscar.
+     * @return contenido de campo buscar
+     */
 	public String getBuscar(){
 
 		return campoBuscar.getText();
 
 	}
 
+	/**
+     * Metodo para dar formato campo buscar.
+     */
 	public void setBuscar(){
 
 		campoBuscar.setText("Codigo/Nombre");
@@ -326,12 +399,10 @@ public class IGUProducto extends JFrame{
 		
 	}
 
-	public int getCampoCodigo() throws NumberFormatException{
-
-		return Integer.valueOf(camposTexto[0].getText());
-
-	}
-
+	/**
+     * Metodo para obtener el modelo de la tabla inventario.
+     * @return modelo de la tabla
+     */
 	public DefaultTableModel getModelo(){
 
 		return modelo;

@@ -1,7 +1,7 @@
 /**
  * Clase DAO del producto.11
  * @author Ivan Tronco
- * @version 1.0
+ * @version 1.5
  */
 
 package ProyectoOpalo.dao;
@@ -18,15 +18,34 @@ import javax.swing.table.*;
 
 public class DAOProducto{
 
+	/**
+     * Atributo que guarda la conexion con la base de datos.
+     */
 	private Connection conexion = null;
+	/**
+     * Atributo que almacena la consultas a la base de datos.
+     */
 	private PreparedStatement prepared;
+	/**
+     * Atributo que guarda los resultados de una consulta.
+     */
     private ResultSet result;
-	DTOProducto producto;
+    /**
+     * Atributo que almacena un producto.
+     */
+	private DTOProducto producto;
 
+	/**
+     * Constructor, que no recibe parametros.
+     */
     public DAOProducto(){
 
     }
 
+    /**
+     * Metodo para agregar un producto a la base de datos.
+     * @param producto recibe el producto 
+     */
 	public void agregarPoducto(DTOProducto producto) throws IllegalArgumentException{
 
 		try {
@@ -69,6 +88,8 @@ public class DAOProducto{
 
 			}
 
+			prepared.close();
+			result.close();
 			conexion.close();
 
 		} catch (SQLException es) {
@@ -92,8 +113,12 @@ public class DAOProducto{
 	        }
 	    }
 
-	}
+	}//agregarPoducto
 
+	/**
+     * Metodo para busca una producto por codigo/id en la base de datos.
+     * @param codigo codigo que se desea buscar 
+     */
 	public DTOProducto getPoducto(int codigo) throws IllegalArgumentException{
 
 		DTOProducto producto = new DTOProducto();
@@ -126,6 +151,8 @@ public class DAOProducto{
 
 			}
 
+			prepared.close();
+			result.close();
 			conexion.close();
 
 		} catch (SQLException es) {
@@ -150,9 +177,13 @@ public class DAOProducto{
 	    }
 
 	    return producto;
-	}
+	}//getPoducto
 
-
+	/**
+     * Metodo para busca una producto por nombre en la base de datos.
+     * @param nombre nombre que se desea buscar 
+     * @param modelo modelo de la tabla inventario
+     */
 	public DTOProducto getPoducto(String nombre, DefaultTableModel modelo) throws IllegalArgumentException{
 
 		DTOProducto producto = new DTOProducto();
@@ -204,6 +235,8 @@ public class DAOProducto{
 			
 			}
 
+			prepared.close();
+			result.close();
 			conexion.close();
 
 		} catch (SQLException es) {
@@ -228,8 +261,12 @@ public class DAOProducto{
 	    }
 
 	    return producto;
-	}
+	}//getPoducto
 
+	/**
+     * Metodo para actualizar un producto de la base de datos.
+     * @param producto producto a actualizar
+     */
 	public void actualizarProducto(DTOProducto producto)throws IllegalArgumentException{
 
 		try {
@@ -270,6 +307,7 @@ public class DAOProducto{
 
 			}
 
+			prepared.close();
 			conexion.close();
 
 		} catch (SQLException es) {
@@ -292,8 +330,12 @@ public class DAOProducto{
 
 	        }
 	    }
-	}
+	}//actualizarProducto
 
+	/**
+     * Metodo para eliminar un producto de la base de datos.
+     * @param producto producto a eliminar
+     */
 	public void borrarProducto(DTOProducto producto) throws IllegalArgumentException {
 
 		try {
@@ -312,6 +354,7 @@ public class DAOProducto{
 
 			} 
 
+			prepared.close();
 			conexion.close();
 
 		} catch (SQLException es) {
@@ -334,8 +377,12 @@ public class DAOProducto{
 
 	        }
 	    }
-	}
+	}//borrarProducto
 
+	/**
+     * Metodo para llenar la tabla de inventario producto.
+     * @param modelo modelo de la tabla producto
+     */
 	public void getTabla(DefaultTableModel modelo){
 
 		try {
@@ -356,6 +403,8 @@ public class DAOProducto{
 
 			} 
 
+			prepared.close();
+			result.close();
 			conexion.close();
 
 		} catch (SQLException es) {
@@ -383,8 +432,13 @@ public class DAOProducto{
 	        }
 	    }
 
-	}
+	}//getTabla
 
+	/**
+     * Metodo para llenar la tabla de inventario producto restringida a un nombre.
+     * @param modelo modelo de la tabla producto
+     * @param nombre nombre que se desea buscar
+     */
 	public void getTabla (DefaultTableModel modelo, String nombre){
 
 		try {
@@ -407,6 +461,8 @@ public class DAOProducto{
 
 			} 
 
+			prepared.close();
+			result.close();
 			conexion.close();
 
 		} catch (SQLException es) {
@@ -434,8 +490,12 @@ public class DAOProducto{
 	        }
 	    }
 
-	}
+	}//getTabla
 
+	/**
+     * Metodo para establecer una conexion a la base de datos.
+     * @return conexion a la base de datos
+     */
 	public Connection getConnection() {
    
         try {
@@ -449,7 +509,6 @@ public class DAOProducto{
 	        String paswd = "hola";
 
 	        conexion = DriverManager.getConnection(jdbcUrl, usuario, paswd);
-        //    JOptionPane.showMessageDialog(null, "Conexion Exitosa");
             
         } catch (SQLException sqlEx){
 
