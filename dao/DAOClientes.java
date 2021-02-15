@@ -269,6 +269,7 @@ public class DAOClientes{
 				JOptionPane.showMessageDialog(null, "Error. El cliente no existe no existe, intente de nuevo.");
 
 			}
+			
 		}catch(SQLException oExcepcion){
 
 			oExcepcion.printStackTrace();

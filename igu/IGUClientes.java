@@ -222,12 +222,25 @@ public class IGUClientes extends JFrame{
 
 		int eId = 0;
 	//	if (campoBuscar.getText().compareTo("") != 0) {
+<<<<<<< HEAD
 			
+=======
+			System.out.println("Paso 3");
+
+			System.out.println("Paso 3.1: " + campoBuscar.getText());
+>>>>>>> 462e10697160199039e8ead2662e177ef5966a72
+
+			
+<<<<<<< HEAD
+	//	}
+			
+=======
 
 			eId = Integer.valueOf(campoBuscar.getText());
 			
 	//	}
-			
+			System.out.println("Paso 4: " + eId);
+>>>>>>> 462e10697160199039e8ead2662e177ef5966a72
 		return eId;
 	}
 

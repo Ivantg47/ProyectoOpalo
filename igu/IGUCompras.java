@@ -23,6 +23,9 @@ public class IGUCompras extends JFrame{
 	public static int indiceTabla = 0; //indice del arreglo que incrementra según se agregan objetos osea filas.
 	private DAOCompra oDao = new DAOCompra();
 
+	private JLabel folio = new JLabel("Folio: ");
+	private JTextField texFolio = new JTextField();
+
 	private JLabel dia = new JLabel("D\u00EDa: ");
 	private JTextField texDia = new JTextField();
 
@@ -34,53 +37,57 @@ public class IGUCompras extends JFrame{
 
 	private JLabel aDatosProducto[] = {
 
-		new JLabel("Insumo: "),
-		new JLabel("Cantidad: "),
-		new JLabel("Costo: "),
-        new JLabel("Fecha de Compra")
+		new JLabel("Codigo"),
+		new JLabel("Descripcion"),
+		new JLabel("Precio"),
+        new JLabel("Cantidad"),
+        new JLabel("Total")
 
 	};
 
 	private JTextField aTextoProducto[] = {
 
-		new JTextField(), //Nombre del insumo
-		new JTextField(), // Cantidad
-		new JTextField(), // Costo
-        new JTextField() //fechaCompra
+		new JTextField(), //Codigo
+		new JTextField(), // Descripcion
+		new JTextField(), // Precio
+        new JTextField(), //Cantidad
+        new JTextField()  //Total
 
 	};
 
     //botones de pre registro
-	private JButton btAceptarP = new JButton("Aceptar"), btCancelarP = new JButton("Cancelar");
+	private JButton btAceptarP, btCancelarP, btLimpiar;
 
-	private JButton btAgregar = new JButton("Registrar Compras"), btCancelar = new JButton("Cancelar Registro");
+	private JButton btAgregar, btCancelar;
+
+	private JLabel total;
+	private JTextField texTotal;
+
 
 	public IGUCompras(){
-	/*
-		super("Registro de Compra");
 
-		add(getPanelDatos());
-		setLocation(300,30);
-		setSize(800,600);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setVisible(true);
-	*/
+		// add(getPanelCompras());
+		// setSize(800, 670);
+		// setLocationRelativeTo(null);
+		// setDefaultCloseOperation(EXIT_ON_CLOSE);
+		// setVisible(true);
+
 	}
 	//public static JPanel panelDatos = new JPanel();
-	public JPanel getPanelDatos(){
+	public JPanel getPanelCompras(){
 
-		JPanel panelDatos = new JPanel();
+		JPanel panelCompras = new JPanel();
 
-		panelDatos.setLayout(new GridLayout(5,1,10,10));
-		//oDao.creaPre();
-		//panelDatos.add(getFecha());
-		panelDatos.add(getDatosProducto());
-		panelDatos.add(getTablaCompras());
-		//panelDatos.add(getPanelInventario());
-		//panelDatos.add(getTicket());
-        panelDatos.add(getEdicionCompras());
-        panelDatos.add(getTablaListado());
-		return panelDatos;
+		panelCompras.setLayout(new FlowLayout(FlowLayout.CENTER));
+		// panelDatosCompras.setLayout(new GridLayout(5,1,10,10));
+
+		panelCompras.add(getFecha());
+		panelCompras.add(getPanelInsumo());
+		panelCompras.add(getTablaCompras());
+		panelCompras.add(getBotonesCompra());
+		
+
+		return panelCompras;
 
 	}
 
@@ -88,55 +95,154 @@ public class IGUCompras extends JFrame{
 
 		JPanel panelFecha = new JPanel();
 
+		panelFecha.setLayout(null);
+
+		panelFecha.add(folio);
+		folio.setBounds(420,4,35,25);
+		panelFecha.add(texFolio);
+		texFolio.setBounds(460,4,60,25);
+
 		panelFecha.add(dia);
-		dia.setBounds(550,20,50,20);
+		dia.setBounds(530,4,30,25);
+		texDia.setPreferredSize(new Dimension(40, 25));
 		panelFecha.add(texDia);
-		texDia.setBounds(580,20,20,20);
+		texDia.setBounds(565,4,40,25);
 
 		panelFecha.add(mes);
-		mes.setBounds(620,20,70,20);
+		mes.setBounds(615,4,30,25);
+		texMes.setPreferredSize(new Dimension(40, 25));
 		panelFecha.add(texMes);
-		texMes.setBounds(660,20,20,20);
+		texMes.setBounds(650,4,40,25);
 
 		panelFecha.add(anio);
-		anio.setBounds(700,20,70,20);
+		anio.setBounds(700,4,30,25);
+		// texAnio.setPreferredSize(new Dimension(40, 25));
 		panelFecha.add(texAnio);
-		texAnio.setBounds(730,20,30,20);
+		texAnio.setBounds(735,4,40,25);
 
+		panelFecha.setPreferredSize(new Dimension(785, 35));
+		// panelFecha.setBackground(new Color(255,255,100));
 		return panelFecha;
 
 	}
 
-	public JPanel getDatosProducto(){
+	public JPanel getDatosInsumo(){
 
 		JPanel panelProductos = new JPanel();
 
-		panelProductos.setBorder(BorderFactory.createTitledBorder("Datos de la compra: "));
+		panelProductos.setBorder(BorderFactory.createTitledBorder("Datos del insumo: "));
 
-		panelProductos.setLayout(new GridLayout(4,1,1,1));
+		panelProductos.setLayout(new GridLayout(2,6,1,1));
 
 		for (int i = 0; i < aDatosProducto.length; i++){
 
 			panelProductos.add(aDatosProducto[i]);
-			panelProductos.add(aTextoProducto[i]);
-			panelProductos.add(getBotonesProducto()); 
 
 		}
 
+		for (int i = 0; i < aTextoProducto.length; i++){
+
+			panelProductos.add(aTextoProducto[i]);
+
+		}
+
+		panelProductos.setPreferredSize(new Dimension(620, 75)); 
+
         aTextoProducto[0].addFocusListener(control);
-        aTextoProducto[1].addFocusListener(control);
+        aTextoProducto[1].setPreferredSize(new Dimension(150, 25));
         aTextoProducto[2].addFocusListener(control);
         aTextoProducto[3].addFocusListener(control);
 
-        btAceptarP.addActionListener(control);
-        btAceptarP.setActionCommand("Verificar");
-        btCancelarP.addActionListener(control);
-        btCancelarP.setActionCommand("Limpiar");
+        
 
 		return panelProductos;
 
 	}
 
+	public JPanel getPanelInsumo(){
+
+		JPanel panel = new JPanel();
+
+		panel.add(getDatosInsumo());
+
+		btAceptarP = new JButton(new ImageIcon(getClass().getResource("/iconos/agregar3.png")));
+		btAceptarP.setPreferredSize(new Dimension(55, 55));
+		btAceptarP.addActionListener(control);
+        btAceptarP.setActionCommand("Verificar");
+
+        btCancelarP = new JButton(new ImageIcon(getClass().getResource("/iconos/quitar.png")));
+        btCancelarP.setPreferredSize(new Dimension(55, 55));
+        btCancelarP.addActionListener(control);
+        btCancelarP.setActionCommand("Limpiar");
+
+		panel.add(btAceptarP);
+		panel.add(btCancelarP);
+
+		panel.setPreferredSize(new Dimension(785, 85));
+		// panel.setBackground(new Color(255,100,100));
+		return panel;
+	}
+
+	public JPanel getTablaCompras(){
+
+		JPanel panelTabla = new JPanel();
+
+		JTable tablaCompras = new JTable();
+		//JScrollPane jScroll = new JScrollPane(tablaCompras);
+
+		modeloDTO = new DefaultTableModel();
+
+		modeloDTO.setColumnIdentifiers(new Object[]{"#", "Nombre", "Cantidad", "Costo Unitario", "SubTotal"});
+
+		tablaCompras.setModel(modeloDTO);
+		JScrollPane jScroll = new JScrollPane(tablaCompras);
+
+		//jScroll.setViewportView(tablaCompras);
+
+		panelTabla.add(jScroll);
+
+		jScroll.setPreferredSize(new Dimension(765, 270));
+		panelTabla.setPreferredSize(new Dimension(785, 300));
+		// panelTabla.setBackground(new Color(100,100,100));
+		// panelTabla.setBorder(BorderFactory.createTitledBorder("Compras a Registrar:"));
+
+		return panelTabla;
+
+	}
+
+	public JPanel getBotonesCompra(){
+
+		JPanel botones = new JPanel();
+
+		btAgregar = new JButton(new ImageIcon(getClass().getResource("/iconos/save.png")));
+		btAgregar.setPreferredSize(new Dimension(80, 80));
+		btAgregar.addActionListener(control);
+        // btAgregar.setActionCommand("Verificar");
+
+        btCancelar = new JButton(new ImageIcon(getClass().getResource("/iconos/trash.png")));
+		btCancelar.setPreferredSize(new Dimension(80, 80));
+		btCancelar.addActionListener(control);
+        // btAgregar.setActionCommand("Verificar");
+
+	//	botones.setLayout(new GridLayout(1,1,10,10));
+		total = new JLabel("    Total Compra");
+		total.setFont(new Font("Tahoma", Font.PLAIN, 36));
+
+		texTotal = new JTextField("0.00");
+		texTotal.setHorizontalAlignment(JTextField.RIGHT);
+		texTotal.setFont(new Font("Tahoma", Font.PLAIN, 30));
+		texTotal.setPreferredSize(new Dimension(200, 40));
+
+		botones.add(btAgregar);
+		botones.add(btCancelar);
+		botones.add(total);
+		botones.add(texTotal);
+
+		botones.setPreferredSize(new Dimension(785, 90));
+		// botones.setBackground(new Color(255,100,255));
+		return botones;
+	}
+	/////////////////////////////////////////////////////////////////////////////////////////////////////
 	public JPanel getEdicionCompras(){
 
 		JPanel panelEdicion = new JPanel();
@@ -161,7 +267,7 @@ public class IGUCompras extends JFrame{
 		panelBuscar.add(campoBuscar);
 		campoBuscar.addFocusListener(control);
 
-		JButton btBuscar = new JButton(new ImageIcon("lupa.png"));
+		JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa.png")));
 		btBuscar.setPreferredSize(new Dimension(32,32));
 		panelBuscar.add(btBuscar);
 		btBuscar.addActionListener(control);
@@ -173,28 +279,7 @@ public class IGUCompras extends JFrame{
 
 	//Método que sea un getModelo() como el otro
 
-    public JPanel getTablaCompras(){
-
-		JPanel panelTabla = new JPanel();
-
-		JTable tablaCompras = new JTable();
-		//JScrollPane jScroll = new JScrollPane(tablaCompras);
-
-		modeloDTO = new DefaultTableModel();
-
-		modeloDTO.setColumnIdentifiers(new Object[]{"#", "Nombre", "Cantidad", "Costo", "Fecha de Compra", "Total"});
-
-		tablaCompras.setModel(modeloDTO);
-		JScrollPane jScroll = new JScrollPane(tablaCompras);
-
-		//jScroll.setViewportView(tablaCompras);
-
-		panelTabla.add(jScroll);
-		panelTabla.setBorder(BorderFactory.createTitledBorder("Compras a Registrar:"));
-
-		return panelTabla;
-
-	}
+    
 /*
     public JPanel getTablaListado(){
 
@@ -255,30 +340,6 @@ public class IGUCompras extends JFrame{
 
 		return panel;
 
-	}
-
-	public JPanel getBotonesProducto(){
-
-		JPanel botones = new JPanel();
-
-		botones.setLayout(new GridLayout(1,1));
-
-		botones.add(btAceptarP);
-		botones.add(btCancelarP);
-
-		return botones;
-	}
-
-
-	public JPanel getBotonesCompra(){
-
-		JPanel botones = new JPanel();
-
-		botones.setLayout(new GridLayout(1,1,10,10));
-		botones.add(btAgregar);
-		botones.add(btCancelar);
-		
-		return botones;
 	}
 
     public DTOCompra getCampos(){
@@ -398,6 +459,11 @@ public class IGUCompras extends JFrame{
 		aTextoProducto[2].setText(null);
 		aTextoProducto[3].setText(null);
 
+	}
+
+	public static void main(String[] args) {
+		
+		IGUCompras prueba = new IGUCompras();
 	}
 
 }

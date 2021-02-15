@@ -12,10 +12,12 @@ import javax.swing.*;
 import ProyectoOpalo.igu.IGUVentas;
 import ProyectoOpalo.dao.DAOVentas;
 import ProyectoOpalo.dto.DTOVentas;
+import ProyectoOpalo.dto.DTOProducto;
 
 public class ControlVenta implements ActionListener, FocusListener{
 
 	private DAOVentas daoVentas;
+	private DTOVentas dtoventas;
 	private IGUVentas iguVentas;
 
 	public ControlVenta(IGUVentas iguVentas){
@@ -51,8 +53,8 @@ public class ControlVenta implements ActionListener, FocusListener{
 				iguVentas.ventas = daoVentasB.buscarVenta(iguVentas.leerDatoBuscar());
 				break;
 			case "btCancelar":
-				//DAOVentas daoVentasC = new DAOVentas();
-				//daoVentasC.CancelarVenta(iguVentas.leerDatoBuscar(), iguVentas.ventas);
+				DAOVentas daoVentasC = new DAOVentas();
+				daoVentasC.CancelarVenta(iguVentas.leerDatoBuscar(), iguVentas.ventas);
 				break;
 		}
 	}

@@ -81,17 +81,16 @@ public class ControlClientes implements ActionListener{
 
 			case "btBuscar":
 
-				if (igu.getId() != 0) {
-
+			//	if (igu.getId() != 0) {
 					dto = dao.buscarCliente(igu.getId());
 					igu.mostrarDTO(dto);
 					//dao.getTabla(igu.getModelo());
 						
-				} else {
+			/*	} else {
 
 					JOptionPane.showMessageDialog(null, "Error. Escriba un ID.");
 
-				}
+				}*/
 
 			break;
 		}

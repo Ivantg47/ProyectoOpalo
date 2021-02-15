@@ -45,7 +45,7 @@ public class IGUAplicacionMenu extends JFrame{
 
 		tpPanel.addTab("", new ImageIcon(getClass().getResource("/iconos/ventas.png")), new IGUVentas().getPanelDatos());
 
-		tpPanel.addTab("", new ImageIcon(getClass().getResource("/iconos/bolsa-de-la-compra.png")), new IGUCompras().getPanelDatos());
+		tpPanel.addTab("", new ImageIcon(getClass().getResource("/iconos/bolsa-de-la-compra.png")), new IGUCompras().getPanelCompras());
 
 		tpPanel.addTab("", new ImageIcon(getClass().getResource("/iconos/dulces (5).png")), new IGUProducto().getIGUProducto());
 
