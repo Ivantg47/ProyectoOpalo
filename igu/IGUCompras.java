@@ -66,12 +66,6 @@ public class IGUCompras extends JFrame{
 
 	public IGUCompras(){
 
-		// add(getPanelCompras());
-		// setSize(800, 670);
-		// setLocationRelativeTo(null);
-		// setDefaultCloseOperation(EXIT_ON_CLOSE);
-		// setVisible(true);
-
 	}
 
 	public JPanel getPanelCompras(){
@@ -79,7 +73,6 @@ public class IGUCompras extends JFrame{
 		JPanel panelCompras = new JPanel();
 
 		panelCompras.setLayout(new FlowLayout(FlowLayout.CENTER));
-		// panelDatosCompras.setLayout(new GridLayout(5,1,10,10));
 
 		panelCompras.add(getPanelBuscar());
 		panelCompras.add(getPanelCompra());		
@@ -101,6 +94,7 @@ public class IGUCompras extends JFrame{
 		panelCompras.add(getBotonesCompra());
 		
 		panelCompras.setPreferredSize(new Dimension(785, 500));
+		// panelCompras.setBackground(new Color(155,255,100));
 		return panelCompras;
 
 	}
@@ -133,7 +127,7 @@ public class IGUCompras extends JFrame{
         btBuscar.setActionCommand("btBuscar");
 
         panelBuscar.setPreferredSize(new Dimension(785, 55));
-
+        // panelBuscar.setBackground(new Color(255,155,100));
 		return panelBuscar;
 
 	}
@@ -163,7 +157,6 @@ public class IGUCompras extends JFrame{
 
 		panelFecha.add(anio);
 		anio.setBounds(700,4,30,25);
-		// texAnio.setPreferredSize(new Dimension(40, 25));
 		panelFecha.add(texAnio);
 		texAnio.setBounds(735,4,40,25);
 
@@ -179,27 +172,6 @@ public class IGUCompras extends JFrame{
 
 		panelProductos.setBorder(BorderFactory.createTitledBorder("Datos del insumo: "));
 
-		// panelProductos.setLayout(new GridLayout(2,6,1,1));
-
-		// for (int i = 0; i < aDatosProducto.length; i++){
-
-		// 	panelProductos.add(aDatosProducto[i]);
-
-		// }
-
-		// for (int i = 0; i < aTextoProducto.length; i++){
-
-		// 	panelProductos.add(aTextoProducto[i]);
-
-		// }
-
-		// panelProductos.setPreferredSize(new Dimension(620, 75)); 
-
-  //       aTextoProducto[0].addFocusListener(control);
-  //       aTextoProducto[1].setPreferredSize(new Dimension(150, 25));
-  //       aTextoProducto[2].addFocusListener(control);
-  //       aTextoProducto[3].addFocusListener(control);
-
 		panelProductos.setLayout(null);
 
 		for (int i = 0; i < aDatosProducto.length; i++){
@@ -209,10 +181,23 @@ public class IGUCompras extends JFrame{
 
 		}
 
-		aDatosProducto[0].setBounds(10, 17, 40, 25);
-        aTextoProducto[0].setBounds(10, 43, 40, 25);
+		aDatosProducto[0].setBounds(10, 17, 60, 25);
+        aTextoProducto[0].setBounds(10, 43, 60, 25);
+
+        aDatosProducto[1].setBounds(75, 17, 80, 25);
+        aTextoProducto[1].setBounds(75, 43, 250, 25);
+
+        aDatosProducto[2].setBounds(330, 17, 100, 25);
+        aTextoProducto[2].setBounds(330, 43, 100, 25);
+
+        aDatosProducto[3].setBounds(435, 17, 70, 25);
+        aTextoProducto[3].setBounds(435, 43, 70, 25);
+
+        aDatosProducto[4].setBounds(510, 17, 100, 25);
+        aTextoProducto[4].setBounds(510, 43, 100, 25);
 
         panelProductos.setPreferredSize(new Dimension(620, 75));
+        // panelProductos.setBackground(new Color(155,155,100));
 
 		return panelProductos;
 
@@ -261,9 +246,8 @@ public class IGUCompras extends JFrame{
 		panelTabla.add(jScroll);
 
 		jScroll.setPreferredSize(new Dimension(755, 230));
-		panelTabla.setPreferredSize(new Dimension(775, 260));
+		panelTabla.setPreferredSize(new Dimension(775, 240));
 		// panelTabla.setBackground(new Color(100,100,100));
-		// panelTabla.setBorder(BorderFactory.createTitledBorder("Compras a Registrar:"));
 
 		return panelTabla;
 
@@ -284,10 +268,10 @@ public class IGUCompras extends JFrame{
         // btAgregar.setActionCommand("Verificar");
 
 	//	botones.setLayout(new GridLayout(1,1,10,10));
-		total = new JLabel("    Total Compra");
+		total = new JLabel("         Total Compra");
 		total.setFont(new Font("Tahoma", Font.PLAIN, 36));
 
-		texTotal = new JTextField("0.00");
+		texTotal = new JTextField("$ 0.00");
 		texTotal.setHorizontalAlignment(JTextField.RIGHT);
 		texTotal.setFont(new Font("Tahoma", Font.PLAIN, 30));
 		texTotal.setPreferredSize(new Dimension(200, 40));
