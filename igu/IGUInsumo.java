@@ -256,7 +256,7 @@ public class IGUInsumo extends JFrame{
 
 		if (!isNumeric(aCamposTextoDatos[1].getText())){
 
-			sNombre = aCamposTextoDatos[1].getText();
+			sNombre = aCamposTextoDatos[1].getText().toUpperCase();
 
 			while(bEsFlotante && eCont < aCamposTextoExistencias.length){
 
@@ -287,7 +287,7 @@ public class IGUInsumo extends JFrame{
 
 		}
 		
-		sUnidadMedida = oComboUnidadMedida.getSelectedItem().toString();
+		sUnidadMedida = oComboUnidadMedida.getSelectedItem().toString().toUpperCase();
 		oDTOInsumo = new DTOInsumo(sNombre, sUnidadMedida, fExistenciaActual, fExistenciaMinima, fExistenciaMaxima);
 
 		
@@ -425,5 +425,13 @@ public class IGUInsumo extends JFrame{
         return oResultado;
     }
 
+    public String getCampoBuscar(){
+
+    	return oCampoTxBuscar.getText();
+
+    }
+
    		 
 }
+
+
