@@ -50,6 +50,25 @@ public class DAOVentas{
 
 			if (resultado == 1){
 
+				sql = "SELECT last_insert_id() AS id_venta;";
+				prepared = conexion.prepareStatement(sql);
+				result = prepared.executeQuery();
+
+				if (result.next()){
+					
+					String venta_Productosql = "INSERT INTO Venta_Producto (id_venta,id_producto,cantidad) VALUES (?, ?, ?);";
+
+					prepared = conexion.prepareStatement(venta_Productosql);
+
+					prepared.setInt(1, result.getInt("id_venta"));
+					prepared.setInt(2, ventas.getIdProducto());
+					prepared.setFloat(3, ventas.getCantidadVendida());
+
+					int resultadoVP = prepared.executeUpdate();
+
+				}
+
+
 				JOptionPane.showMessageDialog(null, "Venta registrada");
 
 			}
@@ -146,7 +165,7 @@ public class DAOVentas{
 	    return ventas;
 	}
 
-	/*public void CancelarVenta(int idVenta, DTOVentas ventas){
+	public void CancelarVenta(int idVenta, DTOVentas ventas){
 		try {
 
 			conexion = getConnection();
@@ -163,6 +182,10 @@ public class DAOVentas{
 			if (resultado == 1){
 
 				JOptionPane.showMessageDialog(null, "Venta cancelada");
+
+			} else {
+
+				JOptionPane.showMessageDialog(null, "No existe una venta con el id ingresado.");
 
 			}
 
@@ -194,7 +217,7 @@ public class DAOVentas{
 	    }
 
 	}
-*/
+
 	public void getTabla(DefaultTableModel modelo){
 
 		try {
