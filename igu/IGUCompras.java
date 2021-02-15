@@ -161,7 +161,7 @@ public class IGUCompras extends JFrame{
 		panelBuscar.add(campoBuscar);
 		campoBuscar.addFocusListener(control);
 
-		JButton btBuscar = new JButton(new ImageIcon("lupa.png"));
+		JButton btBuscar = new JButton(new ImageIcon("igu/lupita.png"));
 		btBuscar.setPreferredSize(new Dimension(32,32));
 		panelBuscar.add(btBuscar);
 		btBuscar.addActionListener(control);
@@ -171,7 +171,13 @@ public class IGUCompras extends JFrame{
 
 	}
 
-	//Método que sea un getModelo() como el otro
+	//Método que sea un getModeloDTO() como el otro
+
+	public DefaultTableModel getModeloDTO(){
+
+		return modeloDTO;
+
+	}
 
     public JPanel getTablaCompras(){
 
