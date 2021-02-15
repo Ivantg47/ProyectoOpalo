@@ -1,5 +1,8 @@
-//ejecutar java ProyectoOpalo.dao.DAOInsumo
-//compilo normal ejecuto ProyectoOpalo.igu.IGUAplicacionMenu
+/**
+ * Clase control del insumo.
+ * @author Frida Janeth Hernández Torres
+ * @version 1.5
+ */
 
 package ProyectoOpalo.dao; //Pertenece a este paquete
 
@@ -15,18 +18,33 @@ import ProyectoOpalo.dto.DTOInsumo;
 
 public class DAOInsumo{
 
+	/**
+     * Atributo que guarda la conexion con la base de datos.
+     */
 	private Connection oConexion;
+	/**
+     * Atributo que almacena la consultas a la base de datos.
+     */
 	private PreparedStatement oSentencia;
+	 /**
+     * Atributo que almacena un insumo
+     */
 	private DTOInsumo oDTOInsumo;
 	
-
+	/**
+     * Constructor, que no recibe parametros.
+     */
 	public DAOInsumo(){
 
 		Connection oConexion = null;
 		PreparedStatement oSentencia = null;
 
 	}
-	
+
+	/**
+     * Metodo para establecer una conexion a la base de datos.
+     * @return conexion a la base de datos
+     */	
 	public Connection getConexion(){
 
 		try{
@@ -59,6 +77,10 @@ public class DAOInsumo{
 
 	}//getConexion
 
+	/**
+     * Metodo para agregar un insumo a la base de datos.
+     * @param oInsumo contiene el insumo.
+     */
 	public void agregar(DTOInsumo oInsumo){
 
 		int eExecucion;
@@ -73,16 +95,11 @@ public class DAOInsumo{
 			//Buscamos si ya existe ese insumo
 			sConsultaBuscar =     "SELECT id_Insumo " 
                                	+ "FROM Insumo " 
-                         		+ "WHERE unidadMedida = ? AND nombre = ? "
-                                + "AND existenciaMinima  = ? AND existenciaMaxima = ? AND existenciaActual = ?;";
+                         		+ "WHERE nombre = ?; ";
 
             oSentencia = oConexion.prepareStatement(sConsultaBuscar);
 
-            oSentencia.setString(1, oInsumo.getUnidadMedida());
-            oSentencia.setString(2, oInsumo.getNombre());
-            oSentencia.setFloat(3, oInsumo.getExistenciaMinima());
-            oSentencia.setFloat(4, oInsumo.getExistenciaMaxima());
-            oSentencia.setFloat(5, oInsumo.getExistenciaActual());
+            oSentencia.setString(1, oInsumo.getNombre());            
 
             oResultado = oSentencia.executeQuery();
 
@@ -146,7 +163,10 @@ public class DAOInsumo{
 
 	}//Fin agregarInsumo
 
-
+	/**
+     * Metodo para busca un insumo  por id en la base de datos.
+     * @param eID id que se desea buscar 
+     */
 	public DTOInsumo buscar(int eID){
 
 		String sConsultaBuscar;
@@ -180,7 +200,7 @@ public class DAOInsumo{
 
             } else {
 
-            	JOptionPane.showMessageDialog(null, "Error. El insumo no existe no existe, intentar con otro codigo.");
+            	JOptionPane.showMessageDialog(null, "Error. El insumo no existe, intentar con otro codigo.");
 
             }
 
@@ -217,6 +237,84 @@ public class DAOInsumo{
 		
 	}//Buscar
 
+	/**
+     * Metodo para busca una insumo por nombre en la base de datos.
+     * @param sNombre nombre que se desea buscar 
+     */
+	public DTOInsumo buscarPorNombre(String sNombre){
+
+		String sConsultaBuscar;
+		ResultSet oResultado;
+		oDTOInsumo = new DTOInsumo();
+
+		try{
+
+			oConexion = getConexion();
+
+			sConsultaBuscar =     "SELECT * " 
+                               	+ "FROM Insumo " 
+                         		+ "WHERE nombre = ? ";
+                                
+
+            oSentencia = oConexion.prepareStatement(sConsultaBuscar);
+
+            oSentencia.setString(1, sNombre);
+
+            oResultado = oSentencia.executeQuery();
+
+            
+            if(oResultado.next()){
+
+            	oDTOInsumo = new DTOInsumo(	  oResultado.getInt("id_Insumo"), 
+            								  oResultado.getString("nombre"), 
+            							 	  oResultado.getString("unidadMedida"), 
+            							 	  oResultado.getFloat("existenciaActual"), 
+            							 	  oResultado.getFloat("existenciaMinima"), 
+            							 	  oResultado.getFloat("existenciaMaxima"));
+
+            } else {
+
+            	JOptionPane.showMessageDialog(null, "Error. El insumo no existe, intentar con otro nombre.");
+
+            }
+
+            
+
+		} catch (SQLException oExcepcionSQL) {
+
+				oExcepcionSQL.printStackTrace();
+
+		} catch (Exception oExcepcion) {
+
+				oExcepcion.printStackTrace();
+
+		} finally {
+
+			try {
+
+				if (oConexion != null) {
+
+				   oConexion.close();
+				   
+				} 
+
+			} catch (SQLException oExcepcion){
+
+				oExcepcion.printStackTrace();
+
+			}
+
+		}
+
+		return oDTOInsumo;
+
+		
+	}//BuscarPorNombre
+
+	/**
+     * Metodo para eliminar un insumo de la base de datos.
+     * @param oInsumo insumo a eliminar
+     */
 	public void eliminar(DTOInsumo oInsumo){
 
 		String sConsultaEliminar;
@@ -263,8 +361,12 @@ public class DAOInsumo{
 
 	        }
 	    }
-	}
+	}//eliminar
 
+	/**
+     * Metodo para modificar un insumo de la base de datos.
+     * @param oInsumo insumo a actualizar
+     */
 	public void modificarInsumo(DTOInsumo oInsumo){
 
 		String oConsultaModificar;
@@ -323,6 +425,10 @@ public class DAOInsumo{
 
 	}//modificarInsumo
 
+	/**
+     * Metodo para llenar la tabla de inventario insumo.
+     * @param oModelo modelo de la tabla insumo.
+     */
 	public void getTabla(DefaultTableModel oModelo){
 		
 		String oConsultaTabla;
@@ -373,6 +479,6 @@ public class DAOInsumo{
 
 	        }
 	    }
-	}
+	}//getTabla
 
 }

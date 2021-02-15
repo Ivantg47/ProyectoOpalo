@@ -17,7 +17,12 @@ import ProyectoOpalo.dto.DTOVentas;
 public class IGUVentas extends JFrame{
 
 	private ControlVenta control = new ControlVenta(this);
-	
+	public DTOVentas ventas = new DTOVentas();
+	private DefaultTableModel modelo;
+	private JTable tabla;
+
+	JTextField campoBuscar = new JTextField();
+
 	private JLabel aDatosCliente[] = {
 
 		new JLabel("ID cliente: "),
@@ -109,15 +114,10 @@ public class IGUVentas extends JFrame{
 
 	public void leerDatosCliente(){
 
-		DTOVentas dtoVentas = new DTOVentas();
-
 		int idCliente = Integer.valueOf(aTextoCliente[0].getText());
 		String tipoPago = aTextoCliente[1].getText();
-		dtoVentas.setIdCliente(idCliente);
-		dtoVentas.setTipoPago(tipoPago);
-		
-		System.out.println(dtoVentas.getIdCliente());
-		System.out.println(dtoVentas.getTipoPago());
+		ventas.setIdCliente(idCliente);
+		ventas.setTipoPago(tipoPago);
 
 	}
 
@@ -146,9 +146,36 @@ public class IGUVentas extends JFrame{
 
 		}
 
+		btAceptarP.addActionListener(control);
+		btAceptarP.setActionCommand("btAceptarP");
+
+		btLimpiarP.addActionListener(control);
+		btLimpiarP.setActionCommand("btLimpiarP");
+
+
 		return panelProductos;
 
 	}
+
+
+	public void leerDatosProducto(){
+
+		int idProdcuto = Integer.valueOf(aTextoProducto[0].getText());
+		float cantidad = Float.valueOf(aTextoProducto[1].getText());
+		ventas.setIdProducto(idProdcuto);
+		ventas.setCantidadVendida(cantidad);
+
+	}
+
+	public void limpiarDatosProducto(){
+
+		aTextoProducto[0].setText(null);
+		aTextoProducto[1].setText(null);
+
+		System.out.println("limpiado");
+
+	}
+
 
 	public JPanel getEdicionVentas(){
 
@@ -168,16 +195,60 @@ public class IGUVentas extends JFrame{
 		JLabel buscar = new JLabel("Buscar");
 		panelBuscar.add(buscar);
 
-		JTextField campoBuscar = new JTextField();
-		campoBuscar.setText(" ingrese un dato ");
 		campoBuscar.setPreferredSize(new Dimension(200,20));
 		panelBuscar.add(campoBuscar);
+	
 
-		JButton btBuscar = new JButton(new ImageIcon("lupa.png"));
+		JButton btBuscar = new JButton(new ImageIcon("C:/Users/Gatit/Desktop/ProyectoOpalo/igu/lupita.png"));
 		btBuscar.setPreferredSize(new Dimension(32,32));
 		panelBuscar.add(btBuscar);
+		
+		btBuscar.addActionListener(control);
+		btBuscar.setActionCommand("btBuscar");		
 
 		return panelBuscar;
+
+	}
+
+	public int leerDatoBuscar(){
+		
+		int idVenta = Integer.valueOf(campoBuscar.getText());
+		ventas.setIdVenta(idVenta);
+
+		return idVenta;
+	}
+
+	public void mostrarDatosBusqueda(DTOVentas ventas){
+
+		JOptionPane.showMessageDialog(null,getTablaConsulta(ventas));
+
+	}
+
+	public JPanel getTablaConsulta(DTOVentas ventas){
+
+		JPanel panelTabla = new JPanel();
+
+		JTable tablaConsulta = new JTable();
+
+		String [] nombre = {
+                "id_venta", "tipoPago", "cancelacion", "fecha", "Estado"
+        };
+
+		tablaConsulta.setModel(new DefaultTableModel(
+            
+            new Object [][] {
+
+            	{"id_venta", "tipoPago", "cancelacion", "fecha", "Estado"},
+                {ventas.getIdVenta(), ventas.getTipoPago(), ventas.getCancelacion(), ventas.getFecha(), ventas.getEstado()}
+
+            }, nombre
+            
+        ));
+
+		panelTabla.add(tablaConsulta);
+		panelTabla.setBorder(BorderFactory.createTitledBorder("Consulta ventas"));
+
+		return panelTabla;
 
 	}
 
@@ -216,39 +287,26 @@ public class IGUVentas extends JFrame{
 
 	}
 
-    public JPanel getTablaVentas(){
+	public JPanel getTablaVentas(){
 
-		JPanel panelTabla = new JPanel();
+		JPanel panel = new JPanel();
+		DAOVentas dao = new DAOVentas();
 
-		JTable tablaVentas = new JTable();
-		//JScrollPane jScroll = new JScrollPane(tablaVentas);
+		panel.setBorder(BorderFactory.createTitledBorder("Registros"));
+		modelo = new DefaultTableModel();
+        modelo.setColumnIdentifiers(new Object[]{"Venta","cancelacion","tipoPago", "fecha", "Estado"});
+		
+		tabla = new JTable(modelo);
+		JScrollPane jScroll = new JScrollPane(tabla);
 
-		String [] nombre = {
-                "Venta", "Cliente", "Producto", "Nombre", "Cantidad", "Estado", "Descripción", "Total"
-        };
+		dao.getTabla(modelo);
 
-		tablaVentas.setModel(new DefaultTableModel(
-            
-            new Object [][] {
+        jScroll.setViewportView(tabla);
 
 
-            	{"id Venta", "id Cliente", "nombre", "id Producto", "producto", "Cantidad", "Estado", "Descripci\u00F3n", "Total"},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null}
+		panel.add(jScroll, BorderLayout.SOUTH);
 
-            }, nombre
-            
-        ));
-
-		//jScroll.setViewportView(tablaVentas);
-
-		//panelTabla.add(jScroll);
-		panelTabla.add(tablaVentas);
-		panelTabla.setBorder(BorderFactory.createTitledBorder("Registros de ventas"));
-
-		return panelTabla;
+		return panel;
 
 	}
 
@@ -284,6 +342,9 @@ public class IGUVentas extends JFrame{
 		btAgregar.addActionListener(control);
 		btAgregar.setActionCommand("btAgregar");
 		botones.add(btCancelar);
+		btCancelar.addActionListener(control);
+		btCancelar.setActionCommand("btCancelar");
+
 		
 		return botones;
 	}

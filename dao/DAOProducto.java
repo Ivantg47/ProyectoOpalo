@@ -1,7 +1,7 @@
 /**
  * Clase DAO del producto.11
  * @author Ivan Tronco
- * @version 1.0
+ * @version 1.5
  */
 
 package ProyectoOpalo.dao;
@@ -18,16 +18,35 @@ import javax.swing.table.*;
 
 public class DAOProducto{
 
+	/**
+     * Atributo que guarda la conexion con la base de datos.
+     */
 	private Connection conexion = null;
+	/**
+     * Atributo que almacena la consultas a la base de datos.
+     */
 	private PreparedStatement prepared;
+	/**
+     * Atributo que guarda los resultados de una consulta.
+     */
     private ResultSet result;
-	DTOProducto producto;
+    /**
+     * Atributo que almacena un producto.
+     */
+	private DTOProducto producto;
 
+	/**
+     * Constructor, que no recibe parametros.
+     */
     public DAOProducto(){
 
     }
 
-	public void agregarPoducto(DTOProducto producto){
+    /**
+     * Metodo para agregar un producto a la base de datos.
+     * @param producto recibe el producto 
+     */
+	public void agregarPoducto(DTOProducto producto) throws IllegalArgumentException{
 
 		try {
 
@@ -59,25 +78,23 @@ public class DAOProducto{
 					prepared.setDate(2, sqlFecha);
 					prepared.setFloat(3, producto.getPrecio());
 
-					if (prepared.executeUpdate() != 0) {
-
-						JOptionPane.showMessageDialog(null, "Producto registrado");
-
-					}
+					prepared.executeUpdate();
 
 				}
 
-			} 
+			} else {
 
+				throw new IllegalArgumentException("El producto ya esta registrado");
+
+			}
+
+			prepared.close();
+			result.close();
 			conexion.close();
 
 		} catch (SQLException es) {
 
 	        es.printStackTrace();
-
-	    } catch (Exception e) {
-	         
-	        e.printStackTrace();
 
 	    } finally {
 
@@ -96,9 +113,13 @@ public class DAOProducto{
 	        }
 	    }
 
-	}
+	}//agregarPoducto
 
-	public DTOProducto getPoducto(int codigo){
+	/**
+     * Metodo para busca una producto por codigo/id en la base de datos.
+     * @param codigo codigo que se desea buscar 
+     */
+	public DTOProducto getPoducto(int codigo) throws IllegalArgumentException{
 
 		DTOProducto producto = new DTOProducto();
 		
@@ -126,19 +147,17 @@ public class DAOProducto{
 
 			} else {
 
-				JOptionPane.showMessageDialog(null, "No hay productos registrados con ese codigo");
+				throw new IllegalArgumentException("No hay productos registrados con ese codigo");
 
 			}
 
+			prepared.close();
+			result.close();
 			conexion.close();
 
 		} catch (SQLException es) {
 
 	        es.printStackTrace();
-
-	    } catch (Exception e) {
-	         
-	        e.printStackTrace();
 
 	    } finally {
 
@@ -158,10 +177,14 @@ public class DAOProducto{
 	    }
 
 	    return producto;
-	}
+	}//getPoducto
 
-
-	public DTOProducto getPoducto(String nombre, DefaultTableModel modelo){
+	/**
+     * Metodo para busca una producto por nombre en la base de datos.
+     * @param nombre nombre que se desea buscar 
+     * @param modelo modelo de la tabla inventario
+     */
+	public DTOProducto getPoducto(String nombre, DefaultTableModel modelo) throws IllegalArgumentException{
 
 		DTOProducto producto = new DTOProducto();
 
@@ -206,21 +229,19 @@ public class DAOProducto{
 
 				} else {
 
-					JOptionPane.showMessageDialog(null, "No hay productos registrados con ese nombre");
+					throw new IllegalArgumentException("No hay productos registrados con ese nombre");
 
 				}
 			
-			} 
+			}
 
+			prepared.close();
+			result.close();
 			conexion.close();
 
 		} catch (SQLException es) {
 
 	        es.printStackTrace();
-
-	    } catch (Exception e) {
-	         
-	        e.printStackTrace();
 
 	    } finally {
 
@@ -240,9 +261,13 @@ public class DAOProducto{
 	    }
 
 	    return producto;
-	}
+	}//getPoducto
 
-	public void actualizarProducto(DTOProducto producto){
+	/**
+     * Metodo para actualizar un producto de la base de datos.
+     * @param producto producto a actualizar
+     */
+	public void actualizarProducto(DTOProducto producto)throws IllegalArgumentException{
 
 		try {
 
@@ -270,23 +295,24 @@ public class DAOProducto{
 				prepared.setFloat(3, producto.getPrecio()); 
 				prepared.setFloat(4, producto.getPrecio());
 
-				if (prepared.executeUpdate() != 0) {
+				if (prepared.executeUpdate() == 0) {
 
-					JOptionPane.showMessageDialog(null, "Producto actualizado");
+					throw new IllegalArgumentException("El producto no existe");
 
 				}
 
-			} 
+			} else {
+				
+				throw new IllegalArgumentException("El producto no existe");
 
+			}
+
+			prepared.close();
 			conexion.close();
 
 		} catch (SQLException es) {
 
 	        es.printStackTrace();
-
-	    } catch (Exception e) {
-	         
-	        e.printStackTrace();
 
 	    } finally {
 
@@ -304,9 +330,13 @@ public class DAOProducto{
 
 	        }
 	    }
-	}
+	}//actualizarProducto
 
-	public void borrarProducto(DTOProducto producto){
+	/**
+     * Metodo para eliminar un producto de la base de datos.
+     * @param producto producto a eliminar
+     */
+	public void borrarProducto(DTOProducto producto) throws IllegalArgumentException {
 
 		try {
 
@@ -318,21 +348,18 @@ public class DAOProducto{
 	
 			prepared.setInt(1, producto.getCodigo());
 
-			if (prepared.executeUpdate() != 0) {
+			if (prepared.executeUpdate() == 0) {
 				
-				JOptionPane.showMessageDialog(null, "Producto borrado");
+				throw new IllegalArgumentException("El producto no existe");
 
 			} 
 
+			prepared.close();
 			conexion.close();
 
 		} catch (SQLException es) {
 
 	        es.printStackTrace();
-
-	    } catch (Exception e) {
-	         
-	        e.printStackTrace();
 
 	    } finally {
 
@@ -350,8 +377,12 @@ public class DAOProducto{
 
 	        }
 	    }
-	}
+	}//borrarProducto
 
+	/**
+     * Metodo para llenar la tabla de inventario producto.
+     * @param modelo modelo de la tabla producto
+     */
 	public void getTabla(DefaultTableModel modelo){
 
 		try {
@@ -372,6 +403,8 @@ public class DAOProducto{
 
 			} 
 
+			prepared.close();
+			result.close();
 			conexion.close();
 
 		} catch (SQLException es) {
@@ -399,9 +432,14 @@ public class DAOProducto{
 	        }
 	    }
 
-	}
+	}//getTabla
 
-	public void getTabla(DefaultTableModel modelo, String nombre){
+	/**
+     * Metodo para llenar la tabla de inventario producto restringida a un nombre.
+     * @param modelo modelo de la tabla producto
+     * @param nombre nombre que se desea buscar
+     */
+	public void getTabla (DefaultTableModel modelo, String nombre){
 
 		try {
 
@@ -423,6 +461,8 @@ public class DAOProducto{
 
 			} 
 
+			prepared.close();
+			result.close();
 			conexion.close();
 
 		} catch (SQLException es) {
@@ -450,8 +490,12 @@ public class DAOProducto{
 	        }
 	    }
 
-	}
+	}//getTabla
 
+	/**
+     * Metodo para establecer una conexion a la base de datos.
+     * @return conexion a la base de datos
+     */
 	public Connection getConnection() {
    
         try {
@@ -465,16 +509,16 @@ public class DAOProducto{
 	        String paswd = "hola";
 
 	        conexion = DriverManager.getConnection(jdbcUrl, usuario, paswd);
-        //    JOptionPane.showMessageDialog(null, "Conexion Exitosa");
             
-        } catch(SQLException oExcepcionSQL){
+        } catch (SQLException sqlEx){
 
-			JOptionPane.showMessageDialog(null, "Error al establecer la conexi\u00F3n");
-			oExcepcionSQL.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al establecer la conexi\u00F3n", 
+									"Error de conexi\u00F3n", JOptionPane.ERROR_MESSAGE);
+			sqlEx.printStackTrace();
 
-		} catch (Exception oExcepcion) {
+		} catch (Exception ex) {
 
-			oExcepcion.printStackTrace();
+			ex.printStackTrace();
 
 		}
        

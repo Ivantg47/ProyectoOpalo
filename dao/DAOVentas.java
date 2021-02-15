@@ -12,45 +12,45 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import ProyectoOpalo.dto.DTOVentas;
+import ProyectoOpalo.igu.IGUVentas;
 import javax.swing.*;
 import javax.swing.table.*;
+import java.util.Date;
+import java.sql.*;
 
 public class DAOVentas{
 
 	private Connection conexion = null;
 	private PreparedStatement prepared;
     private ResultSet result;
-	DTOVentas ventas;
+    IGUVentas igu;
 
     public DAOVentas(){
 
     }
 
-	public void agregarVenta(DAOVentas venta){
-
+	public void agregarVenta(DTOVentas ventas){
 		try {
 
 			conexion = getConnection();
 
 			String sql = "INSERT INTO Venta (tipoPago,id_cancelacion,fecha,estado) VALUES (?, ?, ?, ?);";
-	
+
 			prepared = conexion.prepareStatement(sql);
 
 			prepared.setString(1, ventas.getTipoPago());
-			ventas.setCancelacion(0);
 			prepared.setInt(2, ventas.getCancelacion());
 			java.util.Date fecha = new java.util.Date();
 			java.sql.Date sqlFecha = new java.sql.Date(fecha.getTime());
 			prepared.setDate(3, sqlFecha);
 			ventas.setEstado("realizado");
-			prepared.setString(4, ventas.getEstado());
+			prepared.setString(4,ventas.getEstado());
 
-			prepared = conexion.prepareStatement(sql);
-			result = prepared.executeQuery();
+			int resultado = prepared.executeUpdate();
 
-			if (result.next()){
+			if (resultado == 1){
 
-				JOptionPane.showMessageDialog(null, "Producto registrado");
+				JOptionPane.showMessageDialog(null, "Venta registrada");
 
 			}
 
@@ -82,112 +82,39 @@ public class DAOVentas{
 	    }
 
 	}
-/*
-	public DTOProducto getPoducto(int codigo){
 
-		DTOProducto producto = new DTOProducto();
+	public DTOVentas buscarVenta(int idVenta){
 		
+		DTOVentas ventas = new DTOVentas();
+		IGUVentas iguVentas = new IGUVentas();
+
 		try {
 
 			conexion = getConnection();
 
-			String sql = "SELECT * FROM DatoProducto WHERE id_producto = ?;";
+			String sql = "SELECT * FROM Venta WHERE id_venta = ?;";
 	
 			prepared = conexion.prepareStatement(sql);
 	
-			prepared.setInt(1, codigo);
+			prepared.setInt(1, idVenta);
 
 			result = prepared.executeQuery();
 
 			if (result.next()) {
-				
-				producto.setCodigo(result.getInt("id_producto"));
-				producto.setNombre(result.getString("nombre"));
-				producto.setDescripcion(result.getString("descripcion"));
-				producto.setPrecio(result.getFloat("precio"));
-				producto.setMinimo(result.getInt("existenciaMinima"));
-				producto.setMaximo(result.getInt("existenciaMaxima"));
-				producto.setActual(result.getInt("existenciaActual"));
 
-			} 
+				ventas.setIdVenta(result.getInt("id_venta"));				
+				ventas.setTipoPago(result.getString("tipoPago"));
+				ventas.setCancelacion(result.getInt("id_cancelacion"));
+				ventas.setFecha(String.valueOf(result.getDate("fecha")));
+				ventas.setEstado(result.getString("estado"));
 
-			conexion.close();
+				iguVentas.mostrarDatosBusqueda(ventas);
 
-		} catch (SQLException es) {
+			} else {
 
-	        es.printStackTrace();
+				JOptionPane.showMessageDialog(null, "No hay ventas registradas con ese id");
 
-	    } catch (Exception e) {
-	         
-	        e.printStackTrace();
-
-	    } finally {
-
-	        try {
-
-	            if (conexion != null) {
-
-	               conexion.close();
-	               
-	            } 
-
-	        }catch (SQLException es){
-
-	            es.printStackTrace();
-
-	        }
-	    }
-
-	    return producto;
-	}
-
-
-	public DTOProducto getPoducto(String nombre, DefaultTableModel modelo){
-
-		DTOProducto producto = new DTOProducto();
-
-		try {
-
-			conexion = getConnection();
-
-			String sql = "SELECT COUNT(*) AS filas FROM DatoProducto WHERE nombre = ?;";
-	
-			prepared = conexion.prepareStatement(sql);
-	
-			prepared.setString(1, nombre);
-
-			result = prepared.executeQuery();
-
-			if (result.next()) {
-				
-				int filas = result.getInt(1);
-
-				if (filas != 0) {
-					
-					sql = "SELECT * FROM DatoProducto WHERE nombre = ?;";
-					prepared = conexion.prepareStatement(sql);
-					prepared.setString(1, nombre);
-					result = prepared.executeQuery();
-
-					if (filas == 1 && result.next()) {
-
-						producto.setCodigo(result.getInt("id_producto"));
-						producto.setNombre(result.getString("nombre"));
-						producto.setDescripcion(result.getString("descripcion"));
-						producto.setPrecio(result.getFloat("precio"));
-						producto.setMinimo(result.getInt("existenciaMinima"));
-						producto.setMaximo(result.getInt("existenciaMaxima"));
-						producto.setActual(result.getInt("existenciaActual"));
-
-					} else {
-						
-						getTabla(modelo, nombre);
-
-					}
-
-				}
-			
-			} 
+			}
 
 			conexion.close();
 
@@ -216,189 +143,28 @@ public class DAOVentas{
 	        }
 	    }
 
-	    return producto;
+	    return ventas;
 	}
 
-	public void actualizarProducto(DTOProducto producto){
-
+	/*public void CancelarVenta(int idVenta, DTOVentas ventas){
 		try {
 
 			conexion = getConnection();
 
-			String sql = "UPDATE Producto SET nombre = ?, descripcion = ?, existenciaMinima = ?, existenciaMaxima = ?, existenciaActual = ? WHERE id_producto = ?;";
-	
-			prepared = conexion.prepareStatement(sql);
-	
-			prepared.setString(1, producto.getNombre());
-			prepared.setString(2, producto.getDescripcion());
-			prepared.setInt(3, producto.getMinimo());
-			prepared.setInt(4, producto.getMaximo());
-			prepared.setInt(5, producto.getActual());
-			prepared.setInt(6, producto.getCodigo());
+			String sql = "UPDATE Venta SET id_cancelacion = 2, estado = 'cancelado' WHERE id_venta = ?";
 
-			if (prepared.executeUpdate() != 0) {
-				
-				sql = "INSERT INTO Precio VALUES(?,?,?) ON DUPLICATE KEY UPDATE precio = ?;";
-				prepared = conexion.prepareStatement(sql);
-				prepared.setInt(1, producto.getCodigo());
-				java.util.Date fecha = new java.util.Date();
-				java.sql.Date sqlFecha = new java.sql.Date(fecha.getTime());
-				prepared.setDate(2, sqlFecha);
-				prepared.setFloat(3, producto.getPrecio()); 
-				prepared.setFloat(4, producto.getPrecio());
-
-				if (prepared.executeUpdate() != 0) {
-
-					JOptionPane.showMessageDialog(null, "Producto actualizado");
-
-				}
-
-			} 
-
-			conexion.close();
-
-		} catch (SQLException es) {
-
-	        es.printStackTrace();
-
-	    } catch (Exception e) {
-	         
-	        e.printStackTrace();
-
-	    } finally {
-
-	        try {
-
-	            if (conexion != null) {
-
-	               conexion.close();
-	               
-	            } 
-
-	        }catch (SQLException es){
-
-	            es.printStackTrace();
-
-	        }
-	    }
-	}
-
-	public void borrarProducto(DTOProducto producto){
-
-		try {
-
-			conexion = getConnection();
-
-			String sql = "DELETE FROM Producto WHERE id_producto = ?;";
-	
-			prepared = conexion.prepareStatement(sql);
-	
-			prepared.setInt(1, producto.getCodigo());
-
-			if (prepared.executeUpdate() != 0) {
-				
-				JOptionPane.showMessageDialog(null, "Producto borrado");
-
-			} 
-
-			conexion.close();
-
-		} catch (SQLException es) {
-
-	        es.printStackTrace();
-
-	    } catch (Exception e) {
-	         
-	        e.printStackTrace();
-
-	    } finally {
-
-	        try {
-
-	            if (conexion != null) {
-
-	               conexion.close();
-	               
-	            } 
-
-	        }catch (SQLException es){
-
-	            es.printStackTrace();
-
-	        }
-	    }
-	}
-
-	public void getTabla(DefaultTableModel modelo){
-
-		try {
-
-			conexion = getConnection();
-
-			String sql = "SELECT id_producto, nombre, descripcion, existenciaActual FROM Producto ORDER BY id_producto;";
-	
 			prepared = conexion.prepareStatement(sql);
 
-			result = prepared.executeQuery();
+			ventas.setIdVenta(idVenta);
+			prepared.setInt(1,ventas.getIdVenta());
 
-			modelo.setRowCount(0);
+			int resultado = prepared.executeUpdate();
 
-			while (result.next()) {
-				
-				modelo.addRow(new Object[]{result.getInt("id_producto"), result.getString("nombre"), result.getString("descripcion"), result.getInt("existenciaActual")});
+			if (resultado == 1){
 
-			} 
+				JOptionPane.showMessageDialog(null, "Venta cancelada");
 
-			conexion.close();
-
-		} catch (SQLException es) {
-
-	        es.printStackTrace();
-
-	    } catch (Exception e) {
-	         
-	        e.printStackTrace();
-
-	    } finally {
-
-	        try {
-
-	            if (conexion != null) {
-
-	               conexion.close();
-	               
-	            } 
-
-	        }catch (SQLException es){
-
-	            es.printStackTrace();
-
-	        }
-	    }
-
-	}
-
-	public void getTabla(DefaultTableModel modelo, String nombre){
-
-		try {
-
-			conexion = getConnection();
-
-			String sql = "SELECT id_producto, nombre, descripcion, existenciaActual FROM Producto WHERE nombre = ? ORDER BY id_producto;";
-	
-			prepared = conexion.prepareStatement(sql);
-
-			prepared.setString(1, nombre);
-
-			result = prepared.executeQuery();
-
-			modelo.setRowCount(0);
-			
-			while (result.next()) {
-				
-				modelo.addRow(new Object[]{result.getInt("id_producto"), result.getString("nombre"), result.getString("descripcion"), result.getInt("existenciaActual")});
-
-			} 
+			}
 
 			conexion.close();
 
@@ -429,6 +195,55 @@ public class DAOVentas{
 
 	}
 */
+	public void getTabla(DefaultTableModel modelo){
+
+		try {
+
+			conexion = getConnection();
+
+			String sql = "SELECT * FROM Venta;";
+	
+			prepared = conexion.prepareStatement(sql);
+
+			result = prepared.executeQuery();
+
+			modelo.setRowCount(0);
+
+			while (result.next()) {
+				
+				modelo.addRow(new Object[]{result.getInt("id_venta"), result.getInt("id_cancelacion"), result.getString("tipoPago"), result.getDate("fecha"), result.getString("estado")});
+
+			} 
+
+			conexion.close();
+
+		} catch (SQLException es) {
+
+	        es.printStackTrace();
+
+	    } catch (Exception e) {
+	         
+	        e.printStackTrace();
+
+	    } finally {
+
+	        try {
+
+	            if (conexion != null) {
+
+	               conexion.close();
+	               
+	            } 
+
+	        }catch (SQLException es){
+
+	            es.printStackTrace();
+
+	        }
+	    }
+
+    }
+
 	public Connection getConnection() {
    
         try {

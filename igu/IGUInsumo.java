@@ -16,54 +16,78 @@ import ProyectoOpalo.dto.DTOInsumo;
 import ProyectoOpalo.dao.DAOInsumo;
 import ProyectoOpalo.control.ControlInsumo;
 
-public class IGUInsumo extends JFrame{
+public class IGUInsumo extends JFrame{ 
 
-	public static final String ICONOS = "/iconos/"; 
-
+	/**
+     * Atributo comboBox que tiene las opciones para unidad de media.
+     */
 	private JComboBox<String> oComboUnidadMedida;
 
+	/**
+     * Atributo que genera un campo de texto para los datos del insumo.
+     */
 	private JTextField aCamposTextoDatos[] = {
 		new JTextField(),
 		new JTextField(),
 	};
 
+	/**
+     * Atributo que genera un campo de texto para los datos del insumo
+     */
 	private JTextField aCamposTextoExistencias[] = {
 		new JTextField(),
 		new JTextField(),
 		new JTextField(),
 	};
 
+	/**
+     * Atributo que almacena las etiquetas de datos del insumo.
+     */
 	private JLabel aEtiquetasDatos[] = {
 		new JLabel("Codigo"),
 		new JLabel("Nombre"),
 		new JLabel("Unidad medida"),
 	};
 
+	/**
+     * Atributo que almacena las etiquetas de datos del insumo.
+     */
 	private JLabel aEtiquetasExistencias[] = {
 		new JLabel("Actual"),
 		new JLabel("M\u00EDnima"),
 		new JLabel("M\u00E1xima"),
 	};
 
+	/**
+     * Atributo que genera un campo de texto para buscar el indumo.
+     */
 	private JTextField oCampoTxBuscar;
 
+	/**
+     * Atributo que determina el modelo de la tabla.
+     */
 	private DefaultTableModel oModelo;
+
+	/**
+     * Atributo que genera una tabla que muestre el inventario del insumo.
+     */
  	private JTable oTabla;
 	
+	/**
+     * Atributo que crea la clase control de insumo.
+     */
 	private ControlInsumo oControl = new ControlInsumo(this);
 
+	/**
+     * Constructor, sin parametros.
+     */
 	public IGUInsumo(){
-/*
-		super("Insumo");
-
-		add(getIGUInsumo());
-
-		setSize(700, 600);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setVisible(true);
-*/
 	}
 
+	/**
+     * Metodo para generar el panel de la interfas de insumo.
+     * @return panel de igu insumo
+     */
 	public JPanel getIGUInsumo(){
 
 		JPanel oPanel = new JPanel();
@@ -76,14 +100,18 @@ public class IGUInsumo extends JFrame{
 
 	}
 
+	/**
+     * Metodo para generar el panel de buscar de la interfas de insumo.
+     * @return panel buscar
+     */
 	public JPanel getPanelBuscar(){
 
 		JPanel oPanel = new JPanel();
 
 		oPanel.setBorder(BorderFactory.createTitledBorder(""));
-		oPanel.setLayout(new FlowLayout());
+		oPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-		JLabel oEtiquetaInsumos = new JLabel("Insumos");
+		JLabel oEtiquetaInsumos = new JLabel("Insumos        ");
 		oEtiquetaInsumos.setFont(new Font("Tahoma", Font.PLAIN, 36));
 		oPanel.add(oEtiquetaInsumos);
 
@@ -91,8 +119,10 @@ public class IGUInsumo extends JFrame{
 		oPanel.add(oEtiquetaBuscar);
 
 		oCampoTxBuscar = new JTextField();
-		oCampoTxBuscar.setText("Codigo/aNombres");
+		oCampoTxBuscar.setText("Codigo/Nombre");
+		oCampoTxBuscar.setForeground(new Color(111,111,111));
 		oCampoTxBuscar.setPreferredSize(new Dimension(200,25));
+		oCampoTxBuscar.addFocusListener(oControl);
 		oPanel.add(oCampoTxBuscar);
 
 		JButton oBotonBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa.png")));
@@ -107,6 +137,10 @@ public class IGUInsumo extends JFrame{
 
 	}
 
+	/**
+     * Metodo para generar el panel de inventario de la interfas de insumo.
+     * @return panel de inventario
+     */
 	public JPanel getPanelInventario(){
 
 		JPanel oPanel = new JPanel();
@@ -131,16 +165,20 @@ public class IGUInsumo extends JFrame{
 
 	}
 	
+	/**
+     * Metodo para generar el panel de datos generales de la interfas de insumo.
+     * @return panel de datos del insumo
+     */
 	public JPanel getPanelDatos(){
 
 		JPanel oPanel = new JPanel();
 
-		oPanel.setLayout(new GridLayout(3, 1, 50, 10));
+		oPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0,10));
 
 		oPanel.add(getPanelCombo());
 		oPanel.add(getPanelExistencias());
 		oPanel.add(getPanelBotonesCrud());
-		
+		oPanel.setPreferredSize(new Dimension(230, 670));
 
 		oPanel.setBorder(BorderFactory.createTitledBorder("Datos insumo"));
 
@@ -149,6 +187,10 @@ public class IGUInsumo extends JFrame{
 
 	}
 
+	/**
+     * Metodo para generar el panel de campos de datos de la interfas de insumo.
+     * @return panel de campos de datos del insumo
+     */
 	public JPanel getPanelCombo(){
 
 		JPanel oPanel = new JPanel();
@@ -162,6 +204,8 @@ public class IGUInsumo extends JFrame{
 			oPanel.add(aCamposTextoDatos[i]);
 		}
 
+		aCamposTextoDatos[0].setEnabled(false);
+
 		oPanel.add(aEtiquetasDatos[aEtiquetasDatos.length - 1]);
 		oPanel.add(oComboUnidadMedida);
 
@@ -174,10 +218,16 @@ public class IGUInsumo extends JFrame{
         oComboUnidadMedida.addItem("Galon");
         oComboUnidadMedida.addItem("Pieza");
 
+        oPanel.setPreferredSize(new Dimension(210, 150));
+
 		return oPanel;
 
 	}
 
+	/**
+     * Metodo para generar el panel de existencias de la interfas de insumo.
+     * @return panel de existencias del insumo
+     */
 	public JPanel getPanelExistencias(){
 
 		JPanel oPanel = new JPanel();
@@ -197,12 +247,16 @@ public class IGUInsumo extends JFrame{
 		}
 
 		oPanel.setBorder(BorderFactory.createTitledBorder("Existencias"));
+		oPanel.setPreferredSize(new Dimension(210, 80));
 
 		return oPanel;
 
 	}
 	
-
+	/**
+     * Metodo para generar el panel de botones de la interfas de insumo.
+     * @return panel de botones
+     */
 	public JPanel getPanelBotonesCrud(){
 
 		JPanel oPanel = new JPanel();
@@ -213,24 +267,38 @@ public class IGUInsumo extends JFrame{
 		btAgregar.addActionListener(oControl);
 		btAgregar.setActionCommand("btAgregar");
 		btAgregar.setToolTipText("Agregar");
+		btAgregar.setPreferredSize(new Dimension(48, 48));
 
 		JButton btEliminar = new JButton(new ImageIcon(getClass().getResource("/iconos/eliminar.png")));
 		btEliminar.addActionListener(oControl);
 		btEliminar.setActionCommand("btEliminar");
 		btEliminar.setToolTipText("Eliminar");
+		btEliminar.setPreferredSize(new Dimension(48, 48));
 
 		JButton btModificar = new JButton(new ImageIcon(getClass().getResource("/iconos/modificar.png")));
 		btModificar.addActionListener(oControl);
 		btModificar.setActionCommand("btModificar");
 		btModificar.setToolTipText("Modificar");
+		btModificar.setPreferredSize(new Dimension(48, 48));
+
+		JButton btLimpiar = new JButton(new ImageIcon(getClass().getResource("/iconos/borrador.png")));
+		btLimpiar.setToolTipText("Limpiar");
+		btLimpiar.addActionListener(oControl);
+		btLimpiar.setActionCommand("btLimpiar");
+		btLimpiar.setPreferredSize(new Dimension(48, 48));
 
 		oPanel.add(btAgregar);
 		oPanel.add(btEliminar);
 		oPanel.add(btModificar);
+		oPanel.add(btLimpiar);
 
 		return oPanel;
 	}
 
+	/**
+     * Metodo para leer los datos del insumo
+     * @return el insumo
+     */
 	public DTOInsumo leerDTO(){
 
 		String sNombre = "", sUnidadMedida ;
@@ -241,7 +309,7 @@ public class IGUInsumo extends JFrame{
 
 		if (!isNumeric(aCamposTextoDatos[1].getText())){
 
-			sNombre = aCamposTextoDatos[1].getText();
+			sNombre = aCamposTextoDatos[1].getText().toUpperCase();
 
 			while(bEsFlotante && eCont < aCamposTextoExistencias.length){
 
@@ -272,7 +340,7 @@ public class IGUInsumo extends JFrame{
 
 		}
 		
-		sUnidadMedida = oComboUnidadMedida.getSelectedItem().toString();
+		sUnidadMedida = oComboUnidadMedida.getSelectedItem().toString().toUpperCase();
 		oDTOInsumo = new DTOInsumo(sNombre, sUnidadMedida, fExistenciaActual, fExistenciaMinima, fExistenciaMaxima);
 
 		
@@ -280,7 +348,10 @@ public class IGUInsumo extends JFrame{
 		return oDTOInsumo;
 	}
 
-
+	/**
+     * Metodo que convierte el valor del campo de texto buscar en numero
+     * @return eID
+     */
 	public int getID(){
 
 		int eID = 0;
@@ -295,7 +366,9 @@ public class IGUInsumo extends JFrame{
 
 	}
 
-
+	/**
+     * Metodo muestra los datos del insumo
+     */
 	public void mostrarDTO(DTOInsumo oInsumo){
 
 		aCamposTextoDatos[0].setText( String.valueOf(oInsumo.getId()) );
@@ -307,6 +380,9 @@ public class IGUInsumo extends JFrame{
 
 	}	
 
+	/**
+     * Metodo que limpia los campos de texto de datos del insumo.
+     */
 	public void limpiarCamposTexto() {
 
        for(int eContador = 0; eContador < aCamposTextoDatos.length; eContador++) {
@@ -321,10 +397,14 @@ public class IGUInsumo extends JFrame{
 
        }
 
-       oCampoTxBuscar.setText(null);
+       oCampoTxBuscar.setText("Codigo/Nombre");
        oComboUnidadMedida.setSelectedItem( null );
    }
 
+   /**
+     * Metodo para comprobar si los campos de texto estan vacios
+     * @return verdadero falso
+     */
    public boolean camposVacios(){
 
    		boolean bCamposVacios = false;
@@ -368,12 +448,20 @@ public class IGUInsumo extends JFrame{
    		return bCamposVacios;
    }
 
+   /**
+     * Metodo para obtener el modelo de la tabla inventario.
+     * @return modelo de la tabla
+     */
    	public DefaultTableModel getModelo(){
 
 		return oModelo;
 
 	}
 
+	/**
+     * Metodo que verifica si una cadena es un numero entero
+     * @return verdadero o falso
+     */
 	public static boolean isNumeric(String oCadena) {
 
         boolean oResultado;
@@ -392,6 +480,10 @@ public class IGUInsumo extends JFrame{
         return oResultado;
     }
 
+    /**
+     * Metodo que verifica si una cadena es un numero flotante
+     * @return verdadero o falso
+     */
     public static boolean isNumericFloat(String oCadena) {
 
         boolean oResultado;
@@ -410,5 +502,17 @@ public class IGUInsumo extends JFrame{
         return oResultado;
     }
 
+    /**
+     * Metodo para obtener el contenido del campo buscar.
+     * @return contenido de campo buscar
+     */
+    public String getCampoBuscar(){
+
+    	return oCampoTxBuscar.getText();
+
+    }
+
    		 
 }
+
+

@@ -32,7 +32,7 @@ public class DTOClientes {
 
 	}
 
-	public  void setIdCliente (int eIdCliente) {
+	public void setIdCliente (int eIdCliente) {
 
 		this.eIdCliente = eIdCliente;
 
@@ -113,6 +113,13 @@ public class DTOClientes {
 
 		return sDireccion;
 		
+	}
+
+	public String toString(){
+
+		return "ID: " + eIdCliente + "\nNombre: " + sNombre + " " + aPaterno + " " + aMaterno + 
+				"\nCorreo: " + sCorreo + "\nTelefono: " + sTelefono + "\nDirección: " + sDireccion;
+
 	}
 
 }

@@ -1,7 +1,7 @@
 /**
  * Clase que implementa una interfaz para el modulo de clientes.
  * @author Rojas Fajardo Ximena
- * @version 1.0
+ * @version 1.2
  */
 
 package ProyectoOpalo.igu;
@@ -9,12 +9,14 @@ package ProyectoOpalo.igu;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.*;
+import ProyectoOpalo.dto.DTOClientes;
+import ProyectoOpalo.dao.DAOClientes;
+import ProyectoOpalo.control.ControlClientes;
 
 public class IGUClientes extends JFrame{
 
-	public static final String ICONOS = "/iconos/"; //ruta para la carpeta de imagenes
+	public static final String ICONOS = "/iconos/"; 
 	
-	private JComboBox<String> combo1;
 
 	private JTextField camposTexto[] = {
 		new JTextField(),
@@ -36,6 +38,14 @@ public class IGUClientes extends JFrame{
 		new JLabel("Direccion"),
 	};
 
+
+	private JTextField campoBuscar;
+
+	private DefaultTableModel modelo;
+ 	private JTable tabla;
+	
+	private ControlClientes control = new ControlClientes(this);
+
 	public IGUClientes(){
 /*
 		super("Clientes");
@@ -52,15 +62,15 @@ public class IGUClientes extends JFrame{
 
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
-		panel.add(getPanel1(), BorderLayout.NORTH);
-		panel.add(getPanel2(), BorderLayout.CENTER);
-		panel.add(getPanelLayoutGeneral(), BorderLayout.WEST);
+		panel.add(getPanelBuscar(), BorderLayout.NORTH);
+		panel.add(getPanelListaClientes(), BorderLayout.CENTER);
+		panel.add(getPanelGeneral(), BorderLayout.WEST);
 
 		return panel;
 
 	}
 
-	public JPanel getPanel1(){
+	public JPanel getPanelBuscar(){
 
 		JPanel panel = new JPanel();
 
@@ -71,85 +81,63 @@ public class IGUClientes extends JFrame{
 		titulo.setFont(new Font("Tahoma", Font.PLAIN, 36));
 		panel.add(titulo);
 
-		JLabel buscar = new JLabel("Buscar");
-		panel.add(buscar);
+		JLabel etBuscar = new JLabel("Buscar");
+		panel.add(etBuscar);
 
 		JTextField campoBuscar = new JTextField();
 		campoBuscar.setText("");
 		campoBuscar.setPreferredSize(new Dimension(200,25));
+		//campoBuscar.addFocusListener(control);
 		panel.add(campoBuscar);
 
 		JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa.png")));
 		btBuscar.setPreferredSize(new Dimension(32,32));
 		panel.add(btBuscar);
+		btBuscar.addActionListener(control);
+		btBuscar.setActionCommand("btBuscar");
 
 
 		return panel;
 
 	}
 
-	public JPanel getPanel2(){
+	public JPanel getPanelListaClientes(){
 
 		JPanel panel = new JPanel();
+		DAOClientes dao = new DAOClientes();
 
 		panel.setBorder(BorderFactory.createTitledBorder("Lista de Clientes"));
+		modelo = new DefaultTableModel();
+		modelo.setColumnIdentifiers(new Object[]{"ID", "Nombre", "Apellido Paterno", "Apellido Materno", "Correo", "Telefono", "Direccion"});
 
 		//creacion de la tabla
-		JTable tabla = new JTable();
+		JTable tabla = new JTable(modelo);
 		JScrollPane jScroll = new JScrollPane(tabla);
 
-		String [] nombre = {
-                "ID Cliente", "Nombre", "Apellido Paterno", "Apellido Materno"
-            };
+		dao.getTabla(modelo);
 
-		tabla.setModel(new DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            }, nombre
-            
-        ));
-
-        jScroll.setViewportView(tabla);
+		jScroll.setViewportView(tabla);
 
 		panel.add(jScroll, BorderLayout.CENTER);
-
-		JButton btFlechaDer = new JButton(new ImageIcon(ICONOS + "flechaDer.png"));
-		btFlechaDer.setToolTipText("Siguiente");		
-		JButton btFlechaDobleDer = new JButton(new ImageIcon(ICONOS + "flechaDobleDer.png"));
-		btFlechaDobleDer.setToolTipText("Fin");		
-		JButton btFlechaDobleIzq = new JButton(new ImageIcon(ICONOS + "flechaDobleIzq.png"));
-		btFlechaDobleIzq.setToolTipText("Inicio");
-		JButton btFlechaIzq = new JButton(new ImageIcon(ICONOS + "flechaIzq.png"));
-		btFlechaIzq.setToolTipText("Anterior");
-		
-
-		panel.add(btFlechaDobleIzq, BorderLayout.SOUTH);
-		panel.add(btFlechaIzq, BorderLayout.SOUTH);
-		panel.add(btFlechaDer, BorderLayout.SOUTH);
-		panel.add(btFlechaDobleDer, BorderLayout.SOUTH);
-
 
 		return panel;
 
 	}
 	
-	public JPanel getPanelLayoutGeneral(){
+	public JPanel getPanelGeneral(){
 
-		JPanel panelLayoutGeneral = new JPanel();
+		JPanel panelGeneral = new JPanel();
 
-		panelLayoutGeneral.setLayout(new GridLayout(2, 1));
+		panelGeneral.setLayout(new GridLayout(2, 1));
 
-		panelLayoutGeneral.add(getPanelLayout());
-		panelLayoutGeneral.add(getPanelBotones());
+		panelGeneral.add(getPanelLayout());
+		panelGeneral.add(getPanelBotones());
 		
 
-		panelLayoutGeneral.setBorder(BorderFactory.createTitledBorder("Datos del Cliente"));
+		panelGeneral.setBorder(BorderFactory.createTitledBorder("Datos del Cliente"));
 
 
-		return panelLayoutGeneral;
+		return panelGeneral;
 
 	}
 
@@ -175,25 +163,119 @@ public class IGUClientes extends JFrame{
 
 		panelBotones.setLayout(new FlowLayout());
 
-		JButton btAgregar = new JButton(new ImageIcon(ICONOS + "agregar.png"));
+		JButton btAgregar = new JButton(new ImageIcon(getClass().getResource("/iconos/agregar.png")));
 		btAgregar.setToolTipText("Agregar");
+		btAgregar.addActionListener(control);
+		btAgregar.setActionCommand("btAgregar");
 
-		JButton btEliminar = new JButton(new ImageIcon(ICONOS + "eliminar.png"));
+		JButton btEliminar = new JButton(new ImageIcon(getClass().getResource("/iconos/eliminar.png")));
 		btEliminar.setToolTipText("Eliminar");
+		btAgregar.addActionListener(control);
+		btAgregar.setActionCommand("btEliminar");
 
-		JButton btModificar = new JButton(new ImageIcon(ICONOS + "modificar.png"));
+		JButton btModificar = new JButton(new ImageIcon(getClass().getResource("/iconos/modificar.png")));
 		btModificar.setToolTipText("Modificar");
+		btAgregar.addActionListener(control);
+		btAgregar.setActionCommand("btModificar");
 
 		panelBotones.add(btAgregar);
 		panelBotones.add(btEliminar);
 		panelBotones.add(btModificar);
 
+		
 		return panelBotones;
 	}
 
-	public static void main(String[] args) {
-		IGUClientes ventana = new IGUClientes();
+	public DTOClientes getDTO(){
+
+		DTOClientes oCliente = new DTOClientes();
+
+		if(!camposTexto[0].getText().equals("")){
+
+			//oCliente.setId(Integer.valueOf(camposTexto[0].getText()));
+
+		}
+
+		oCliente.setNombre(camposTexto[1].getText());
+		oCliente.setPaterno(camposTexto[2].getText());
+		oCliente.setMaterno(camposTexto[3].getText());
+		oCliente.setCorreo(camposTexto[4].getText());
+		oCliente.setTelefono(camposTexto[5].getText());
+		oCliente.setDireccion(camposTexto[6].getText());
 		
+		return oCliente;	
+
 	}
+
+	public int getId(){
+
+		int eId = 0;
+
+		if (campoBuscar.getText().compareTo("") != 0) {
+
+			eId = Integer.valueOf(campoBuscar.getText());
+			
+		}
+
+		return eId;
+	}
+
+	public DefaultTableModel getModelo(){
+
+		return modelo;
+
+	}
+
+	public void limpiar(){
+
+
+		for (JTextField campo : camposTexto) {
+			
+			campo.setText(null);
+
+		}
+
+		for (JTextField campo : camposTexto) {
+			
+			campo.setText(null);
+			
+		}
+	}
+
+	public boolean camposVacios(){
+
+		boolean vacio = false;
+		int pos = 1;
+
+		do {
+
+			if (camposTexto[pos].getText().compareTo("") == 0) {
+				
+				vacio = true;
+
+			}
+
+			pos++;
+
+		} while (!vacio || pos < camposTexto.length);
+
+		return vacio;
+
+	}
+
+
+	public void mostrarDTO(DTOClientes oClientes){
+
+		/*camposTexto[0].setText(String.valueOf(oClientes.getId()));
+		camposTexto[1].setText(oClientes.getNombre());
+		camposTexto[2].setText(oClientes.getPaterno());
+		camposTexto[3].setText(oClientes.getMaterno());
+		camposTexto[4].setText(oClientes.getCorreo());
+		camposTexto[5].setText(oClientes.getTelefono());
+		camposTexto[6].setText(oClientes.getDireccion());
+*/
+	}
+
+	
 	
 }
