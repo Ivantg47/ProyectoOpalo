@@ -258,15 +258,14 @@ public class IGUProducto extends JFrame{
 
 			}
 
-			producto.setNombre(camposTexto[1].getText());
-			producto.setDescripcion(camposTexto[2].getText());
+			producto.setNombre(camposTexto[1].getText().toUpperCase());
+			producto.setDescripcion(camposTexto[2].getText().toUpperCase());
 			producto.setPrecio(Float.valueOf(camposTexto[3].getText()));
 			producto.setActual(Integer.valueOf(camposTextoExistencias[0].getText()));
 			producto.setMinimo(Integer.valueOf(camposTextoExistencias[1].getText()));
 			producto.setMaximo(Integer.valueOf(camposTextoExistencias[2].getText()));
 
 		}
-		
 		
 		return producto;
 	}

@@ -15,16 +15,35 @@ import ProyectoOpalo.dto.DTOProducto;
 
 public class ControlProducto implements ActionListener, FocusListener{
 
+	/**
+     * Atributo que almacena un producto.
+     */
 	private DTOProducto producto;
+
+	/**
+     * Atributo que almacena la dao de producto.
+     */
 	private DAOProducto dao;
+
+	/**
+     * Atributo que conecta con la interfas de producto.
+     */
 	private IGUProducto igu;
 
+	/**
+     * Constructor, recibe igu de profucto.
+     * @param igu
+     */
 	public ControlProducto(IGUProducto igu){
 
 		this.igu = igu;
 
-	}
+	}//ControlProducto
 
+	/**
+     * Metodo, que escucha los eventos de los botones.
+     * @param evento indica que boton fue precionado
+     */
 	public void actionPerformed(ActionEvent evento){
 
 		JButton fuente = (JButton) evento.getSource();
@@ -60,7 +79,7 @@ public class ControlProducto implements ActionListener, FocusListener{
 				igu.limpiar();
 
 				JOptionPane.showMessageDialog( null, "Producto registrado",
-               "Registro producto", JOptionPane.INFORMATION_MESSAGEE);
+               					"Registro producto", JOptionPane.INFORMATION_MESSAGE);
 
 			} else if (fuente.getActionCommand().equals("eliminar")) {
 				
@@ -69,7 +88,7 @@ public class ControlProducto implements ActionListener, FocusListener{
 				igu.limpiar();
 
 				JOptionPane.showMessageDialog( null, "Producto eliminado",
-               "Eliminar producto", JOptionPane.INFORMATION_MESSAGEE);
+               					"Eliminar producto", JOptionPane.INFORMATION_MESSAGE);
 
 			} else if (fuente.getActionCommand().equals("modificar")) {
 				
@@ -78,28 +97,37 @@ public class ControlProducto implements ActionListener, FocusListener{
 				igu.limpiar();
 
 				JOptionPane.showMessageDialog( null, "Producto actualizado",
-               "Actualizar producto", JOptionPane.INFORMATION_MESSAGEE);
+               					"Actualizar producto", JOptionPane.INFORMATION_MESSAGE);
 
 			} else if (fuente.getActionCommand().equals("limpiar")) {
 				
 				igu.limpiar();
 
 			}
-			
+
 		} catch (NullPointerException nullEx) {
 
 			JOptionPane.showMessageDialog( null, "No debe dejar campos vacios",
-           "Campo vacio", JOptionPane.ERROR_MESSAGE);
+           									"Campo vacio", JOptionPane.ERROR_MESSAGE);
 
 		} catch (NumberFormatException numEx) {
 
 			JOptionPane.showMessageDialog( null, "Dato incorrecto",
-           "Error en formato de número", JOptionPane.ERROR_MESSAGE);
+           				"Error en formato de número", JOptionPane.ERROR_MESSAGE);
+
+		} catch (IllegalArgumentException illEx){
+
+			JOptionPane.showMessageDialog( null, illEx.getMessage(),
+           				"Error en formato de número", JOptionPane.ERROR_MESSAGE);
 
 		}
 		
-	}
+	}//actionPerformed
 
+	/**
+     * Metodo que verifica si una cadena es un numero entero
+     * @return verdadero o falso
+     */
 	public static boolean isNumeric(String cadena) {
 
         boolean resultado;
@@ -109,18 +137,22 @@ public class ControlProducto implements ActionListener, FocusListener{
             Integer.parseInt(cadena);
             resultado = true;
 
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException ex) {
 
             resultado = false;
 
         }
 
         return resultado;
-    }
+    }//isNumeric
 
-	public void focusGained(FocusEvent e) {
+    /**
+     * Metodo, que espera a que el campo buscar sea seleccionado y en caso de no tener datos los limpia.
+     * @param evento indica cuando el campo buscar es seleccionado
+     */
+	public void focusGained(FocusEvent evento) {
 
-		JTextField campo = (JTextField) e.getSource();
+		JTextField campo = (JTextField) evento.getSource();
 
 		if(campo.getText().equals("Codigo/Nombre")){
 
@@ -129,11 +161,15 @@ public class ControlProducto implements ActionListener, FocusListener{
 
     	}
            
-    }
+    }//focusGained
 
-    public void focusLost(FocusEvent e) {
+    /**
+     * Metodo, que espera a que el campo buscar sea desseleccionado y en caso de no tener datos coloca un texto.
+     * @param evento indica cuando el campo buscar es desseleccionado
+     */
+    public void focusLost(FocusEvent evento) {
 
-    	JTextField campo = (JTextField) e.getSource();
+    	JTextField campo = (JTextField) evento.getSource();
 
     	if(campo.getText().equals("")){
 
@@ -141,6 +177,6 @@ public class ControlProducto implements ActionListener, FocusListener{
 
     	}
         
-    }
+    }//focusLost
 
 }

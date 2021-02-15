@@ -27,7 +27,7 @@ public class DAOProducto{
 
     }
 
-	public void agregarPoducto(DTOProducto producto){
+	public void agregarPoducto(DTOProducto producto) throws IllegalArgumentException{
 
 		try {
 
@@ -59,25 +59,21 @@ public class DAOProducto{
 					prepared.setDate(2, sqlFecha);
 					prepared.setFloat(3, producto.getPrecio());
 
-					if (prepared.executeUpdate() != 0) {
-
-						JOptionPane.showMessageDialog(null, "Producto registrado");
-
-					}
+					prepared.executeUpdate();
 
 				}
 
-			} 
+			} else {
+
+				throw new IllegalArgumentException("El producto ya esta registrado");
+
+			}
 
 			conexion.close();
 
 		} catch (SQLException es) {
 
 	        es.printStackTrace();
-
-	    } catch (Exception e) {
-	         
-	        e.printStackTrace();
 
 	    } finally {
 
@@ -98,7 +94,7 @@ public class DAOProducto{
 
 	}
 
-	public DTOProducto getPoducto(int codigo){
+	public DTOProducto getPoducto(int codigo) throws IllegalArgumentException{
 
 		DTOProducto producto = new DTOProducto();
 		
@@ -126,7 +122,7 @@ public class DAOProducto{
 
 			} else {
 
-				JOptionPane.showMessageDialog(null, "No hay productos registrados con ese codigo");
+				throw new IllegalArgumentException("No hay productos registrados con ese codigo");
 
 			}
 
@@ -135,10 +131,6 @@ public class DAOProducto{
 		} catch (SQLException es) {
 
 	        es.printStackTrace();
-
-	    } catch (Exception e) {
-	         
-	        e.printStackTrace();
 
 	    } finally {
 
@@ -161,7 +153,7 @@ public class DAOProducto{
 	}
 
 
-	public DTOProducto getPoducto(String nombre, DefaultTableModel modelo){
+	public DTOProducto getPoducto(String nombre, DefaultTableModel modelo) throws IllegalArgumentException{
 
 		DTOProducto producto = new DTOProducto();
 
@@ -206,21 +198,17 @@ public class DAOProducto{
 
 				} else {
 
-					JOptionPane.showMessageDialog(null, "No hay productos registrados con ese nombre");
+					throw new IllegalArgumentException("No hay productos registrados con ese nombre");
 
 				}
 			
-			} 
+			}
 
 			conexion.close();
 
 		} catch (SQLException es) {
 
 	        es.printStackTrace();
-
-	    } catch (Exception e) {
-	         
-	        e.printStackTrace();
 
 	    } finally {
 
@@ -242,7 +230,7 @@ public class DAOProducto{
 	    return producto;
 	}
 
-	public void actualizarProducto(DTOProducto producto){
+	public void actualizarProducto(DTOProducto producto)throws IllegalArgumentException{
 
 		try {
 
@@ -270,23 +258,23 @@ public class DAOProducto{
 				prepared.setFloat(3, producto.getPrecio()); 
 				prepared.setFloat(4, producto.getPrecio());
 
-				if (prepared.executeUpdate() != 0) {
+				if (prepared.executeUpdate() == 0) {
 
-					JOptionPane.showMessageDialog(null, "Producto actualizado");
+					throw new IllegalArgumentException("El producto no existe");
 
 				}
 
-			} 
+			} else {
+				
+				throw new IllegalArgumentException("El producto no existe");
+
+			}
 
 			conexion.close();
 
 		} catch (SQLException es) {
 
 	        es.printStackTrace();
-
-	    } catch (Exception e) {
-	         
-	        e.printStackTrace();
 
 	    } finally {
 
@@ -306,7 +294,7 @@ public class DAOProducto{
 	    }
 	}
 
-	public void borrarProducto(DTOProducto producto){
+	public void borrarProducto(DTOProducto producto) throws IllegalArgumentException {
 
 		try {
 
@@ -318,9 +306,9 @@ public class DAOProducto{
 	
 			prepared.setInt(1, producto.getCodigo());
 
-			if (prepared.executeUpdate() != 0) {
+			if (prepared.executeUpdate() == 0) {
 				
-				JOptionPane.showMessageDialog(null, "Producto borrado");
+				throw new IllegalArgumentException("El producto no existe");
 
 			} 
 
@@ -329,10 +317,6 @@ public class DAOProducto{
 		} catch (SQLException es) {
 
 	        es.printStackTrace();
-
-	    } catch (Exception e) {
-	         
-	        e.printStackTrace();
 
 	    } finally {
 
@@ -401,7 +385,7 @@ public class DAOProducto{
 
 	}
 
-	public void getTabla(DefaultTableModel modelo, String nombre){
+	public void getTabla (DefaultTableModel modelo, String nombre){
 
 		try {
 
@@ -467,14 +451,15 @@ public class DAOProducto{
 	        conexion = DriverManager.getConnection(jdbcUrl, usuario, paswd);
         //    JOptionPane.showMessageDialog(null, "Conexion Exitosa");
             
-        } catch(SQLException oExcepcionSQL){
+        } catch (SQLException sqlEx){
 
-			JOptionPane.showMessageDialog(null, "Error al establecer la conexi\u00F3n");
-			oExcepcionSQL.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al establecer la conexi\u00F3n", 
+									"Error de conexi\u00F3n", JOptionPane.ERROR_MESSAGE);
+			sqlEx.printStackTrace();
 
-		} catch (Exception oExcepcion) {
+		} catch (Exception ex) {
 
-			oExcepcion.printStackTrace();
+			ex.printStackTrace();
 
 		}
        
