@@ -144,7 +144,7 @@ public class DAOClientes{
 
 			conexion = getConexion();
 
-			eliminar = "DELETE FROM Clientes WHERE id_cliente = ?;";
+			eliminar = "DELETE FROM Cliente WHERE id_cliente = ?;";
 
 			prepared = conexion.prepareStatement(eliminar);
 
@@ -266,6 +266,7 @@ public class DAOClientes{
 				JOptionPane.showMessageDialog(null, "Error. El cliente no existe no existe, intente de nuevo.");
 
 			}
+			
 		}catch(SQLException oExcepcion){
 
 			oExcepcion.printStackTrace();
@@ -304,8 +305,8 @@ public class DAOClientes{
 
 			conexion = getConexion();
 
-			oConsultaTabla = 	  "SELECT id_cliente, nombre, aPaterno, aMaterno, correo, elefono, direccion "
-								+ "FROM Clientes ORDER BY id_cliente;";
+			oConsultaTabla = 	  "SELECT id_cliente, nombre, aPaterno, aMaterno, correo, telefono, direccion "
+								+ "FROM Cliente ORDER BY id_cliente;";
 	
 			prepared = conexion.prepareStatement(oConsultaTabla);
 

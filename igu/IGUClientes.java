@@ -84,7 +84,7 @@ public class IGUClientes extends JFrame{
 		JLabel etBuscar = new JLabel("Buscar");
 		panel.add(etBuscar);
 
-		JTextField campoBuscar = new JTextField();
+		campoBuscar = new JTextField();
 		campoBuscar.setText("");
 		campoBuscar.setPreferredSize(new Dimension(200,25));
 		//campoBuscar.addFocusListener(control);
@@ -209,15 +209,20 @@ public class IGUClientes extends JFrame{
 	}
 
 	public int getId(){
+//System.out.println("Paso 3.2: " + camposTexto[2].getText());
 
 		int eId = 0;
+	//	if (campoBuscar.getText().compareTo("") != 0) {
+			System.out.println("Paso 3");
 
-		if (campoBuscar.getText().compareTo("") != 0) {
+			System.out.println("Paso 3.1: " + campoBuscar.getText());
+
+			
 
 			eId = Integer.valueOf(campoBuscar.getText());
 			
-		}
-
+	//	}
+			System.out.println("Paso 4: " + eId);
 		return eId;
 	}
 
@@ -267,14 +272,13 @@ public class IGUClientes extends JFrame{
 
 	public void mostrarDTO(DTOClientes oClientes){
 
-		/*camposTexto[0].setText(String.valueOf(oClientes.getId()));
 		camposTexto[1].setText(oClientes.getNombre());
 		camposTexto[2].setText(oClientes.getPaterno());
 		camposTexto[3].setText(oClientes.getMaterno());
 		camposTexto[4].setText(oClientes.getCorreo());
 		camposTexto[5].setText(oClientes.getTelefono());
 		camposTexto[6].setText(oClientes.getDireccion());
-*/
+
 	}
 
 	
