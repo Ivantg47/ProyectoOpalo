@@ -308,7 +308,7 @@ public class DAOClientes{
 
 			conexion = getConexion();
 
-			oConsultaTabla = 	  "SELECT id_cliente, nombre, aPaterno, aMaterno, correo, relefono, direccion "
+			oConsultaTabla = 	  "SELECT id_cliente, nombre, aPaterno, aMaterno, correo, elefono, direccion "
 								+ "FROM Clientes ORDER BY id_cliente;";
 	
 			prepared = conexion.prepareStatement(oConsultaTabla);
