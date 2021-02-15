@@ -186,22 +186,22 @@ public class IGUClientes extends JFrame{
 		return panelBotones;
 	}
 
-	/*public DTOClientes getDTO(){
+	public DTOClientes getDTO(){
 
 		DTOClientes oCliente = new DTOClientes();
 
 		if(!camposTexto[0].getText().equals("")){
 
-			oCliente.setId(Integer.valueOf(camposTexto[0].getText()));
+			//oCliente.setId(Integer.valueOf(camposTexto[0].getText()));
 
 		}
 
 		oCliente.setNombre(camposTexto[1].getText());
 		oCliente.setPaterno(camposTexto[2].getText());
 		oCliente.setMaterno(camposTexto[3].getText());
-		oCliente.setCorreo(camposTexto[3].getText());
-		oCliente.setTelefono(camposTexto[3].getText());
-		oCliente.setDireccion(camposTexto[3].getText());
+		oCliente.setCorreo(camposTexto[4].getText());
+		oCliente.setTelefono(camposTexto[5].getText());
+		oCliente.setDireccion(camposTexto[6].getText());
 		
 		return oCliente;	
 
@@ -219,13 +219,13 @@ public class IGUClientes extends JFrame{
 
 		return eId;
 	}
-*/
+
 	public DefaultTableModel getModelo(){
 
 		return modelo;
 
 	}
-/*
+
 	public void limpiar(){
 
 
@@ -242,7 +242,7 @@ public class IGUClientes extends JFrame{
 		}
 	}
 
-	public boolean campoVacio(){
+	public boolean camposVacios(){
 
 		boolean vacio = false;
 		int pos = 1;
@@ -263,18 +263,19 @@ public class IGUClientes extends JFrame{
 
 	}
 
+
 	public void mostrarDTO(DTOClientes oClientes){
 
-		camposTexto[0].setText(String.valueOf(oInsumo.getId()));
+		/*camposTexto[0].setText(String.valueOf(oClientes.getId()));
 		camposTexto[1].setText(oClientes.getNombre());
 		camposTexto[2].setText(oClientes.getPaterno());
 		camposTexto[3].setText(oClientes.getMaterno());
 		camposTexto[4].setText(oClientes.getCorreo());
 		camposTexto[5].setText(oClientes.getTelefono());
 		camposTexto[6].setText(oClientes.getDireccion());
-
+*/
 	}
 
 	
-*/	
+	
 }

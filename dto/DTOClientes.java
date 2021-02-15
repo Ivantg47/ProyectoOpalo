@@ -32,7 +32,7 @@ public class DTOClientes {
 
 	}
 
-	public  void setIdCliente (int eIdCliente) {
+	public void setIdCliente (int eIdCliente) {
 
 		this.eIdCliente = eIdCliente;
 

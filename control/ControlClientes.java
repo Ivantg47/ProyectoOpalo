@@ -26,31 +26,31 @@ public class ControlClientes implements ActionListener{
 	public void actionPerformed(ActionEvent oEvento){
 
 		dao = new DAOClientes();
-		//dao.getTabla(igu.getModelo());
+		dao.getTabla(igu.getModelo());
 
 		switch (oEvento.getActionCommand()){
 
 			case "btAgregar":
-				/*if (igu.CamposVacios){
+				if (igu.camposVacios()){
 
 					dto = igu.getDTO();
 
 					if(datosCorrectos(dto)){
 
 						dao.agregarCliente(dto);
-						dao.getTabla(igu.getModelo);
+						dao.getTabla(igu.getModelo());
 					}
 
-				}*/
+				}
 			
 			break;
-/*
+
 			case ("btEliminar"):
 
-				if(dto != null && igu.getId == dto.getIdCliente() && !igu.CamposVacios()){
+				if(dto != null && /*igu.getId() == dto.getIdCliente() &&*/ !igu.camposVacios()){
 
 					dao.eliminarCliente(dto);
-					igu.limpiarCamposTexto();
+					igu.limpiar();
 					dao.getTabla(igu.getModelo());
 
 				} else {
@@ -63,12 +63,12 @@ public class ControlClientes implements ActionListener{
 
 			case "btModificar":
 
-				if(dto != null && igu.getId() == dto.getIdCliente() && !igu.camposVacios()){
+				if(dto != null && /*igu.getId() == dto.getIdCliente() &&*/ !igu.camposVacios()){
 
 					dto = igu.getDTO();
 
 					if(datosCorrectos(dto)){
-						dto.setIdClientes(igu.getId());
+						//dto.setIdClientes(igu.getId());
 						dao.modificarCliente(dto);
 						dao.getTabla(igu.getModelo());
 					}
@@ -78,36 +78,39 @@ public class ControlClientes implements ActionListener{
 					JOptionPane.showMessageDialog(null, "Error. Primero busque el cliente a modificar.");
 				}
 
-				case "btBuscar":
+			break;
 
-					if (igu.getId() != 0) {
+			case "btBuscar":
 
-						dto = dao.BuscarClientes(igu.getId());
-						igu.mostrarDTO(dto);
-						dao.getTabla(igu.getModelo());
+				if (igu.getId() != 0) {
+
+					dto = dao.buscarCliente(igu.getId());
+					igu.mostrarDTO(dto);
+					dao.getTabla(igu.getModelo());
 						
-					} else {
+				} else {
 
-						JOptionPane.showMessageDialog(null, "Error. Escriba un ID.");
-					}
+					JOptionPane.showMessageDialog(null, "Error. Escriba un ID.");
 
-			break;*/
+				}
+
+			break;
 		}
 	}
 
-/*
+
 	public boolean datosCorrectos(DTOClientes dto){
 
 		boolean bDatosCorrectos = false;
 
-		if(dto.getNombre().compareTo("") != 0 && dto.getPaterno().compareTo("") != 0 && dto.getMaterno().compareTo("") != 0){
+		/*if(dto.getNombre().compareTo("") != 0 && dto.getPaterno().compareTo("") != 0 && dto.getMaterno().compareTo("") != 0){
 
 			bDatosCorrectos = true;
 		}
-
+		*/
 		return bDatosCorrectos;
 	}
-*/
+
 
 
 }

@@ -243,9 +243,60 @@ public class DAOClientes{
 		ResultSet resultado;
 		DTOClientes cliente = new DTOClientes();
 
+		try{
+
+			conexion = getConexion();
+
+			buscar = "SELECT * FROM Cliente WHERE id_cliente = ?;";
+
+			prepared = conexion.prepareStatement(buscar);
+
+			//prepared.setInt(1, eId);
+
+			resultado = prepared.executeQuery();
+
+			if (resultado.next()) {
+
+				cliente = new DTOClientes (resultado.getInt("id_cliente"),
+											resultado.getString("nombre"),
+											resultado.getString("aPaterno"),
+											resultado.getString("aMaterno"),
+											resultado.getString("correo"),
+											resultado.getString("telefono"),
+											resultado.getString("direccion"));
+				
+			} else {
+
+				JOptionPane.showMessageDialog(null, "Error. El cliente no existe no existe, intente de nuevo.");
+
+			}
+		}catch(SQLException oExcepcion){
+
+			oExcepcion.printStackTrace();
+
+		}catch(Exception oExcepcion){
+
+			oExcepcion.printStackTrace();
+
+		}finally {
+
+			try {
+
+				if (conexion != null) {
+
+				   conexion.close();
+				   
+				} 
+
+			} catch (SQLException oExcepcion){
+
+				oExcepcion.printStackTrace();
+
+			}
+		}
 
 		return cliente;
-		
+
 	}//fin buscar
 
 	public void getTabla(DefaultTableModel modelo){
