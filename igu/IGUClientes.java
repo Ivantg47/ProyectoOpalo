@@ -9,6 +9,7 @@ package ProyectoOpalo.igu;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.*;
+
 import ProyectoOpalo.dto.DTOClientes;
 import ProyectoOpalo.dao.DAOClientes;
 import ProyectoOpalo.control.ControlClientes;
@@ -16,7 +17,6 @@ import ProyectoOpalo.control.ControlClientes;
 public class IGUClientes extends JFrame{
 
 	public static final String ICONOS = "/iconos/"; 
-	
 
 	private JTextField camposTexto[] = {
 		new JTextField(),
@@ -47,15 +47,8 @@ public class IGUClientes extends JFrame{
 	private ControlClientes control = new ControlClientes(this);
 
 	public IGUClientes(){
-/*
-		super("Clientes");
 
-		add(getIGUClientes());
 
-		setSize(700, 600);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setVisible(true);
-*/
 	}
 
 	public JPanel getIGUClientes(){
@@ -75,9 +68,9 @@ public class IGUClientes extends JFrame{
 		JPanel panel = new JPanel();
 
 		panel.setBorder(BorderFactory.createTitledBorder(""));
-		panel.setLayout(new FlowLayout());
+		panel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-		JLabel titulo = new JLabel("Clientes");
+		JLabel titulo = new JLabel("Clientes        ");
 		titulo.setFont(new Font("Tahoma", Font.PLAIN, 36));
 		panel.add(titulo);
 
@@ -85,17 +78,19 @@ public class IGUClientes extends JFrame{
 		panel.add(etBuscar);
 
 		campoBuscar = new JTextField();
-		campoBuscar.setText("");
+		campoBuscar.setText("Codigo/Nombre");
+		campoBuscar.setForeground(new Color(111,111,111));
 		campoBuscar.setPreferredSize(new Dimension(200,25));
-		//campoBuscar.addFocusListener(control);
+		campoBuscar.addFocusListener(control);
 		panel.add(campoBuscar);
 
 		JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa.png")));
 		btBuscar.setPreferredSize(new Dimension(32,32));
-		panel.add(btBuscar);
 		btBuscar.addActionListener(control);
 		btBuscar.setActionCommand("btBuscar");
+		btBuscar.setPreferredSize(new Dimension(32,32));
 
+		panel.add(btBuscar);
 
 		return panel;
 
@@ -111,7 +106,7 @@ public class IGUClientes extends JFrame{
 		modelo.setColumnIdentifiers(new Object[]{"ID", "Nombre", "Apellido Paterno", "Apellido Materno", "Correo", "Telefono", "Direccion"});
 
 		//creacion de la tabla
-		JTable tabla = new JTable(modelo);
+		tabla = new JTable(modelo);
 		JScrollPane jScroll = new JScrollPane(tabla);
 
 		dao.getTabla(modelo); //error
@@ -128,12 +123,12 @@ public class IGUClientes extends JFrame{
 
 		JPanel panelGeneral = new JPanel();
 
-		panelGeneral.setLayout(new GridLayout(2, 1));
+		panelGeneral.setLayout(new FlowLayout());
 
 		panelGeneral.add(getPanelLayout());
 		panelGeneral.add(getPanelBotones());
-		
 
+		panelGeneral.setPreferredSize(new Dimension(230, 670));
 		panelGeneral.setBorder(BorderFactory.createTitledBorder("Datos del Cliente"));
 
 
@@ -198,16 +193,36 @@ public class IGUClientes extends JFrame{
 	public DTOClientes getDTO(){
 
 		String sNombre = "", sPaterno = "", sMaterno = "", sCorreo = "", sTelefono = "", sDireccion = "";
-
 		DTOClientes oCliente;
+		boolean bEsCadena = true;
+		int eCont = 0;
 
-		sNombre =  camposTexto[1].getText();
-		sPaterno = camposTexto[2].getText();
-		sMaterno = camposTexto[3].getText();
-		sCorreo = camposTexto[4].getText();
-		sTelefono = camposTexto[5].getText();
-		sDireccion = camposTexto[6].getText();
+		while(bEsCadena && eCont < camposTexto.length){
 
+			if (isNumeric(camposTexto[eCont].getText())){
+
+				bEsCadena = false;
+
+			}
+
+			eCont++;
+
+		}
+		
+		if(bEsCadena){
+
+			sNombre =  camposTexto[1].getText();
+			sPaterno = camposTexto[2].getText();
+			sMaterno = camposTexto[3].getText();
+			sCorreo = camposTexto[4].getText();
+			sTelefono = camposTexto[5].getText();
+			sDireccion = camposTexto[6].getText();
+
+		} else {
+
+			JOptionPane.showMessageDialog(null, "Error. Los campos numericos, ingresar nuevamente.");
+
+		}
 
 
 		oCliente = new DTOClientes(sNombre, sPaterno, sMaterno, sCorreo, sTelefono, sDireccion);
@@ -220,24 +235,13 @@ public class IGUClientes extends JFrame{
 	public int getId(){
 
 		int eId = 0;
-	//	if (campoBuscar.getText().compareTo("") != 0) {
 
-
-			System.out.println("Paso 3");
-
-			System.out.println("Paso 3.1: " + campoBuscar.getText());
-
-
-			
-
-	//	}
-			
-
+		if (campoBuscar.getText().compareTo("") != 0) {
 
 			eId = Integer.valueOf(campoBuscar.getText());
-			
-
-			System.out.println("Paso 4: " + eId);
+	
+		}
+		
 		return eId;
 	}
 
@@ -261,6 +265,8 @@ public class IGUClientes extends JFrame{
 			campo.setText(null);
 			
 		}
+
+		campoBuscar.setText("Codigo/Nombre");
 	}
 
 	public boolean camposVacios(){
@@ -280,6 +286,12 @@ public class IGUClientes extends JFrame{
 
 		} while (!vacio || pos < camposTexto.length);
 
+		if(vacio){
+
+			JOptionPane.showMessageDialog(null, "Error. Llenar campos vacios");
+
+		}
+
 		return vacio;
 
 	}
@@ -295,6 +307,30 @@ public class IGUClientes extends JFrame{
 		camposTexto[6].setText(oClientes.getDireccion());
 
 	}
+
+	public static boolean isNumeric(String oCadena) {
+
+        boolean oResultado;
+
+        try {
+
+            Integer.parseInt(oCadena);
+            oResultado = true;
+
+        } catch (NumberFormatException oExcepcion) {
+
+            oResultado = false;
+
+        }
+
+        return oResultado;
+    }
+
+    public String getCampoBuscar(){
+
+    	return campoBuscar.getText();
+
+    }
 
 	
 	
