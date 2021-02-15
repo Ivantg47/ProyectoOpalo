@@ -46,7 +46,7 @@ public class DAOProducto{
      * Metodo para agregar un producto a la base de datos.
      * @param producto recibe el producto 
      */
-	public void agregarPoducto(DTOProducto producto) throws IllegalArgumentException{
+	public void agregarProducto(DTOProducto producto) throws IllegalArgumentException{
 
 		try {
 
@@ -113,13 +113,13 @@ public class DAOProducto{
 	        }
 	    }
 
-	}//agregarPoducto
+	}//agregarProducto
 
 	/**
      * Metodo para busca una producto por codigo/id en la base de datos.
      * @param codigo codigo que se desea buscar 
      */
-	public DTOProducto getPoducto(int codigo) throws IllegalArgumentException{
+	public DTOProducto getProducto(int codigo) throws IllegalArgumentException{
 
 		DTOProducto producto = new DTOProducto();
 		
@@ -177,14 +177,14 @@ public class DAOProducto{
 	    }
 
 	    return producto;
-	}//getPoducto
+	}//getProducto
 
 	/**
      * Metodo para busca una producto por nombre en la base de datos.
      * @param nombre nombre que se desea buscar 
      * @param modelo modelo de la tabla inventario
      */
-	public DTOProducto getPoducto(String nombre, DefaultTableModel modelo) throws IllegalArgumentException{
+	public DTOProducto getProducto(String nombre, DefaultTableModel modelo) throws IllegalArgumentException{
 
 		DTOProducto producto = new DTOProducto();
 
@@ -261,7 +261,7 @@ public class DAOProducto{
 	    }
 
 	    return producto;
-	}//getPoducto
+	}//getProducto
 
 	/**
      * Metodo para actualizar un producto de la base de datos.
