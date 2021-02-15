@@ -84,7 +84,7 @@ public class IGUClientes extends JFrame{
 		JLabel etBuscar = new JLabel("Buscar");
 		panel.add(etBuscar);
 
-		JTextField campoBuscar = new JTextField();
+		campoBuscar = new JTextField();
 		campoBuscar.setText("");
 		campoBuscar.setPreferredSize(new Dimension(200,25));
 		//campoBuscar.addFocusListener(control);
@@ -164,24 +164,33 @@ public class IGUClientes extends JFrame{
 		panelBotones.setLayout(new FlowLayout());
 
 		JButton btAgregar = new JButton(new ImageIcon(getClass().getResource("/iconos/agregar.png")));
-		btAgregar.setToolTipText("Agregar");
 		btAgregar.addActionListener(control);
 		btAgregar.setActionCommand("btAgregar");
+		btAgregar.setToolTipText("Agregar");
+		btAgregar.setPreferredSize(new Dimension(48, 48));	
 
 		JButton btEliminar = new JButton(new ImageIcon(getClass().getResource("/iconos/eliminar.png")));
+		btEliminar.addActionListener(control);
+		btEliminar.setActionCommand("btEliminar");
 		btEliminar.setToolTipText("Eliminar");
-		btAgregar.addActionListener(control);
-		btAgregar.setActionCommand("btEliminar");
+		btEliminar.setPreferredSize(new Dimension(48, 48));
 
 		JButton btModificar = new JButton(new ImageIcon(getClass().getResource("/iconos/modificar.png")));
+		btModificar.addActionListener(control);
+		btModificar.setActionCommand("btModificar");
 		btModificar.setToolTipText("Modificar");
-		btAgregar.addActionListener(control);
-		btAgregar.setActionCommand("btModificar");
+		btModificar.setPreferredSize(new Dimension(48, 48));
+
+		JButton btLimpiar = new JButton(new ImageIcon(getClass().getResource("/iconos/borrador.png")));
+		btLimpiar.setToolTipText("Limpiar");
+		btLimpiar.addActionListener(control);
+		btLimpiar.setActionCommand("btLimpiar");
+		btLimpiar.setPreferredSize(new Dimension(48, 48));
 
 		panelBotones.add(btAgregar);
 		panelBotones.add(btEliminar);
 		panelBotones.add(btModificar);
-
+		panelBotones.add(btLimpiar);
 		
 		return panelBotones;
 	}
@@ -209,15 +218,16 @@ public class IGUClientes extends JFrame{
 	}
 
 	public int getId(){
+//System.out.println("Paso 3.2: " + camposTexto[2].getText());
 
 		int eId = 0;
-
-		if (campoBuscar.getText().compareTo("") != 0) {
+	//	if (campoBuscar.getText().compareTo("") != 0) {
+			
 
 			eId = Integer.valueOf(campoBuscar.getText());
 			
-		}
-
+	//	}
+			
 		return eId;
 	}
 
@@ -267,14 +277,13 @@ public class IGUClientes extends JFrame{
 
 	public void mostrarDTO(DTOClientes oClientes){
 
-		/*camposTexto[0].setText(String.valueOf(oClientes.getId()));
 		camposTexto[1].setText(oClientes.getNombre());
 		camposTexto[2].setText(oClientes.getPaterno());
 		camposTexto[3].setText(oClientes.getMaterno());
 		camposTexto[4].setText(oClientes.getCorreo());
 		camposTexto[5].setText(oClientes.getTelefono());
 		camposTexto[6].setText(oClientes.getDireccion());
-*/
+
 	}
 
 	

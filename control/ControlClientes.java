@@ -47,36 +47,35 @@ public class ControlClientes implements ActionListener{
 
 			case ("btEliminar"):
 
-				/*if(dto != null && igu.getId() == dto.getIdCliente() && !igu.camposVacios()){
+				//if(dto != null && igu.getId() == dto.getIdCliente() && !igu.camposVacios()){
 
 					dao.eliminarCliente(dto);
 					igu.limpiar();
 					dao.getTabla(igu.getModelo());
+				//} else {
 
-				} else {
-
-					JOptionPane.showMessageDialog(null, "Error. Primero busque el cliente a eliminar.");
-				}*/
+				//	JOptionPane.showMessageDialog(null, "Error. Primero busque el cliente a eliminar.");
+				//}
 
 
 			break;
 
 			case "btModificar":
 
-				/*if(dto != null && /*igu.getId() == dto.getIdCliente() && !igu.camposVacios()){
+				//if(dto != null && /*igu.getId() == dto.getIdCliente() && !igu.camposVacios()){
 
 					dto = igu.getDTO();
 
-					if(datosCorrectos(dto)){
-						//dto.setIdClientes(igu.getId());
+					//if(datosCorrectos(dto)){
+						dto.setIdCliente(igu.getId());
 						dao.modificarCliente(dto);
 						dao.getTabla(igu.getModelo());
-					}
+					//}
 
-				} else {
+				//} else {
 
-					JOptionPane.showMessageDialog(null, "Error. Primero busque el cliente a modificar.");
-				}*/
+					//JOptionPane.showMessageDialog(null, "Error. Primero busque el cliente a modificar.");
+				//}
 
 			break;
 
@@ -99,7 +98,7 @@ public class ControlClientes implements ActionListener{
 	}
 
 
-	/*public boolean datosCorrectos(DTOClientes dto){
+	public boolean datosCorrectos(DTOClientes dto){
 
 		boolean bDatosCorrectos = false;
 
@@ -110,7 +109,7 @@ public class ControlClientes implements ActionListener{
 		
 		return bDatosCorrectos;
 	}
-*/
+
 
 
 }

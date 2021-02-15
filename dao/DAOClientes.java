@@ -68,7 +68,7 @@ public class DAOClientes{
 		try{
 
 			conexion = getConexion() ;
-			/*
+			
 			buscar =  	"SELECT id_cliente " +
           				"FROM Cliente " 
                          		+ "WHERE nombre = ? AND aPaterno = ? AND aMaterno = ?;";
@@ -81,7 +81,7 @@ public class DAOClientes{
 
             oResultado = prepared.executeQuery();
 
-            if (!oResultado.next()){*/
+            if (!oResultado.next()){
 
          		insertar =  "INSERT INTO Cliente (nombre, aPaterno, aMaterno, correo, telefono, direccion) "
          						+ "VALUES (?, ?, ?, ?, ?, ?);";
@@ -103,10 +103,10 @@ public class DAOClientes{
 
          		}
 
-            //} else {
+            } else {
 
             	JOptionPane.showMessageDialog(null, "Error. El cliente ya existe, ingresar datos nuevamente.");
-            //}
+            }
 
 		} catch(SQLException oExcepcionSQL) {
 
@@ -144,11 +144,11 @@ public class DAOClientes{
 
 			conexion = getConexion();
 
-			eliminar = "DELETE FROM Clientes WHERE id_cliente = ?;";
+			eliminar = "DELETE FROM Cliente WHERE id_cliente = ?;";
 
 			prepared = conexion.prepareStatement(eliminar);
 
-			//prepared.setInt(1, oCliente.getIdCliente());
+			prepared.setInt(1, oCliente.getIdCliente());
 
 			if(prepared.executeUpdate() != 0){
 
@@ -156,6 +156,7 @@ public class DAOClientes{
 			}
 
 			conexion.close();
+
 		}catch(SQLException oExcepcion){
 
 			oExcepcion.printStackTrace();
@@ -190,17 +191,19 @@ public class DAOClientes{
 			conexion = getConexion();
 
 			modificar = "UPDATE Cliente "
-						+ "SET nombre = ?, aPaterno = ?, aMaterno = ?, correo= ?, correo = ?, telefono = ?, direccion = ?;";
+						+ "SET nombre = ?, aPaterno = ?, aMaterno = ?, correo = ?, telefono = ?, direccion = ? "
+						+ "WHERE id_cliente = ?;";
 
 			prepared = conexion.prepareStatement(modificar);
 
-			/**prepared.setString(1, oCliente.getNombre());
+			prepared.setString(1, oCliente.getNombre());
           	prepared.setString(2, oCliente.getPaterno());
            	prepared.setString(3, oCliente.getMaterno());
            	prepared.setString(4, oCliente.getCorreo());
            	prepared.setString(5, oCliente.getTelefono());
            	prepared.setString(6, oCliente.getDireccion());
-*/
+           	prepared.setInt(7, oCliente.getIdCliente());
+
            	if (prepared.executeUpdate() != 0) {
            		
            		JOptionPane.showMessageDialog(null, "Cliente modificado");
@@ -253,7 +256,7 @@ public class DAOClientes{
 
 			if (resultado.next()) {
 
-				cliente = new DTOClientes (
+				cliente = new DTOClientes (	resultado.getInt("id_cliente"),
 											resultado.getString("nombre"),
 											resultado.getString("aPaterno"),
 											resultado.getString("aMaterno"),
@@ -304,8 +307,8 @@ public class DAOClientes{
 
 			conexion = getConexion();
 
-			oConsultaTabla = 	  "SELECT id_cliente, nombre, aPaterno, aMaterno, correo, elefono, direccion "
-								+ "FROM Clientes ORDER BY id_cliente;";
+			oConsultaTabla = 	  "SELECT id_cliente, nombre, aPaterno, aMaterno, correo, telefono, direccion "
+								+ "FROM Cliente ORDER BY id_cliente;";
 	
 			prepared = conexion.prepareStatement(oConsultaTabla);
 
