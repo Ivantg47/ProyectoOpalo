@@ -15,7 +15,6 @@ import ProyectoOpalo.dto.DTOVentas;
 
 public class ControlVenta implements ActionListener, FocusListener{
 
-	private DTOVentas dtoVentas;
 	private DAOVentas daoVentas;
 	private IGUVentas iguVentas;
 
@@ -28,7 +27,6 @@ public class ControlVenta implements ActionListener, FocusListener{
 	public void actionPerformed(ActionEvent evento){
 
 		JButton fuente = (JButton) evento.getSource();
-		daoVentas = new DAOVentas();
 		
 		switch (fuente.getActionCommand()){
 
@@ -38,10 +36,24 @@ public class ControlVenta implements ActionListener, FocusListener{
 			case "btLimpiarC":
 				iguVentas.limpiarDatosCliente();
 				break;
-			case "btAgregar":
-				daoVentas.agregarVenta(daoVentas);
+			case "btAceptarP":
+				iguVentas.leerDatosProducto();
 				break;
-				
+			case "btLimpiarP":
+				iguVentas.limpiarDatosProducto();
+				break;
+			case "btAgregar":
+				DAOVentas daoVentas = new DAOVentas();
+				daoVentas.agregarVenta(iguVentas.ventas);
+				break;
+			case "btBuscar":
+				DAOVentas daoVentasB = new DAOVentas();
+				iguVentas.ventas = daoVentasB.buscarVenta(iguVentas.leerDatoBuscar());
+				break;
+			case "btCancelar":
+				//DAOVentas daoVentasC = new DAOVentas();
+				//daoVentasC.CancelarVenta(iguVentas.leerDatoBuscar(), iguVentas.ventas);
+				break;
 		}
 	}
 
