@@ -18,9 +18,9 @@ import javax.swing.table.*;
 public class DAOClientes{
 
 	private Connection conexion = null;
-	private PreparedStatement prepared;
+	private PreparedStatement prepared = null;
     private ResultSet result;
-	DTOClientes oCliente;
+	private DTOClientes oCliente;
 
 	public DAOClientes(){
 
@@ -71,7 +71,7 @@ public class DAOClientes{
 			
 			buscar =  	"SELECT id_cliente " +
           				"FROM Cliente " 
-                         		+ "WHERE nombre = ? AND aPaterno = ? AND aMaterno = ?;";
+                         + "WHERE nombre = ? AND aPaterno = ? AND aMaterno = ?;";
 
             prepared = conexion.prepareStatement(buscar);
 
@@ -350,7 +350,5 @@ public class DAOClientes{
 	        }
 	    }
 	}
-
-
 
 }

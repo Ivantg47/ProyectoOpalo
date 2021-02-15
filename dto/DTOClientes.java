@@ -123,11 +123,4 @@ public class DTOClientes {
 		
 	}
 
-	public String toString(){
-
-		return "ID: " + eIdCliente + "\nNombre: " + sNombre + " " + aPaterno + " " + aMaterno + 
-				"\nCorreo: " + sCorreo + "\nTelefono: " + sTelefono + "\nDirección: " + sDireccion;
-
-	}
-
 }
