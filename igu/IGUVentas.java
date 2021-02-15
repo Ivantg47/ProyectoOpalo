@@ -13,6 +13,8 @@ import javax.swing.table.*;
 import ProyectoOpalo.control.ControlVenta;
 import ProyectoOpalo.dao.DAOVentas;
 import ProyectoOpalo.dto.DTOVentas;
+import ProyectoOpalo.dao.DAOProducto;
+import ProyectoOpalo.dto.DTOProducto;
 
 public class IGUVentas extends JFrame{
 
@@ -39,7 +41,7 @@ public class IGUVentas extends JFrame{
 
 	private JLabel aDatosProducto[] = {
 
-		new JLabel("ID: "),
+		new JLabel("ID producto: "),
 		new JLabel("Cantidad: "),
 
 	};
@@ -160,10 +162,27 @@ public class IGUVentas extends JFrame{
 
 	public void leerDatosProducto(){
 
+		DAOProducto producto = new DAOProducto();
+		DTOProducto productoB = new DTOProducto();
+
 		int idProdcuto = Integer.valueOf(aTextoProducto[0].getText());
 		float cantidad = Float.valueOf(aTextoProducto[1].getText());
-		ventas.setIdProducto(idProdcuto);
-		ventas.setCantidadVendida(cantidad);
+
+	//	productoB = producto.getPoducto(idProdcuto);
+
+		if (productoB.getCodigo() == idProdcuto) {
+			
+			ventas.setIdProducto(idProdcuto);
+			ventas.setCantidadVendida(cantidad);
+
+
+
+		} else {
+
+			JOptionPane.showMessageDialog(null, "no esxiste el producto");
+
+		}
+
 
 	}
 

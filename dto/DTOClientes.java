@@ -16,13 +16,14 @@ public class DTOClientes {
 	private String sTelefono;
 	private String sDireccion;
 
-	public DTOClientes(){
 
+	public DTOClientes(){
+		
 	}
 
-	public DTOClientes(int eIdCliente, String sNombre, String aPaterno, String aMaterno, String sCorreo, String sTelefono, String sDireccion){
+	public DTOClientes(String sNombre, String aPaterno, String aMaterno, String sCorreo, String sTelefono, String sDireccion){
 
-		this.eIdCliente = eIdCliente;
+		//this.eIdCliente = eIdCliente;
 		this.sNombre = sNombre;
 		this.aPaterno = aPaterno;
 		this.aMaterno = aMaterno;
@@ -30,6 +31,13 @@ public class DTOClientes {
 		this.sTelefono = sTelefono;
 		this.sDireccion = sDireccion;
 
+	}
+
+
+	public DTOClientes(int eIdCliente, String sNombre, String aPaterno, String aMaterno, String sCorreo, String sTelefono, String sDireccion){
+
+		this(sNombre, aPaterno, aMaterno, sCorreo, sTelefono, sDireccion);
+		this.eIdCliente = eIdCliente;
 	}
 
 	public void setIdCliente (int eIdCliente) {
@@ -74,52 +82,45 @@ public class DTOClientes {
 	
 	}
 
-	public int getIdCliente(int eIdCliente){
+	public int getIdCliente(){
 
 		return eIdCliente;
 
 	}
 
-	public String getNombre(String sNombre){
+	public String getNombre(){
 
 		return sNombre;
 
 	}
 
-	public String getPaterno(String aPaterno) {
+	public String getPaterno() {
 
 		return aPaterno;
 
 	}
 
-	public String getMaterno(String aMaterno) {
+	public String getMaterno() {
 
 		return aMaterno;
 
 	}
 
-	public String getCorreo(String sCorreo){
+	public String getCorreo(){
 
 		return sCorreo;
 	}
 
-	public String getTelefono(String sTelefono){
+	public String getTelefono(){
 
 		return sTelefono;
 
 	}
 
-	public String getDireccion(String sDireccion){
+	public String getDireccion(){
 
 		return sDireccion;
 		
-	}
-
-	public String toString(){
-
-		return "ID: " + eIdCliente + "\nNombre: " + sNombre + " " + aPaterno + " " + aMaterno + 
-				"\nCorreo: " + sCorreo + "\nTelefono: " + sTelefono + "\nDirección: " + sDireccion;
-
 	}
 
 }

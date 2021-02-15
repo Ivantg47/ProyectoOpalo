@@ -22,7 +22,7 @@ public class DAOVentas{
 
 	private Connection conexion = null;
 	private PreparedStatement prepared;
-    private ResultSet result;
+    private ResultSet result, resultF;
     IGUVentas igu;
 
     public DAOVentas(){
@@ -48,7 +48,55 @@ public class DAOVentas{
 
 			int resultado = prepared.executeUpdate();
 
-			if (resultado == 1){
+			//Facturas
+			String facturasql = "INSERT INTO Factura (fecha) VALUES (?);";
+
+			prepared = conexion.prepareStatement(facturasql);
+
+			java.util.Date fechaF = new java.util.Date();
+			java.sql.Date sqlFechaF = new java.sql.Date(fecha.getTime());
+			prepared.setDate(1,sqlFechaF);
+
+			int resultadoF = prepared.executeUpdate();
+
+
+			if (resultado == 1 && resultadoF == 1){
+
+				sql = "SELECT last_insert_id() AS id_venta;";
+				prepared = conexion.prepareStatement(sql);
+				result = prepared.executeQuery();
+
+				facturasql = "SELECT last_insert_id() AS id_factura;";
+				prepared = conexion.prepareStatement(facturasql);
+				resultF = prepared.executeQuery();
+
+				if (result.next()){
+					
+					//Ventas y productos
+					String venta_Productosql = "INSERT INTO Venta_Producto (id_venta,id_producto,cantidad) VALUES (?, ?, ?);";
+
+					prepared = conexion.prepareStatement(venta_Productosql);
+
+					prepared.setInt(1, result.getInt("id_venta"));
+					prepared.setInt(2, ventas.getIdProducto());
+					prepared.setFloat(3, ventas.getCantidadVendida());
+
+					int resultadoV_P = prepared.executeUpdate();
+
+					//Ventas y clientes
+					String venta_Clientesql = "INSERT INTO Venta_Cliente (id_venta,id_cliente,id_factura) VALUES (?, ?, ?);";
+
+					prepared = conexion.prepareStatement(venta_Productosql);
+
+					prepared.setInt(1, result.getInt("id_venta"));
+					prepared.setInt(2, ventas.getIdCliente());
+					prepared.setInt(3, resultF.getInt("id_factura"));
+
+					int resultadoVP = prepared.executeUpdate();
+					
+
+				}
+
 
 				JOptionPane.showMessageDialog(null, "Venta registrada");
 
@@ -146,7 +194,7 @@ public class DAOVentas{
 	    return ventas;
 	}
 
-	/*public void CancelarVenta(int idVenta, DTOVentas ventas){
+	public void CancelarVenta(int idVenta, DTOVentas ventas){
 		try {
 
 			conexion = getConnection();
@@ -163,6 +211,10 @@ public class DAOVentas{
 			if (resultado == 1){
 
 				JOptionPane.showMessageDialog(null, "Venta cancelada");
+
+			} else {
+
+				JOptionPane.showMessageDialog(null, "No existe una venta con el id ingresado.");
 
 			}
 
@@ -194,7 +246,7 @@ public class DAOVentas{
 	    }
 
 	}
-*/
+
 	public void getTabla(DefaultTableModel modelo){
 
 		try {

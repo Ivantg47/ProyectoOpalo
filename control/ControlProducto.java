@@ -60,12 +60,12 @@ public class ControlProducto implements ActionListener, FocusListener{
 					if (isNumeric(igu.getBuscar())) {
 									
 						// int codigo = Integer.parseInt(igu.getBuscar());
-						igu.setCampos(dao.getPoducto(Integer.parseInt(igu.getBuscar())));
+						igu.setCampos(dao.getProducto(Integer.parseInt(igu.getBuscar())));
 						
 	
 					} else {
 						
-						igu.setCampos(dao.getPoducto(igu.getBuscar(), igu.getModelo()));
+						igu.setCampos(dao.getProducto(igu.getBuscar(), igu.getModelo()));
 	
 					}
 					
@@ -74,7 +74,7 @@ public class ControlProducto implements ActionListener, FocusListener{
 
 			} else if (fuente.getActionCommand().equals("agregar")) {
 				
-				dao.agregarPoducto(igu.getCampos());
+				dao.agregarProducto(igu.getCampos());
 				dao.getTabla(igu.getModelo());
 				igu.limpiar();
 

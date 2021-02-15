@@ -12,7 +12,7 @@ import ProyectoOpalo.igu.IGUClientes;
 import ProyectoOpalo.dao.DAOClientes;
 import ProyectoOpalo.dto.DTOClientes;
 
-public class ControlClientes implements ActionListener{
+public class ControlClientes implements ActionListener, FocusListener{
 
 	private DTOClientes dto;
 	private DAOClientes dao;
@@ -31,7 +31,8 @@ public class ControlClientes implements ActionListener{
 		switch (oEvento.getActionCommand()){
 
 			case "btAgregar":
-				if (igu.camposVacios()){
+
+				if (!igu.camposVacios()){
 
 					dto = igu.getDTO();
 
@@ -47,7 +48,7 @@ public class ControlClientes implements ActionListener{
 
 			case ("btEliminar"):
 
-				if(dto != null && /*igu.getId() == dto.getIdCliente() &&*/ !igu.camposVacios()){
+				if(dto != null && igu.getId() == dto.getIdCliente()){
 
 					dao.eliminarCliente(dto);
 					igu.limpiar();
@@ -63,14 +64,16 @@ public class ControlClientes implements ActionListener{
 
 			case "btModificar":
 
-				if(dto != null && /*igu.getId() == dto.getIdCliente() &&*/ !igu.camposVacios()){
+				if(dto != null && igu.getId() == dto.getIdCliente() && !igu.camposVacios()){
 
 					dto = igu.getDTO();
 
 					if(datosCorrectos(dto)){
-						//dto.setIdClientes(igu.getId());
+
+						dto.setIdCliente(igu.getId());
 						dao.modificarCliente(dto);
 						dao.getTabla(igu.getModelo());
+
 					}
 
 				} else {
@@ -81,13 +84,25 @@ public class ControlClientes implements ActionListener{
 			break;
 
 			case "btBuscar":
+				if (!igu.getCampoBuscar().equals("Codigo/Nombre")) { 
+			
+					if (isNumeric(igu.getCampoBuscar())) {
 
-				if (igu.getId() != 0) {
-
-					dto = dao.buscarCliente(igu.getId());
-					igu.mostrarDTO(dto);
-					dao.getTabla(igu.getModelo());
+						dto = dao.buscarCliente(igu.getId());
+						igu.mostrarDTO(dto);
+						dao.getTabla(igu.getModelo());
 						
+					} else {
+
+						/*
+						dto = dao.buscarPorNombre(igu.getId());
+						igu.mostrarDTO(dto);
+						dao.getTabla(igu.getModelo());
+						*/
+					}
+
+					
+
 				} else {
 
 					JOptionPane.showMessageDialog(null, "Error. Escriba un ID.");
@@ -95,22 +110,73 @@ public class ControlClientes implements ActionListener{
 				}
 
 			break;
+
+			case "btLimpiar":
+
+				igu.limpiar();
+
+			break;
 		}
-	}
+
+	}//actionPerformed
 
 
 	public boolean datosCorrectos(DTOClientes dto){
 
 		boolean bDatosCorrectos = false;
 
-		/*if(dto.getNombre().compareTo("") != 0 && dto.getPaterno().compareTo("") != 0 && dto.getMaterno().compareTo("") != 0){
+		if(dto.getNombre().compareTo("") != 0 && dto.getPaterno().compareTo("") != 0 && dto.getMaterno().compareTo("") != 0 && dto.getCorreo().compareTo("") != 0 && dto.getTelefono().compareTo("") != 0 && dto.getDireccion().compareTo("") != 0){
 
 			bDatosCorrectos = true;
 		}
-		*/
+		
 		return bDatosCorrectos;
 	}
 
 
+
+	public void focusGained(FocusEvent e) {
+		
+		JTextField campo = (JTextField) e.getSource();
+
+		if(campo.getText().equals("Codigo/Nombre")){
+
+	        campo.setForeground(Color.BLACK);
+	        campo.setText(null);
+
+    	}
+           
+    }
+
+    public void focusLost(FocusEvent e) {
+
+    	JTextField campo = (JTextField) e.getSource();
+
+    	if(campo.getText().equals("")){
+
+    		campo.setText("Codigo/Nombre");
+			campo.setForeground(new Color(111,111,111));
+
+    	}
+        
+    }
+
+    public static boolean isNumeric(String sCadena) {
+
+        boolean oResultado;
+
+        try {
+
+            Integer.parseInt(sCadena);
+            oResultado = true;
+
+        } catch (NumberFormatException oExcepcion) {
+
+            oResultado = false;
+
+        }
+
+        return oResultado;
+    }//isNumeric
 
 }
