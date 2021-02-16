@@ -15,6 +15,7 @@ import ProyectoOpalo.dao.DAOCompra;
 
 public class IGUCompras extends JFrame{
 
+	public DTOCompra compras = new DTOCompra();
 	private DefaultTableModel modelo, modeloDTO;
 	private JTable tabla;
 
@@ -37,7 +38,7 @@ public class IGUCompras extends JFrame{
 
 	private JLabel aDatosProducto[] = {
 
-		new JLabel("Codigo"),
+		//new JLabel("Codigo"),
 		new JLabel("Descripcion"),
 		new JLabel("Precio"),
         new JLabel("Cantidad"),
@@ -47,7 +48,7 @@ public class IGUCompras extends JFrame{
 
 	private JTextField aTextoProducto[] = {
 
-		new JTextField(), //Codigo
+		//new JTextField(), //Codigo
 		new JTextField(), // Descripcion
 		new JTextField(), // Precio
         new JTextField(), //Cantidad
@@ -97,7 +98,9 @@ public class IGUCompras extends JFrame{
 		// panelCompras.setBackground(new Color(155,255,100));
 		return panelCompras;
 
-	}
+	} 
+
+	private JTextField campoBuscar = new JTextField();
 
 	public JPanel getPanelBuscar(){
 
@@ -113,7 +116,6 @@ public class IGUCompras extends JFrame{
 		JLabel buscar = new JLabel("Buscar");
 		panelBuscar.add(buscar);
 
-		JTextField campoBuscar = new JTextField();
 		campoBuscar.setText("Folio/Fecha (dd-mm-aaaa)");
 		campoBuscar.setForeground(new Color(111,111,111));
 		campoBuscar.setPreferredSize(new Dimension(200,20));
@@ -137,12 +139,12 @@ public class IGUCompras extends JFrame{
 		JPanel panelFecha = new JPanel();
 
 		panelFecha.setLayout(null);
-
+/*
 		panelFecha.add(folio);
 		folio.setBounds(420,4,35,25);
 		panelFecha.add(texFolio);
 		texFolio.setBounds(460,4,60,25);
-
+*/
 		panelFecha.add(dia);
 		dia.setBounds(530,4,30,25);
 		texDia.setPreferredSize(new Dimension(40, 25));
@@ -180,21 +182,21 @@ public class IGUCompras extends JFrame{
 			panelProductos.add(aTextoProducto[i]);
 
 		}
-
+		/*
 		aDatosProducto[0].setBounds(10, 17, 60, 25);
         aTextoProducto[0].setBounds(10, 43, 60, 25);
+*/
+        aDatosProducto[0].setBounds(10, 17, 80, 25);
+        aTextoProducto[0].setBounds(10, 43, 250, 25);
 
-        aDatosProducto[1].setBounds(75, 17, 80, 25);
-        aTextoProducto[1].setBounds(75, 43, 250, 25);
+        aDatosProducto[1].setBounds(330, 17, 100, 25);
+        aTextoProducto[1].setBounds(330, 43, 100, 25);
 
-        aDatosProducto[2].setBounds(330, 17, 100, 25);
-        aTextoProducto[2].setBounds(330, 43, 100, 25);
+        aDatosProducto[2].setBounds(435, 17, 70, 25);
+        aTextoProducto[2].setBounds(435, 43, 70, 25);
 
-        aDatosProducto[3].setBounds(435, 17, 70, 25);
-        aTextoProducto[3].setBounds(435, 43, 70, 25);
-
-        aDatosProducto[4].setBounds(510, 17, 100, 25);
-        aTextoProducto[4].setBounds(510, 43, 100, 25);
+        aDatosProducto[3].setBounds(510, 17, 100, 25);
+        aTextoProducto[3].setBounds(510, 43, 100, 25);
 
         panelProductos.setPreferredSize(new Dimension(620, 75));
         // panelProductos.setBackground(new Color(155,155,100));
@@ -268,7 +270,7 @@ public class IGUCompras extends JFrame{
 		btAgregar = new JButton(new ImageIcon(getClass().getResource("/iconos/save.png")));
 		btAgregar.setPreferredSize(new Dimension(80, 80));
 		btAgregar.addActionListener(control);
-        // btAgregar.setActionCommand("Verificar");
+        btAgregar.setActionCommand("Registrar");
 
         btCancelar = new JButton(new ImageIcon(getClass().getResource("/iconos/trash.png")));
 		btCancelar.setPreferredSize(new Dimension(80, 80));
@@ -374,15 +376,22 @@ public class IGUCompras extends JFrame{
     public DTOCompra getCampos(){
 
         DTOCompra compra = new DTOCompra();
+		String fecha;
 
-        compra.setNombre(aTextoProducto[0].getText());
-        compra.setCantidad(Float.valueOf(aTextoProducto[1].getText()));
-        compra.setTotal(Float.valueOf(aTextoProducto[2].getText()));
-        compra.setFechaCompra(aTextoProducto[3].getText());
+		fecha = texAnio.getText() + "-" +  texMes.getText() + "-" + texDia.getText();
+
+        compra.setNombre(aTextoProducto[0].getText());// Descripcion
+        compra.setTotal(Float.valueOf(aTextoProducto[1].getText()));// Precio
+        compra.setCantidad(Float.valueOf(aTextoProducto[2].getText()));//Cantidad
+		compra.setFechaCompra(fecha);//Total
 
         return compra;
 
     }
+	
+	public void setTotal(Float fTotal){
+		texTotal.setText("$" + String.valueOf(fTotal));
+	}
 
 	public JPanel getTicket(DTOCompra[] aCompras){
 
@@ -454,15 +463,15 @@ public class IGUCompras extends JFrame{
 		JTable tablaConsulta = new JTable();
 
 		String [] nombre = {
-                "ID", "Insumo", "Cantidad", "Costo Total", "Fecha Compra"
+                "ID", "Insumo", "Cantidad", "Costo Unitario", "Fecha Compra", "Total"
         };
 
 		tablaConsulta.setModel(new DefaultTableModel(
             
             new Object [][] {
 
-            	{"Insumo", "Cantidad", "Costo Total", "Fecha Compra"},
-                {compras.getNombre(), compras.getCantidad(), compras.getTotal(), compras.getFechaCompra()}
+            	{"Insumo", "Cantidad", "Costo Unitario", "Fecha Compra", "Total"},
+                {compras.getNombre(), compras.getCantidad(), compras.getTotal(), compras.getFechaCompra(), compras.getFinal()}
 
             }, nombre
             
@@ -487,6 +496,14 @@ public class IGUCompras extends JFrame{
 		aTextoProducto[1].setText(null);
 		aTextoProducto[2].setText(null);
 		aTextoProducto[3].setText(null);
+
+	}
+
+	public int leerDatoBuscar(){
+		
+		int idCompra = Integer.valueOf(campoBuscar.getText());
+
+		return idCompra;
 
 	}
 

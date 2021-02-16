@@ -28,14 +28,17 @@ public class ControlCompra implements ActionListener, FocusListener{
     public void llenarTabla(DefaultTableModel modelo){
 
         //Falta arreglar lo del subtotal, almenos lo del arreglo ya está.
-
+        //modeloDTO.setColumnIdentifiers(new Object[]{"#", "Nombre", "Cantidad", "Costo Unitario", "SubTotal"});
         modelo.setRowCount(0);
+        
+        float subtotal;
 
         for (int i = 0; i <= indice; i++) {
 
             try {
-                suma += aCompras[i].getTotal();
-                modelo.addRow(new Object[]{aCompras[i].getIdInsumo(), aCompras[i].getNombre(), aCompras[i].getCantidad(), aCompras[i].getTotal(), aCompras[i].getFechaCompra(), suma});
+                subtotal = aCompras[i].getCantidad() * aCompras[i].getTotal();
+//                suma += aCompras[i].getTotal();
+                modelo.addRow(new Object[]{aCompras[i].getIdInsumo(), aCompras[i].getNombre(), aCompras[i].getCantidad(), aCompras[i].getTotal(), subtotal});
             } catch (Exception e) {
                 System.out.println("Ex" + e);
             }
@@ -70,6 +73,7 @@ public class ControlCompra implements ActionListener, FocusListener{
                     System.out.println(aCompras[indice].getNombre());
                 }
                 llenarTabla(igu.getModeloDTO());
+                igu.setTotal(getTotal(aCompras));
                 break;
 
             case "Limpiar":
@@ -78,14 +82,36 @@ public class ControlCompra implements ActionListener, FocusListener{
                     System.out.println(aCompras[indice].getNombre());
                 }
                 break;
-            /*        
+                    
             case "btBuscar":
 				DAOCompra daoCompraB = new DAOCompra();
-				igu.ventas = daoCompraB.buscarCompra(igu.leerDatoBuscar());//Preguntaaaaaar
-				break;*/
+				igu.compras = daoCompraB.buscarCompra(igu.leerDatoBuscar());
+				break;
+
+            case "Registrar":
+                dao.insertarCompras(aCompras, indice);
+                break;
 
 
         }
+
+    }
+
+    public float getTotal(DTOCompra[] aCompras){
+
+        float total = 0;
+
+        for (int i = 0; i <= indice; i++) {
+
+            try {
+                total = total + (aCompras[i].getTotal() * aCompras[i].getCantidad());
+            } catch (Exception e) {
+                System.out.println("Ex" + e);
+            }
+
+        }
+
+        return total;
 
     }
 

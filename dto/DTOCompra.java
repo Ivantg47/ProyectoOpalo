@@ -21,7 +21,7 @@ package ProyectoOpalo.dto;
 public class DTOCompra {
 
 	private int eIdInsumo;
-	private float fCantidad, fTotal;
+	private float fCantidad, fTotal, fFinal;
 	private String sFechaCompra, sNombre;
 
 	//Constructor Vacío
@@ -61,6 +61,10 @@ public class DTOCompra {
 		return fTotal;
 	}	
 
+	public float getFinal(){
+		return fFinal;
+	}	
+
 	public String getFechaCompra(){
 		return sFechaCompra;
 	}	
@@ -75,6 +79,10 @@ public class DTOCompra {
 
 	public void setCantidad(float fCantidad){
 		this.fCantidad = fCantidad;
+	}
+
+	public void setFinal(float flotante){
+		this.fFinal = flotante;
 	}
 
 	public void setTotal(float fTotal){

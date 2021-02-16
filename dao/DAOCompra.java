@@ -67,38 +67,6 @@ public class DAOCompra{
 
     }
 
-    public void insertarSecundaria(DTOCompra compra){
-
-        try {
-
-			conexion = getConnection();
-
-			String sql = "INSERT INTO Secundaria (nombre, cantidad, costo) VALUES (?, ?, ?);";
-	
-			prepared = conexion.prepareStatement(sql);
-	
-			prepared.setString(1, compra.getNombre());
-			prepared.setFloat(2, compra.getCantidad());
-			prepared.setFloat(3, compra.getTotal());
-
-            if (prepared.executeUpdate() != 0) {
-				
-				JOptionPane.showMessageDialog(null, "Producto preregistrado");
-
-			}else{
-
-                JOptionPane.showMessageDialog(null, "Producto no preregistrado");
-
-            }
-
-			conexion.close();
-
-        }catch(Exception e){
-
-        }
-
-    }
-
     public void getTabla(DefaultTableModel modelo){
 
 		try {
@@ -148,17 +116,97 @@ public class DAOCompra{
 
     }
 
+	public void insertarCompras(DTOCompra[] aCompras, int indice){
+
+		String insertCompras, insertCompra_Insumo, lastID, mensaje = "";
+		PreparedStatement preparedCompra, prepID, preparedCI;
+		ResultSet resID;
+		int prueba, indica = -1;
+
+		int intArray[];    //declaring array
+		intArray = new int[10];  // allocating memory to array
+
+		for (int i = 0; i <= indice; i++) {
+			
+			try {
+			
+				conexion = getConnection();
+				String sql = "SELECT id_Insumo FROM Insumo WHERE nombre = ?;";
+				prepared = conexion.prepareStatement(sql);
+				prepared.setString(1, aCompras[i].getNombre());
+	
+				result = prepared.executeQuery();
+	
+				if(result.next()){ //si existe el insumo
+	
+					insertCompras = "INSERT INTO Compras (fechaCompra) VALUES(?);";
+					preparedCompra = conexion.prepareStatement(insertCompras);
+					preparedCompra.setDate(1, java.sql.Date.valueOf(aCompras[i].getFechaCompra()));
+
+					if (preparedCompra.executeUpdate() != 0) {
+				
+						lastID = "SELECT last_insert_id() AS id_compra;";
+						prepID = conexion.prepareStatement(lastID);
+						resID = prepID.executeQuery();
+		
+						if (resID.next()){
+		
+							prueba = resID.getInt("id_compra");
+							System.out.println("id_compra = " + prueba);
+							insertCompra_Insumo = "INSERT INTO Compra_Insumo (id_compra, id_insumo, cantidad, costoTotal) VALUES(?, ?, ?, ?);";
+							preparedCI = conexion.prepareStatement(insertCompra_Insumo);
+							preparedCI.setInt(1, prueba);
+							preparedCI.setInt(2, aCompras[i].getIdInsumo());
+							preparedCI.setFloat(3, aCompras[i].getCantidad());
+							preparedCI.setFloat(4, aCompras[i].getTotal());
+
+							if (preparedCI.executeUpdate() != 0) {
+								System.out.println("Se ha insertado en Compra_insumo");
+								indica++;
+								intArray[indica] = prueba;
+							}
+		
+						} else {
+							System.out.println("Error en el insertar Compra_Insumo");
+						}
+					} else {
+						System.out.println("Error en el select last ID");
+					}
+	
+				}else{
+	
+					JOptionPane.showMessageDialog(null, "Error en la insercion de la compra");
+	
+				}
+	
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Error: " + e);
+			}
+
+		}
+
+		for (int j = 0; j <= indica; j++) {
+			
+			mensaje += mensaje + ", " + intArray[j];
+
+		}
+
+		JOptionPane.showMessageDialog(null, "Se han insertado las compras: " + mensaje + ".");
+
+	}
+
     //mét pam
     public DTOCompra buscarCompra(int idCompra){
 		
 		DTOCompra compra = new DTOCompra();
 		IGUCompras igu = new IGUCompras();
+		float uno, dos, tres;
 
 		try {
 
 			conexion = getConnection();
 
-			String sql = "SELECT c.id_compra, i.nombre, ci.cantidad, ci.costoTotal, c.fechaCompra FROM Compras c INNER JOIN Compra_Insumo ci ON (c.id_compra = ci.id_compra) INNER JOIN Insumo i ON (ci.id_insumo = i.id_Insumo) WHERE c.id_compra = ?;";
+			String sql = "SELECT c.id_compra, i.nombre, ci.cantidad, ci.costoTotal, c.fechaCompra FROM Compras c INNER JOIN Compra_Insumo ci ON (c.id_compra = ci.id_compra) INNER JOIN Insumo i ON (ci.id_insumo = i.id_Insumo) WHERE ci.id_compra = ?;";
 	
 			prepared = conexion.prepareStatement(sql);
 	
@@ -171,8 +219,12 @@ public class DAOCompra{
 				compra.setIdInsumo(result.getInt("id_compra"));				
 				compra.setNombre(result.getString("nombre"));
 				compra.setCantidad(result.getFloat("cantidad"));
+				uno = result.getFloat("cantidad");
 				compra.setTotal(result.getFloat("costoTotal"));
+				dos = result.getFloat("costoTotal");
 				compra.setFechaCompra(String.valueOf(result.getDate("fechaCompra")));
+				tres = uno * dos; 
+				compra.setFinal(tres);//luego
 
 				igu.mostrarDatosBusqueda(compra);
 
