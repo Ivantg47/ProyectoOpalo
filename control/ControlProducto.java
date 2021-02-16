@@ -59,7 +59,6 @@ public class ControlProducto implements ActionListener, FocusListener{
 				
 					if (isNumeric(igu.getBuscar())) {
 									
-						// int codigo = Integer.parseInt(igu.getBuscar());
 						igu.setCampos(dao.getProducto(Integer.parseInt(igu.getBuscar())));
 						
 	

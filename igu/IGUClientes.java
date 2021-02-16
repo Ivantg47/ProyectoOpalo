@@ -57,7 +57,7 @@ public class IGUClientes extends JFrame{
 		panel.setLayout(new BorderLayout());
 		panel.add(getPanelBuscar(), BorderLayout.NORTH);
 		panel.add(getPanelListaClientes(), BorderLayout.CENTER); //
-		panel.add(getPanelGeneral(), BorderLayout.WEST);
+		panel.add(getPanelDatosCliente(), BorderLayout.WEST);
 
 		return panel;
 
@@ -119,24 +119,23 @@ public class IGUClientes extends JFrame{
 
 	}
 	
-	public JPanel getPanelGeneral(){
+	public JPanel getPanelDatosCliente(){
 
 		JPanel panelGeneral = new JPanel();
 
 		panelGeneral.setLayout(new FlowLayout(FlowLayout.CENTER, 0,10));
 
-		panelGeneral.add(getPanelLayout());
+		panelGeneral.add(getPanelDatos());
 		panelGeneral.add(getPanelBotones());
 
 		panelGeneral.setPreferredSize(new Dimension(230, 670));
 		panelGeneral.setBorder(BorderFactory.createTitledBorder("Datos del Cliente"));
 
-
 		return panelGeneral;
 
 	}
 
-	public JPanel getPanelLayout(){
+	public JPanel getPanelDatos(){
 
 		JPanel panel = new JPanel();
 
@@ -147,6 +146,9 @@ public class IGUClientes extends JFrame{
 			panel.add(camposTexto[i]);
 
 		}
+
+		camposTexto[0].setEnabled(false);
+		panel.setPreferredSize(new Dimension(210, 340));
 
 		return panel;
 
