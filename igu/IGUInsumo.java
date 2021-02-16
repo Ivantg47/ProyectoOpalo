@@ -82,6 +82,7 @@ public class IGUInsumo extends JFrame{
      * Constructor, sin parametros.
      */
 	public IGUInsumo(){
+
 	}
 
 	/**
@@ -149,7 +150,6 @@ public class IGUInsumo extends JFrame{
 		oPanel.setBorder(BorderFactory.createTitledBorder("Inventario"));
 		oModelo = new DefaultTableModel();
 		oModelo.setColumnIdentifiers(new Object[]{"Codigo", "Nombre", "Unidad", "Existencias"});
-		//oPanel.setLayout(new GridLayout(1,4));
 
 		//creacion de la oTabla
 		oTabla = new JTable(oModelo);

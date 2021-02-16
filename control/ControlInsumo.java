@@ -92,7 +92,7 @@ public class ControlInsumo implements ActionListener, FocusListener{
 
 			case "btEliminar":
 				
-				if(oDTO != null && oIGU.getID() == oDTO.getId()){
+				if(!oIGU.camposVacios() && oDTO != null && oIGU.getID() == oDTO.getId()){
 
 					oDAO.eliminar(oDTO);
 					oIGU.limpiarCamposTexto();
@@ -107,14 +107,16 @@ public class ControlInsumo implements ActionListener, FocusListener{
 
 			case "btModificar":
 
-				if(oDTO != null && oIGU.getID() == oDTO.getId() && !oIGU.camposVacios()){
+				if(!oIGU.camposVacios() && oDTO != null && oIGU.getID() == oDTO.getId() && !oIGU.camposVacios()){
 
 					oDTO = oIGU.leerDTO();
 
 					if(datosCorrectos(oDTO)){
+
 						oDTO.setId(oIGU.getID());
 						oDAO.modificarInsumo(oDTO);
 						oDAO.getTabla(oIGU.getModelo());
+
 					}
 
 				} else {

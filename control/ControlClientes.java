@@ -48,7 +48,7 @@ public class ControlClientes implements ActionListener, FocusListener{
 
 			case ("btEliminar"):
 
-				if(dto != null && igu.getId() == dto.getIdCliente()){
+				if(!igu.camposVacios() && dto != null && igu.getId() == dto.getIdCliente()){
 
 					dao.eliminarCliente(dto);
 					igu.limpiar();
@@ -64,7 +64,7 @@ public class ControlClientes implements ActionListener, FocusListener{
 
 			case "btModificar":
 
-				if(dto != null && igu.getId() == dto.getIdCliente() && !igu.camposVacios()){
+				if(!igu.camposVacios() && dto != null && igu.getId() == dto.getIdCliente()){
 
 					dto = igu.getDTO();
 
@@ -85,23 +85,26 @@ public class ControlClientes implements ActionListener, FocusListener{
 
 			case "btBuscar":
 				if (!igu.getCampoBuscar().equals("Codigo/Nombre")) { 
-			
+					
+					dao.getTabla(igu.getModelo());
+
 					if (isNumeric(igu.getCampoBuscar())) {
 
 						dto = dao.buscarCliente(igu.getId());
 						igu.mostrarDTO(dto);
-						dao.getTabla(igu.getModelo());
-						
+
 					} else {
+						
+						if( comprobarNombre(igu.getCampoBuscar())){
 
-						/*
-						dto = dao.buscarPorNombre(igu.getId());
-						igu.mostrarDTO(dto);
-						dao.getTabla(igu.getModelo());
-						*/
+							dto = dao.buscarNombre(igu.getCampoBuscar(), igu.getModelo() );
+							igu.mostrarDTO(dto);
+							dao.getTabla(igu.getModelo());
+
+						}	
 					}
-
-					
+		
+					igu.setBuscar();
 
 				} else {
 
@@ -178,5 +181,22 @@ public class ControlClientes implements ActionListener, FocusListener{
 
         return oResultado;
     }//isNumeric
+
+  	public boolean comprobarNombre(String sNombre){
+
+  		
+	    for (int eCont = 0; eCont < sNombre.length(); eCont++) {
+	        char cCaracter = sNombre.charAt(eCont);
+	       
+	        if (!((cCaracter >= 'a' && cCaracter <= 'z') || (cCaracter >= 'A' && cCaracter <= 'Z') || cCaracter == ' ')) {
+
+	            return false;
+
+	        }
+	    }
+
+	    return true;
+
+  	}
 
 }
