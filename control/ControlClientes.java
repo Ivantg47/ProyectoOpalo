@@ -48,8 +48,9 @@ public class ControlClientes implements ActionListener, FocusListener{
 
 			case ("btEliminar"):
 
-				if(!igu.camposVacios() && dto != null && igu.getId() == dto.getIdCliente()){
+				if(!igu.camposVacios()){
 
+					dto = igu.getDTO();
 					dao.eliminarCliente(dto);
 					igu.limpiar();
 					dao.getTabla(igu.getModelo());
@@ -64,13 +65,13 @@ public class ControlClientes implements ActionListener, FocusListener{
 
 			case "btModificar":
 
-				if(!igu.camposVacios() && dto != null && igu.getId() == dto.getIdCliente()){
+				if(!igu.camposVacios()){
 
 					dto = igu.getDTO();
 
 					if(datosCorrectos(dto)){
 
-						dto.setIdCliente(igu.getId());
+					//	dto.setIdCliente(igu.getId());
 						dao.modificarCliente(dto);
 						dao.getTabla(igu.getModelo());
 

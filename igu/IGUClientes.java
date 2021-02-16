@@ -194,11 +194,12 @@ public class IGUClientes extends JFrame{
 
 	public DTOClientes getDTO(){
 
+		int eId = 0;
 		String sNombre = "", sPaterno = "", sMaterno = "", sCorreo = "", sTelefono = "", sDireccion = "";
 		DTOClientes oCliente;
 		boolean bEsCadena = true;
 		boolean bEsNumero = true;
-		int eCont = 0;
+		int eCont = 1;
 
 		while(bEsCadena && eCont < 4){
 
@@ -224,6 +225,7 @@ public class IGUClientes extends JFrame{
 			JOptionPane.showMessageDialog(null, "Error. El nombre y apellidos no pueden contener numeros");
 
 		}
+
 		
 		if(bEsCadena && bEsNumero){
 
@@ -236,9 +238,15 @@ public class IGUClientes extends JFrame{
 
 		} 
 
+		if (camposTexto[0].getText().compareTo("") != 0){
 
-		oCliente = new DTOClientes(sNombre, sPaterno, sMaterno, sCorreo, sTelefono, sDireccion);
+			eId = Integer.valueOf(camposTexto[0].getText());
+			oCliente = new DTOClientes(eId, sNombre, sPaterno, sMaterno, sCorreo, sTelefono, sDireccion);
 
+		} else {
+
+			oCliente = new DTOClientes(sNombre, sPaterno, sMaterno, sCorreo, sTelefono, sDireccion);
+		}
 
 		return oCliente;	
 
