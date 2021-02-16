@@ -48,30 +48,25 @@ public class DAOVentas{
 
 			int resultado = prepared.executeUpdate();
 
-			//Facturas
-			String facturasql = "INSERT INTO Factura (fecha) VALUES (?);";
+			if (resultado == 1){
 
-			prepared = conexion.prepareStatement(facturasql);
-
-			java.util.Date fechaF = new java.util.Date();
-			java.sql.Date sqlFechaF = new java.sql.Date(fecha.getTime());
-			prepared.setDate(1,sqlFechaF);
-
-			int resultadoF = prepared.executeUpdate();
-
-
-			if (resultado == 1 && resultadoF == 1){
-
-				sql = "SELECT last_insert_id() AS id_venta;";
+				sql = "SELECT last_insert_id() AS id_venta from Venta;";
 				prepared = conexion.prepareStatement(sql);
 				result = prepared.executeQuery();
 
-				facturasql = "SELECT last_insert_id() AS id_factura;";
-				prepared = conexion.prepareStatement(facturasql);
-				resultF = prepared.executeQuery();
-
 				if (result.next()){
 					
+					//Facturas
+					String facturasql = "INSERT INTO Factura (fecha) VALUES (?);";
+
+					prepared = conexion.prepareStatement(facturasql);
+
+					java.util.Date fechaF = new java.util.Date();
+					java.sql.Date sqlFechaF = new java.sql.Date(fecha.getTime());
+					prepared.setDate(1,sqlFechaF);
+
+					int resultadoF = prepared.executeUpdate();
+
 					//Ventas y productos
 					String venta_Productosql = "INSERT INTO Venta_Producto (id_venta,id_producto,cantidad) VALUES (?, ?, ?);";
 
@@ -83,17 +78,26 @@ public class DAOVentas{
 
 					int resultadoV_P = prepared.executeUpdate();
 
-					//Ventas y clientes
-					String venta_Clientesql = "INSERT INTO Venta_Cliente (id_venta,id_cliente,id_factura) VALUES (?, ?, ?);";
+					if (resultadoF == 1) {
+						facturasql = "SELECT last_insert_id() AS id_factura from Factura;";
+						prepared = conexion.prepareStatement(facturasql);
+						resultF = prepared.executeQuery();
 
-					prepared = conexion.prepareStatement(venta_Productosql);
+						if (resultF.next()){
 
-					prepared.setInt(1, result.getInt("id_venta"));
-					prepared.setInt(2, ventas.getIdCliente());
-					prepared.setInt(3, resultF.getInt("id_factura"));
+							//Ventas y clientes
+							String venta_Clientesql = "INSERT INTO Venta_Cliente (id_venta,id_cliente,id_factura) VALUES (?, ?, ?);";
 
-					int resultadoVP = prepared.executeUpdate();
-					
+							prepared = conexion.prepareStatement(venta_Clientesql);
+
+							prepared.setInt(1, result.getInt("id_venta"));
+							prepared.setInt(2, ventas.getIdCliente());
+							prepared.setInt(3, resultF.getInt("id_factura"));
+
+							int resultadoV_C = prepared.executeUpdate();
+
+						}
+					}
 
 				}
 
