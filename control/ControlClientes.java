@@ -71,7 +71,6 @@ public class ControlClientes implements ActionListener, FocusListener{
 
 					if(datosCorrectos(dto)){
 
-					//	dto.setIdCliente(igu.getId());
 						dao.modificarCliente(dto);
 						dao.getTabla(igu.getModelo());
 
@@ -85,6 +84,7 @@ public class ControlClientes implements ActionListener, FocusListener{
 			break;
 
 			case "btBuscar":
+			
 				if (!igu.getCampoBuscar().equals("Codigo/Nombre")) { 
 					
 					dao.getTabla(igu.getModelo());
@@ -95,13 +95,14 @@ public class ControlClientes implements ActionListener, FocusListener{
 						igu.mostrarDTO(dto);
 
 					} else {
-						System.out.println("nombre");
+						
 						if(comprobarNombre(igu.getCampoBuscar())){
 							
 							dto = dao.buscarNombre(igu.getCampoBuscar(), igu.getModelo());
 							igu.mostrarDTO(dto);
 
 						} else {
+
 							System.out.println("no entro");
 						}
 					}

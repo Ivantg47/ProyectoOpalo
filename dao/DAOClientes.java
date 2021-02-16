@@ -266,7 +266,7 @@ public class DAOClientes{
 				
 			} else {
 
-				JOptionPane.showMessageDialog(null, "Error. El cliente no existe no existe, intente de nuevo.");
+				JOptionPane.showMessageDialog(null, "Error. El cliente no existe, intente de nuevo.");
 
 			}
 			
@@ -345,13 +345,14 @@ public class DAOClientes{
 						getTabla(modelo, nombre);
 
 					}
-				}	
+
+				} else {
+
+					JOptionPane.showMessageDialog(null, "Error. El cliente no existe, intente de nuevo.");
+
+				}
 		
-			} else {
-
-				JOptionPane.showMessageDialog(null, "Error. El cliente no existe no existe, intente de nuevo.");
-
-			}
+			} 
 			
 		}catch(SQLException oExcepcion){
 
