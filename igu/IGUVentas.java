@@ -1,6 +1,7 @@
 /**
  * Clase IGU de Ventas.
  * @author Pamela Stephanie Moreno Parker
+ * @author Ivan Tronco
  * @version 1.0
  */
 
