@@ -115,3 +115,7 @@ CREATE TABLE Venta_Cliente (id_venta 	INT 				REFERENCES Venta(id_venta)
 							,id_factura INT 				REFERENCES Factura(id_factura)
 							,CONSTRAINT PK_Venta_Producto 	PRIMARY KEY (id_venta, id_cliente)
 							);
+
+
+--Vistas
+CREATE OR REPLACE VIEW NombreConcatenado AS(SELECT nombre || " " || aPaterno|| " " || aMaterno FROM Cliente);

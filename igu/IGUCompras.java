@@ -1,7 +1,8 @@
 /**
  * Clase que implementa una interfaz para el modulo de compras.
  * @author Diego Puebla Aldama
- * @version 2.0
+ * @author Ivan Tronco
+ * @version 2.5
  */
 
 package ProyectoOpalo.igu;
@@ -88,10 +89,10 @@ public class IGUCompras extends JFrame{
 		panelCompras.setLayout(new FlowLayout(FlowLayout.CENTER));
 		panelCompras.setBorder(BorderFactory.createTitledBorder("Detalles de compra"));
 
-		panelCompras.add(getFecha());
+		panelCompras.add(getPanelFecha());
 		panelCompras.add(getPanelInsumo());
-		panelCompras.add(getTablaCompras());
-		panelCompras.add(getBotonesCompra());
+		panelCompras.add(getPanelTablaCompras());
+		panelCompras.add(getPanelBotonesCompra());
 		
 		panelCompras.setPreferredSize(new Dimension(785, 500));
 		// panelCompras.setBackground(new Color(155,255,100));
@@ -132,7 +133,7 @@ public class IGUCompras extends JFrame{
 
 	}
 
-	public JPanel getFecha(){
+	public JPanel getPanelFecha(){
 
 		JPanel panelFecha = new JPanel();
 
@@ -166,7 +167,7 @@ public class IGUCompras extends JFrame{
 
 	}
 
-	public JPanel getDatosInsumo(){
+	public JPanel getPanelDatosInsumo(){
 
 		JPanel panelProductos = new JPanel();
 
@@ -227,7 +228,7 @@ public class IGUCompras extends JFrame{
 		return panel;
 	}
 
-	public JPanel getTablaCompras(){
+	public JPanel getPanelTablaCompras(){
 
 		JPanel panelTabla = new JPanel();
 
@@ -253,7 +254,7 @@ public class IGUCompras extends JFrame{
 
 	}
 
-	public JPanel getBotonesCompra(){
+	public JPanel getPanelBotonesCompra(){
 
 		JPanel botones = new JPanel();
 
@@ -267,7 +268,7 @@ public class IGUCompras extends JFrame{
 		btCancelar.addActionListener(control);
         // btAgregar.setActionCommand("Verificar");
 
-	//	botones.setLayout(new GridLayout(1,1,10,10));
+
 		total = new JLabel("         Total Compra");
 		total.setFont(new Font("Tahoma", Font.PLAIN, 36));
 
@@ -285,6 +286,7 @@ public class IGUCompras extends JFrame{
 		// botones.setBackground(new Color(255,100,255));
 		return botones;
 	}
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////
 	// public JPanel getEdicionCompras(){
 

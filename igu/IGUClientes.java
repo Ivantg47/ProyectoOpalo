@@ -123,7 +123,7 @@ public class IGUClientes extends JFrame{
 
 		JPanel panelGeneral = new JPanel();
 
-		panelGeneral.setLayout(new FlowLayout());
+		panelGeneral.setLayout(new FlowLayout(FlowLayout.CENTER, 0,10));
 
 		panelGeneral.add(getPanelLayout());
 		panelGeneral.add(getPanelBotones());
@@ -195,9 +195,10 @@ public class IGUClientes extends JFrame{
 		String sNombre = "", sPaterno = "", sMaterno = "", sCorreo = "", sTelefono = "", sDireccion = "";
 		DTOClientes oCliente;
 		boolean bEsCadena = true;
+		boolean bEsNumero = true;
 		int eCont = 0;
 
-		while(bEsCadena && eCont < camposTexto.length){
+		while(bEsCadena && eCont < 4){
 
 			if (isNumeric(camposTexto[eCont].getText())){
 
@@ -208,21 +209,30 @@ public class IGUClientes extends JFrame{
 			eCont++;
 
 		}
-		
-		if(bEsCadena){
 
-			sNombre =  camposTexto[1].getText();
-			sPaterno = camposTexto[2].getText();
-			sMaterno = camposTexto[3].getText();
-			sCorreo = camposTexto[4].getText();
-			sTelefono = camposTexto[5].getText();
-			sDireccion = camposTexto[6].getText();
+		if (!isNumeric(camposTexto[5].getText())) {
+			
+			bEsNumero = false;
+			JOptionPane.showMessageDialog(null, "Error. Telefono no puede contener letras.");
 
-		} else {
+		} 
 
-			JOptionPane.showMessageDialog(null, "Error. Los campos numericos, ingresar nuevamente.");
+		if (!bEsCadena){
+
+			JOptionPane.showMessageDialog(null, "Error. El nombre y apellidos no pueden contener numeros");
 
 		}
+		
+		if(bEsCadena && bEsNumero){
+
+			sNombre =  camposTexto[1].getText().toUpperCase();
+			sPaterno = camposTexto[2].getText().toUpperCase();
+			sMaterno = camposTexto[3].getText().toUpperCase();
+			sCorreo = camposTexto[4].getText().toUpperCase();
+			sTelefono = camposTexto[5].getText();
+			sDireccion = camposTexto[6].getText().toUpperCase();
+
+		} 
 
 
 		oCliente = new DTOClientes(sNombre, sPaterno, sMaterno, sCorreo, sTelefono, sDireccion);
@@ -284,7 +294,7 @@ public class IGUClientes extends JFrame{
 
 			pos++;
 
-		} while (!vacio || pos < camposTexto.length);
+		} while (!vacio && pos < camposTexto.length);
 
 		if(vacio){
 
@@ -314,7 +324,7 @@ public class IGUClientes extends JFrame{
 
         try {
 
-            Integer.parseInt(oCadena);
+            Double.parseDouble(oCadena);
             oResultado = true;
 
         } catch (NumberFormatException oExcepcion) {

@@ -131,8 +131,6 @@ public class DAOInsumo{
 
             }
 
-            
-
 		} catch (SQLException oExcepcionSQL) {
 
 				oExcepcionSQL.printStackTrace();
@@ -388,7 +386,7 @@ public class DAOInsumo{
 			oSentencia.setFloat(3, oInsumo.getExistenciaMinima());
 			oSentencia.setFloat(4, oInsumo.getExistenciaMaxima());
 			oSentencia.setFloat(5, oInsumo.getExistenciaActual());
-			oSentencia.setFloat(6, oInsumo.getId());
+			oSentencia.setInt(6, oInsumo.getId());
 
 			
 			if (oSentencia.executeUpdate() != 0) {
