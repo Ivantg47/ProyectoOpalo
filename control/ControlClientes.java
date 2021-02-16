@@ -94,14 +94,16 @@ public class ControlClientes implements ActionListener, FocusListener{
 						igu.mostrarDTO(dto);
 
 					} else {
-						
-						if( comprobarNombre(igu.getCampoBuscar())){
-
-							dto = dao.buscarNombre(igu.getCampoBuscar(), igu.getModelo() );
+						System.out.println("nombre");
+						if(comprobarNombre(igu.getCampoBuscar())){
+							System.out.println("modelo: " + igu.getModelo());
+							dto = dao.buscarNombre(igu.getCampoBuscar(), igu.getModelo());
 							igu.mostrarDTO(dto);
 							dao.getTabla(igu.getModelo());
 
-						}	
+						} else {
+							System.out.println("no entro");
+						}
 					}
 		
 					igu.setBuscar();

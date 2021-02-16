@@ -210,7 +210,7 @@ public class IGUCompras extends JFrame{
 
 		JPanel panel = new JPanel();
 
-		panel.add(getDatosInsumo());
+		panel.add(getPanelDatosInsumo());
 
 		btAceptarP = new JButton(new ImageIcon(getClass().getResource("/iconos/agregar3.png")));
 		btAceptarP.setPreferredSize(new Dimension(55, 55));
@@ -238,7 +238,7 @@ public class IGUCompras extends JFrame{
 
 	}
 
-    public JPanel getTablaCompras(){
+    public JPanel getPanelTablaCompras(){
 
 		JPanel panelTabla = new JPanel();
 

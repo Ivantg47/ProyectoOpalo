@@ -310,12 +310,12 @@ public class DAOClientes{
 
 			conexion = getConexion();
 
-			buscar = "SELECT COUNT(*) AS filas FROM NombreConcatenado WHERE nombre like ?;";
+			buscar = "SELECT COUNT(*) FROM NombreConcatenado WHERE completo LIKE ?;";
 
 			prepared = conexion.prepareStatement(buscar);
 
 			prepared.setString(1, "%" + nombre + "%");
-
+			
 			resultado = prepared.executeQuery();
 
 			if (resultado.next()) {
@@ -323,15 +323,15 @@ public class DAOClientes{
 				int filas = resultado.getInt(1);
 				
 				if (filas != 0) {
-
+					
 					String sConsulta;
-					sConsulta = "SELECT * FROM Cliente WHERE (nombre || ' ' || aPaterno|| ' ' || aMaterno) like ?;";
+					sConsulta = "SELECT * FROM NombreConcatenado WHERE completo LIKE ?;";
 					prepared = conexion.prepareStatement(sConsulta);
 					prepared.setString(1, "%" + nombre + "%");
-					result = prepared.executeQuery();
+					resultado = prepared.executeQuery();
 
-					if (filas == 1 && result.next()) {
-
+					if (filas == 1 && resultado.next()) {
+						
 						cliente = new DTOClientes (	resultado.getInt("id_cliente"),
 											 		resultado.getString("nombre"),
 													resultado.getString("aPaterno"),
@@ -341,7 +341,7 @@ public class DAOClientes{
 													resultado.getString("direccion"));
 
 					} else {
-
+						
 						getTabla(modelo, nombre);
 
 					}
@@ -446,25 +446,25 @@ public class DAOClientes{
 
 			conexion = getConexion();
 
-			oConsultaTabla = 	  "SELECT id_cliente, nombre, aPaterno, aMaterno, correo, telefono, direccion "
-								+ "FROM Cliente "
-								+ "WHERE( nombre || ' ' || aPaterno|| ' ' || aMaterno) like ? "
-								+ "ORDER BY id_cliente;";
+			oConsultaTabla = "SELECT * FROM NombreConcatenado WHERE completo LIKE ?;";
 	
 			prepared = conexion.prepareStatement(oConsultaTabla);
 
-			prepared.setString(1, nombre);
+			prepared.setString(1, "%" + nombre + "%");
 
 			oResultado = prepared.executeQuery();
-
+			System.out.println(modelo.getRowCount());
 			modelo.setRowCount(0);
-
+			modelo.fireTableDataChanged();
+			System.out.println(modelo.getRowCount());
+			System.out.println("modelo 2: " + modelo);
 			while (oResultado.next()) {
-				
+				System.out.println("agrega: " + oResultado.getInt("id_cliente"));
 				modelo.addRow(new Object[]{oResultado.getInt("id_cliente"), oResultado.getString("nombre"), oResultado.getString("aPaterno"), oResultado.getString("aMaterno"), oResultado.getString("correo"), oResultado.getString("telefono"), oResultado.getString("direccion")});
-
+				modelo.fireTableDataChanged();
 			} 
-
+			System.out.println(modelo.getRowCount());
+			modelo.fireTableDataChanged();
 			conexion.close();
 
 		} catch (SQLException oExcepcion) {

@@ -205,13 +205,7 @@ public class IGUVentas extends JFrame{
 		return panelCliente;
 
 	}
-
-<<<<<<< HEAD
-	public void leerDatosCliente(){		
-
-		DAOClientes cliente = new DAOClientes();
-		DTOClientes clienteB = new DTOClientes();
-=======
+		
 
 	public JPanel getPanelDatosProducto(){
 
@@ -332,7 +326,9 @@ public class IGUVentas extends JFrame{
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////	
 	public void leerDatosCliente(){
->>>>>>> 2606c48870de189c450a3889ade331ffc0925b90
+
+		DAOClientes cliente = new DAOClientes();
+		DTOClientes clienteB = new DTOClientes();
 
 		int idCliente = Integer.valueOf(aTextoCliente[0].getText());
 		String tipoPago = aTextoCliente[1].getText();
@@ -600,3 +596,4 @@ public class IGUVentas extends JFrame{
 	
 	}
 */
+}
