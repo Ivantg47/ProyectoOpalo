@@ -299,6 +299,92 @@ public class DAOClientes{
 
 	}//fin buscar
 
+
+	public DTOClientes buscarNombre(String nombre, DefaultTableModel modelo){
+
+		String buscar;
+		ResultSet resultado;
+		DTOClientes cliente = new DTOClientes();
+
+		try{
+
+			conexion = getConexion();
+
+			buscar = "SELECT COUNT(*) AS filas FROM NombreConcatenado WHERE nombre like ?;";
+
+			prepared = conexion.prepareStatement(buscar);
+
+			prepared.setString(1, "%" + nombre + "%");
+
+			resultado = prepared.executeQuery();
+
+			if (resultado.next()) {
+			
+				int filas = resultado.getInt(1);
+				
+				if (filas != 0) {
+
+					String sConsulta;
+					sConsulta = "SELECT * FROM Cliente WHERE (nombre || ' ' || aPaterno|| ' ' || aMaterno) like ?;";
+					prepared = conexion.prepareStatement(sConsulta);
+					prepared.setString(1, "%" + nombre + "%");
+					result = prepared.executeQuery();
+
+					if (filas == 1 && result.next()) {
+
+						cliente = new DTOClientes (	resultado.getInt("id_cliente"),
+											 		resultado.getString("nombre"),
+													resultado.getString("aPaterno"),
+													resultado.getString("aMaterno"),
+													resultado.getString("correo"),
+													resultado.getString("telefono"),
+													resultado.getString("direccion"));
+
+					} else {
+
+						getTabla(modelo, nombre);
+
+					}
+				}	
+		
+			} else {
+
+				JOptionPane.showMessageDialog(null, "Error. El cliente no existe no existe, intente de nuevo.");
+
+			}
+			
+		}catch(SQLException oExcepcion){
+
+			oExcepcion.printStackTrace();
+
+		}catch(Exception oExcepcion){
+
+			oExcepcion.printStackTrace();
+
+		}finally {
+
+			try {
+
+				if (conexion != null) {
+
+				   conexion.close();
+				   
+				} 
+
+			} catch (SQLException oExcepcion){
+
+				oExcepcion.printStackTrace();
+
+			}
+		}
+
+		return cliente;
+
+	}//fin buscar
+
+	
+
+
 	public void getTabla(DefaultTableModel modelo){
 		
 		String oConsultaTabla;
@@ -312,6 +398,62 @@ public class DAOClientes{
 								+ "FROM Cliente ORDER BY id_cliente;";
 	
 			prepared = conexion.prepareStatement(oConsultaTabla);
+
+			oResultado = prepared.executeQuery();
+
+			modelo.setRowCount(0);
+
+			while (oResultado.next()) {
+				
+				modelo.addRow(new Object[]{oResultado.getInt("id_cliente"), oResultado.getString("nombre"), oResultado.getString("aPaterno"), oResultado.getString("aMaterno"), oResultado.getString("correo"), oResultado.getString("telefono"), oResultado.getString("direccion")});
+
+			} 
+
+			conexion.close();
+
+		} catch (SQLException oExcepcion) {
+
+	        oExcepcion.printStackTrace();
+
+	    } catch (Exception oExcepcion) {
+	         
+	        oExcepcion.printStackTrace();
+
+	    } finally {
+
+	        try {
+
+	            if (conexion != null) {
+
+	               conexion.close();
+	               
+	            } 
+
+	        }catch (SQLException oExcepcion){
+
+	            oExcepcion.printStackTrace();
+
+	        }
+	    }
+	}
+
+	public void getTabla(DefaultTableModel modelo, String nombre){
+		
+		String oConsultaTabla;
+		ResultSet oResultado;
+
+		try {
+
+			conexion = getConexion();
+
+			oConsultaTabla = 	  "SELECT id_cliente, nombre, aPaterno, aMaterno, correo, telefono, direccion "
+								+ "FROM Cliente "
+								+ "WHERE( nombre || ' ' || aPaterno|| ' ' || aMaterno) like ? "
+								+ "ORDER BY id_cliente;";
+	
+			prepared = conexion.prepareStatement(oConsultaTabla);
+
+			prepared.setString(1, nombre);
 
 			oResultado = prepared.executeQuery();
 

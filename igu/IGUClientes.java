@@ -342,6 +342,13 @@ public class IGUClientes extends JFrame{
 
     }
 
+    public void setBuscar(){
+
+		campoBuscar.setText("Codigo/Nombre");
+		campoBuscar.setForeground(new Color(111,111,111));
+		
+	}
+
 	
 	
 }
