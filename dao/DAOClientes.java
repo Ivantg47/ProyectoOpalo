@@ -453,18 +453,15 @@ public class DAOClientes{
 			prepared.setString(1, "%" + nombre + "%");
 
 			oResultado = prepared.executeQuery();
-			System.out.println(modelo.getRowCount());
+			
 			modelo.setRowCount(0);
-			modelo.fireTableDataChanged();
-			System.out.println(modelo.getRowCount());
-			System.out.println("modelo 2: " + modelo);
+			
 			while (oResultado.next()) {
-				System.out.println("agrega: " + oResultado.getInt("id_cliente"));
+				
 				modelo.addRow(new Object[]{oResultado.getInt("id_cliente"), oResultado.getString("nombre"), oResultado.getString("aPaterno"), oResultado.getString("aMaterno"), oResultado.getString("correo"), oResultado.getString("telefono"), oResultado.getString("direccion")});
-				modelo.fireTableDataChanged();
+				
 			} 
-			System.out.println(modelo.getRowCount());
-			modelo.fireTableDataChanged();
+			
 			conexion.close();
 
 		} catch (SQLException oExcepcion) {

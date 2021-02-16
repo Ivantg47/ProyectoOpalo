@@ -311,6 +311,9 @@ public class IGUClientes extends JFrame{
 
 	public void mostrarDTO(DTOClientes oClientes){
 
+		if (oClientes.getIdCliente() != 0) {
+			camposTexto[0].setText(String.valueOf(oClientes.getIdCliente()));
+		}
 		camposTexto[1].setText(oClientes.getNombre());
 		camposTexto[2].setText(oClientes.getPaterno());
 		camposTexto[3].setText(oClientes.getMaterno());
@@ -350,7 +353,5 @@ public class IGUClientes extends JFrame{
 		campoBuscar.setForeground(new Color(111,111,111));
 		
 	}
-
-	
 	
 }
