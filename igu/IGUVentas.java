@@ -18,6 +18,8 @@ import ProyectoOpalo.dao.DAOVentas;
 import ProyectoOpalo.dto.DTOVentas;
 import ProyectoOpalo.dao.DAOProducto;
 import ProyectoOpalo.dto.DTOProducto;
+import ProyectoOpalo.dao.DAOClientes;
+import ProyectoOpalo.dto.DTOClientes;
 
 public class IGUVentas extends JFrame{
 
@@ -204,6 +206,12 @@ public class IGUVentas extends JFrame{
 
 	}
 
+<<<<<<< HEAD
+	public void leerDatosCliente(){		
+
+		DAOClientes cliente = new DAOClientes();
+		DTOClientes clienteB = new DTOClientes();
+=======
 
 	public JPanel getPanelDatosProducto(){
 
@@ -324,11 +332,19 @@ public class IGUVentas extends JFrame{
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////	
 	public void leerDatosCliente(){
+>>>>>>> 2606c48870de189c450a3889ade331ffc0925b90
 
 		int idCliente = Integer.valueOf(aTextoCliente[0].getText());
 		String tipoPago = aTextoCliente[1].getText();
-		ventas.setIdCliente(idCliente);
-		ventas.setTipoPago(tipoPago);
+
+		clienteB = cliente.buscarCliente(idCliente);
+
+		if (clienteB.getIdCliente() == idCliente) {
+			
+			ventas.setIdCliente(idCliente);
+			ventas.setTipoPago(tipoPago);
+
+		}
 
 	}
 
@@ -467,7 +483,7 @@ public class IGUVentas extends JFrame{
             new Object [][] {
 
             	{"id_venta", "tipoPago", "cancelacion", "fecha", "Estado"},
-                {ventas.getIdVenta(), ventas.getTipoPago(), ventas.getCancelacion(), ventas.getFecha(), ventas.getEstado()}
+                {ventas.getIdVenta(), ventas.getTipoPago(), ventas.getDescripcion(), ventas.getFecha(), ventas.getEstado()}
 
             }, nombre
             
@@ -584,4 +600,3 @@ public class IGUVentas extends JFrame{
 	
 	}
 */
-}
