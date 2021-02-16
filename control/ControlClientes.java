@@ -48,7 +48,7 @@ public class ControlClientes implements ActionListener, FocusListener{
 
 			case ("btEliminar"):
 
-				if(dto != null && igu.getId() == dto.getIdCliente()){
+				if(!igu.camposVacios() && dto != null && igu.getId() == dto.getIdCliente()){
 
 					dao.eliminarCliente(dto);
 					igu.limpiar();
@@ -64,7 +64,7 @@ public class ControlClientes implements ActionListener, FocusListener{
 
 			case "btModificar":
 
-				if(dto != null && igu.getId() == dto.getIdCliente() && !igu.camposVacios()){
+				if(!igu.camposVacios() && dto != null && igu.getId() == dto.getIdCliente()){
 
 					dto = igu.getDTO();
 
@@ -91,14 +91,34 @@ public class ControlClientes implements ActionListener, FocusListener{
 						dto = dao.buscarCliente(igu.getId());
 						igu.mostrarDTO(dto);
 						dao.getTabla(igu.getModelo());
-						
+						dividir();
+
 					} else {
 
-						/*
-						dto = dao.buscarPorNombre(igu.getId());
-						igu.mostrarDTO(dto);
-						dao.getTabla(igu.getModelo());
-						*/
+						String aNombreDividido[] = igu.getCampoBuscar().split(" ");
+    					boolean bNombreCorrecto = true;
+
+    					for (int eCont = 0; eCont < aNombreDividido.length; eCont++){
+    						System.out.println("Contenido: "+aNombreDividido[eCont]);
+    						if (aNombreDividido[eCont].compareTo(" ") == 0){
+
+				    			bNombreCorrecto = false;
+				    			System.out.println("Nombre muy largo");
+
+				    		}
+
+    					}
+
+				    	if(aNombreDividido.length != 2){
+
+				    		bNombreCorrecto = false;
+				    		System.out.println("Nombre incorrecto: " + aNombreDividido.length );
+				    	}
+
+						//dto = dao.buscarPorNombre(igu.getId());
+						//igu.mostrarDTO(dto);
+						//dao.getTabla(igu.getModelo());
+						
 					}
 
 					
@@ -178,5 +198,19 @@ public class ControlClientes implements ActionListener, FocusListener{
 
         return oResultado;
     }//isNumeric
+
+    public void dividir(){
+
+    	String sNombre;
+    	sNombre = "Frida Hernandez Torres 1";
+
+    	String aNombreDividido[] = sNombre.split(" ");
+    	
+    	System.out.println(aNombreDividido[1]);
+
+    	/*for(String sPartes: aNombreDividido){
+    		System.out.println(sPartes);
+    	}*/
+    }
 
 }
