@@ -144,7 +144,7 @@ public class DAOVentas{
 
 			conexion = getConnection();
 
-			String sql = "SELECT * FROM Venta WHERE id_venta = ?;";
+			String sql = "SELECT V.id_venta,C.descripcion,V.tipoPago,V.fecha,V.estado FROM Venta V, Cancelacion C WHERE V.id_cancelacion = C.id_cancelacion AND V.id_venta = ?;";
 	
 			prepared = conexion.prepareStatement(sql);
 	
@@ -154,11 +154,11 @@ public class DAOVentas{
 
 			if (result.next()) {
 
-				ventas.setIdVenta(result.getInt("id_venta"));				
-				ventas.setTipoPago(result.getString("tipoPago"));
-				ventas.setCancelacion(result.getInt("id_cancelacion"));
-				ventas.setFecha(String.valueOf(result.getDate("fecha")));
-				ventas.setEstado(result.getString("estado"));
+				ventas.setIdVenta(result.getInt("V.id_venta"));				
+				ventas.setTipoPago(result.getString("V.tipoPago"));
+				ventas.setDescripcion(result.getString("C.descripcion"));
+				ventas.setFecha(String.valueOf(result.getDate("V.fecha")));
+				ventas.setEstado(result.getString("V.estado"));
 
 				iguVentas.mostrarDatosBusqueda(ventas);
 
@@ -257,7 +257,7 @@ public class DAOVentas{
 
 			conexion = getConnection();
 
-			String sql = "SELECT * FROM Venta;";
+			String sql = "SELECT V.id_venta,C.descripcion,V.tipoPago,V.fecha,V.estado FROM Venta V, Cancelacion C WHERE V.id_cancelacion = C.id_cancelacion;";
 	
 			prepared = conexion.prepareStatement(sql);
 
@@ -267,7 +267,7 @@ public class DAOVentas{
 
 			while (result.next()) {
 				
-				modelo.addRow(new Object[]{result.getInt("id_venta"), result.getInt("id_cancelacion"), result.getString("tipoPago"), result.getDate("fecha"), result.getString("estado")});
+				modelo.addRow(new Object[]{result.getInt("V.id_venta"), result.getString("C.descripcion"), result.getString("V.tipoPago"), result.getDate("V.fecha"), result.getString("V.estado")});
 
 			} 
 

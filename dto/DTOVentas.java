@@ -13,6 +13,7 @@ public class DTOVentas{
 	private int eIDcancelacion = 1;
 	private String sfecha = "";
 	private String sEstado = "";
+	private String sDescripcion = "";
 	private float fCantidadVendida;
 	private int eIdCliente;
 	private int eIdProducto;
@@ -36,7 +37,8 @@ public class DTOVentas{
 	}		
 
 	public DTOVentas(int idVenta, String stipoPago, int eIDcancelacion, String sfecha, 
-					 String sEstado, float fCantidadVendida, int eIdCliente, int eIdProducto){
+					 String sEstado, float fCantidadVendida, int eIdCliente, int eIdProducto,
+					 String sDescripcion){
 
 		setIdVenta(idVenta); 
 		setTipoPago(stipoPago);
@@ -46,7 +48,7 @@ public class DTOVentas{
 		setCantidadVendida(fCantidadVendida);
 		setIdCliente(eIdCliente);
 		setIdProducto(eIdProducto);
-
+		setDescripcion(sDescripcion);
 
 	}		
 
@@ -82,6 +84,10 @@ public class DTOVentas{
 		this.eIdProducto = eIdProducto;
 	}
 
+	public void setDescripcion(String sDescripcion){
+		this.sDescripcion = sDescripcion;
+	}
+
 	public int getIdVenta(){
 		return idVenta;
 	}
@@ -112,6 +118,10 @@ public class DTOVentas{
 
 	public int getIdProducto(){
 		return eIdProducto;
+	}
+
+	public String getDescripcion(){
+		return sDescripcion;
 	}
 
 	public String toString(){
