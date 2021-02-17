@@ -84,7 +84,7 @@ public class ControlVenta implements ActionListener, FocusListener{
 
 		} catch (ArrayIndexOutOfBoundsException arEx){
 
-			JOptionPane.showMessageDialog(iguVentas, "No ha agregado productos",
+			JOptionPane.showMessageDialog(iguVentas, "No se han agregado productos",
            									"Fuera de rango", JOptionPane.ERROR_MESSAGE);
 		}
 	}

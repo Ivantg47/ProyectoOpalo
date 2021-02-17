@@ -25,12 +25,18 @@ import ProyectoOpalo.dto.DTOClientes;
 public class IGUVentas extends JFrame{
 
 	private ControlVenta control = new ControlVenta(this);
-	public DTOVentas ventas = new DTOVentas();
 	private DefaultTableModel modelo;
 	private JTable tabla;
 	private float total;
+	private JTextField campoBuscar;
 
-	JTextField campoBuscar, texTotal;
+	private JTextField texTotal[] = {
+
+		new JTextField(), //0 -> subtotal
+		new JTextField(), //1 -> iva
+		new JTextField(), //2 -> total
+
+	};
 
 	private JLabel aDatosCliente[] = {
 
@@ -330,9 +336,9 @@ public class IGUVentas extends JFrame{
 
 		JScrollPane jScroll = new JScrollPane(tabla);
 		panelTabla.add(jScroll);
-		jScroll.setPreferredSize(new Dimension(755, 200));
+		jScroll.setPreferredSize(new Dimension(755, 190));
 
-		panelTabla.setPreferredSize(new Dimension(775, 210));
+		panelTabla.setPreferredSize(new Dimension(775, 200));
 		// panelTabla.setBackground(new Color(100,100,100));
 
 		return panelTabla;
@@ -342,6 +348,7 @@ public class IGUVentas extends JFrame{
 	public JPanel getPanelBotonesVenta(){
 
 		JPanel botones = new JPanel();
+		
 
 		JButton btAgregar = new JButton(new ImageIcon(getClass().getResource("/iconos/efectivo.png")));
 		btAgregar.setPreferredSize(new Dimension(80, 80));
@@ -353,24 +360,56 @@ public class IGUVentas extends JFrame{
 		btCancelar.addActionListener(control);
         // btAgregar.setActionCommand("Verificar");
 
-
-		JLabel total = new JLabel("        Total Venta");
-		total.setFont(new Font("Tahoma", Font.PLAIN, 36));
-
-		texTotal = new JTextField(formato.format(0));
-		texTotal.setHorizontalAlignment(JTextField.RIGHT);
-		texTotal.setFont(new Font("Tahoma", Font.PLAIN, 30));
-		texTotal.setPreferredSize(new Dimension(200, 40));
-
 		botones.add(btAgregar);
 		botones.add(btCancelar);
-		botones.add(total);
-		botones.add(texTotal);
+		botones.add(getPanelTotal());
 
-		botones.setPreferredSize(new Dimension(775, 85));
-		// botones.setBackground(new Color(255,100,255));
+		botones.setPreferredSize(new Dimension(775, 90));
+		botones.setBackground(new Color(255,100,255));
 		return botones;
 	}//getPanelBotonesVenta
+
+	public JPanel getPanelTotal(){
+
+		JPanel pTotal = new JPanel();
+		pTotal.setLayout(null);
+
+		JLabel subtotal = new JLabel("Subtotal:");
+		subtotal.setBounds(10, 2, 60, 25);
+		pTotal.add(subtotal);
+		JLabel iva = new JLabel("I.V.A:");
+		iva.setBounds(10, 30, 60, 25);
+		pTotal.add(iva);
+		JLabel total = new JLabel("Total:");
+		total.setBounds(10, 57, 60, 25);
+		pTotal.add(total);
+		// total.setFont(new Font("Tahoma", Font.PLAIN, 36));
+
+		//subtotal
+		texTotal[0].setText(formato.format(0));
+		texTotal[0].setHorizontalAlignment(JTextField.RIGHT);
+		pTotal.add(texTotal[0]);
+		texTotal[0].setBounds(70, 2, 100, 25);
+		texTotal[0].setEnabled(false);
+		//iva
+		texTotal[1].setText(formato.format(0));
+		texTotal[1].setHorizontalAlignment(JTextField.RIGHT);
+		pTotal.add(texTotal[1]);
+		texTotal[1].setBounds(70, 30, 100, 25);
+		texTotal[1].setEnabled(false);
+		//total
+		texTotal[2].setText(formato.format(0));
+		texTotal[2].setHorizontalAlignment(JTextField.RIGHT);
+		pTotal.add(texTotal[2]);
+		texTotal[2].setBounds(70, 57, 100, 25);
+		texTotal[2].setEnabled(false);
+		// texTotal.setFont(new Font("Tahoma", Font.PLAIN, 30));
+
+		pTotal.setPreferredSize(new Dimension(180, 85));
+		pTotal.setBackground(new Color(200,100,155));
+		
+		return pTotal;
+	}//getPanelTotal
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void setCampoCliente(DTOClientes cliente){
@@ -444,16 +483,22 @@ public class IGUVentas extends JFrame{
 
 		if (!aTextoProducto[1].getText().equals("")) {
 
-			if (!aTextoProducto[4].getText().equals("") && Integer.valueOf(aTextoProducto[4].getText()) != 0 && aTextoProducto[4].getText().compareTo(aTextoProducto[3].getText()) <= 0) {
+			if (!aTextoProducto[4].getText().equals("") && Integer.valueOf(aTextoProducto[4].getText()) != 0) {
 				
-				modelo.addRow(new Object[]{Integer.valueOf(aTextoProducto[0].getText()), aTextoProducto[1].getText(), aTextoProducto[2].getText(),
-									Integer.valueOf(aTextoProducto[4].getText()), 
-									(Integer.valueOf(aTextoProducto[4].getText()) * Float.valueOf(aTextoProducto[2].getText()))});
-				
-				total = total + (Integer.valueOf(aTextoProducto[4].getText()) * Float.valueOf(aTextoProducto[2].getText()));
-				texTotal.setText(formato.format(total));
-				aTextoProducto[0].setEnabled(true);
-				aTextoProducto[0].requestFocus();
+				if (aTextoProducto[4].getText().compareTo(aTextoProducto[3].getText()) <= 0){
+					modelo.addRow(new Object[]{Integer.valueOf(aTextoProducto[0].getText()), aTextoProducto[1].getText(), aTextoProducto[2].getText(),
+											Integer.valueOf(aTextoProducto[4].getText()), 
+											(Integer.valueOf(aTextoProducto[4].getText()) * Float.valueOf(aTextoProducto[2].getText()))});
+					
+					total = total + (Integer.valueOf(aTextoProducto[4].getText()) * Float.valueOf(aTextoProducto[2].getText()));
+					// texTotal.setText(formato.format(total));
+					aTextoProducto[0].setEnabled(true);
+					aTextoProducto[0].requestFocus();
+				} else {
+
+					throw new IllegalArgumentException("Solo hay: " + aTextoProducto[3].getText() + " producto disponibles.");
+
+				}
 
 			} else {
 
@@ -486,7 +531,7 @@ public class IGUVentas extends JFrame{
 		if (tabla.getSelectedRow() != -1) {
 		
 				total = total - (Float) tabla.getValueAt(tabla.getSelectedRow(), 4);
-				texTotal.setText(formato.format(total));
+				// texTotal.setText(formato.format(total));
 				modelo.removeRow(tabla.getSelectedRow());
 
 		} else {
