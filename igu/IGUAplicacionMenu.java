@@ -18,9 +18,6 @@ public class IGUAplicacionMenu extends JFrame{
 
 		super("Pasteler\u00EDa Fun Cake");
 
-		//add(getBarraHtas(), BorderLayout.NORTH);
-
-	//	setJMenuBar(getBarraMenu());
 		setJTabbedPane();
 		setSize(800, 670);
 		setLocationRelativeTo(null);
@@ -31,15 +28,8 @@ public class IGUAplicacionMenu extends JFrame{
 	}
 
 	public void setJTabbedPane(){
-
+		
 		JTabbedPane tpPanel = new JTabbedPane();
-		// IGUInsumo iguInsumo = new IGUInsumo();
-		// IGUProducto iguProducto = new IGUProducto();
-		// IGUCompras iguCompras = new IGUCompras();
-		// IGUClientes iguClientes = new IGUClientes();
-		// IGUVentas iguVentas = new IGUVentas();
-		// IGUReporte iguReporte = new IGUReporte();
-//		producto = new ControlProducto(iguProducto);
 
 		tpPanel.addTab("", new ImageIcon(getClass().getResource("/iconos/cliente (2).png")), new IGUClientes().getIGUClientes());
 

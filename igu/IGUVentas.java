@@ -12,6 +12,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.text.DecimalFormat;
 
 import ProyectoOpalo.control.ControlVenta;
 import ProyectoOpalo.dao.DAOVentas;
@@ -27,6 +28,7 @@ public class IGUVentas extends JFrame{
 	public DTOVentas ventas = new DTOVentas();
 	private DefaultTableModel modelo;
 	private JTable tabla;
+	private float total;
 
 	JTextField campoBuscar, texTotal;
 
@@ -67,6 +69,7 @@ public class IGUVentas extends JFrame{
 	};
 
 	private JTextField campoFolio, campoFecha;
+	private DecimalFormat formato = new DecimalFormat("$ #,##0.00");
 
 	public IGUVentas(){
 
@@ -121,12 +124,12 @@ public class IGUVentas extends JFrame{
 		campoBuscar = new JTextField();
 		campoBuscar.setText("Folio");
 		campoBuscar.setForeground(new Color(111,111,111));
-		campoBuscar.setPreferredSize(new Dimension(200,20));
+		campoBuscar.setPreferredSize(new Dimension(200,25));
 		panelBuscar.add(campoBuscar);
 		campoBuscar.addFocusListener(control);
 
-		JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa.png")));
-		btBuscar.setPreferredSize(new Dimension(32,32));
+		JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa (2).png")));
+		btBuscar.setPreferredSize(new Dimension(25,25));
 		panelBuscar.add(btBuscar);
 		btBuscar.addActionListener(control);
         btBuscar.setActionCommand("btBuscar");
@@ -190,15 +193,18 @@ public class IGUVentas extends JFrame{
 		//id cliente
 		aDatosCliente[0].setBounds(10, 12, 50, 25);
 		aTextoCliente[0].setBounds(10, 36, 50, 25);
+		aTextoCliente[0].addActionListener(control);
+		aTextoCliente[0].setActionCommand("buscarCliente");
+		aTextoCliente[0].setHorizontalAlignment(JTextField.RIGHT);
 		//nombre cliente
 		aDatosCliente[1].setBounds(65, 12, 80, 25);
 		aTextoCliente[1].setBounds(65, 36, 240, 25);
 		aTextoCliente[1].setEnabled(false);
 
-		JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa (2).png")));
-		btBuscar.setToolTipText("Buscar cliente");
+		JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/borrador (2).png")));
+		btBuscar.setToolTipText("Limpiar campos");
 		btBuscar.addActionListener(control);
-		btBuscar.setActionCommand("buscarCliente");
+		btBuscar.setActionCommand("limpiarCliente");
 
 		panelCliente.add(btBuscar);
 		btBuscar.setBounds(310, 36, 25, 25);
@@ -233,32 +239,33 @@ public class IGUVentas extends JFrame{
         aTextoProducto[0].setActionCommand("buscarProducto");
         //descripcion
         aDatosProducto[1].setBounds(65, 12, 80, 25);
-        aTextoProducto[1].setBounds(65, 35, 220, 25);
+        aTextoProducto[1].setBounds(65, 35, 250, 25);
         aTextoProducto[1].setEnabled(false);
         //precio
-        aDatosProducto[2].setBounds(290, 12, 70, 25);
-        aTextoProducto[2].setBounds(290, 35, 70, 25);
+        aDatosProducto[2].setBounds(320, 12, 70, 25);
+        aTextoProducto[2].setBounds(320, 35, 70, 25);
         aTextoProducto[2].setHorizontalAlignment(JTextField.RIGHT);
         aTextoProducto[2].setEnabled(false);
         //disponibles
-        aDatosProducto[3].setBounds(365, 12, 70, 25);
-        aTextoProducto[3].setBounds(365, 35, 70, 25);
+        aDatosProducto[3].setBounds(395, 12, 70, 25);
+        aTextoProducto[3].setBounds(395, 35, 70, 25);
         aTextoProducto[3].setHorizontalAlignment(JTextField.RIGHT);
         aTextoProducto[3].setEnabled(false);
         //catidad
-        aDatosProducto[4].setBounds(440, 12, 70, 25);
-        aTextoProducto[4].setBounds(440, 35, 70, 25);
+        aDatosProducto[4].setBounds(470, 12, 70, 25);
+        aTextoProducto[4].setBounds(470, 35, 70, 25);
         aTextoProducto[4].setHorizontalAlignment(JTextField.RIGHT);
+        aTextoProducto[4].setEnabled(false);
         //total
     /*    aDatosProducto[5].setBounds(515, 12, 85, 25);
         aTextoProducto[5].setBounds(515, 35, 85, 25);
         aTextoProducto[5].setHorizontalAlignment(JTextField.RIGHT);
         aTextoProducto[5].setEnabled(false);
 */
-        JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa (2).png")));
-		btBuscar.setToolTipText("Buscar producto");
+        JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/borrador (2).png")));
+		btBuscar.setToolTipText("Limpiar campos");
 		btBuscar.addActionListener(control);
-		// btBuscar.setActionCommand("buscarProducto");
+		btBuscar.setActionCommand("limpiarProducto");
 
 		panelProductos.add(btBuscar);
 		btBuscar.setBounds(605, 35, 25, 25);
@@ -329,10 +336,10 @@ public class IGUVentas extends JFrame{
         // btAgregar.setActionCommand("Verificar");
 
 
-		JLabel total = new JLabel("        Total Venta  $");
+		JLabel total = new JLabel("        Total Venta");
 		total.setFont(new Font("Tahoma", Font.PLAIN, 36));
 
-		texTotal = new JTextField("0.00");
+		texTotal = new JTextField(formato.format(0));
 		texTotal.setHorizontalAlignment(JTextField.RIGHT);
 		texTotal.setFont(new Font("Tahoma", Font.PLAIN, 30));
 		texTotal.setPreferredSize(new Dimension(200, 40));
@@ -355,6 +362,7 @@ public class IGUVentas extends JFrame{
 			aTextoCliente[1].setText(cliente.getNombre() + " "
 									+ cliente.getPaterno() + " "
 									+ cliente.getMaterno());
+			aTextoCliente[0].setEnabled(false);
 
 		} else {
 
@@ -370,6 +378,15 @@ public class IGUVentas extends JFrame{
 
 	}//getCampoCliente
 
+	public void limpiarCampoCliente(){
+
+		aTextoCliente[0].setText(null);
+		aTextoCliente[1].setText(null);
+		aTextoCliente[0].setEnabled(true);
+		
+
+	}//limpiarCampo
+
 	public void setCampoProducto(DTOProducto producto){
 		
 		if (producto.getCodigo() != 0){
@@ -377,6 +394,7 @@ public class IGUVentas extends JFrame{
 			aTextoProducto[1].setText(producto.getNombre() + " " + producto.getDescripcion());
 			aTextoProducto[2].setText(String.valueOf(producto.getPrecio()));
 			aTextoProducto[3].setText(String.valueOf(producto.getActual()));
+			aTextoProducto[4].setEnabled(true);
 
 		} 
 
@@ -395,6 +413,7 @@ public class IGUVentas extends JFrame{
 		aTextoProducto[2].setText(null);
 		aTextoProducto[3].setText(null);
 		aTextoProducto[4].setText(null);
+		aTextoProducto[4].setEnabled(false);
 		
 
 	}//limpiarCampoProducto
@@ -408,8 +427,9 @@ public class IGUVentas extends JFrame{
 				modelo.addRow(new Object[]{Integer.valueOf(aTextoProducto[0].getText()), aTextoProducto[1].getText(), aTextoProducto[2].getText(),
 									Integer.valueOf(aTextoProducto[4].getText()), 
 									(Integer.valueOf(aTextoProducto[4].getText()) * Float.valueOf(aTextoProducto[2].getText()))});
-
-				texTotal.setText(String.valueOf(Float.valueOf(texTotal.getText()) + (Integer.valueOf(aTextoProducto[4].getText()) * Float.valueOf(aTextoProducto[2].getText()))));
+				
+				total = total + (Integer.valueOf(aTextoProducto[4].getText()) * Float.valueOf(aTextoProducto[2].getText()));
+				texTotal.setText(formato.format(total));
 
 			} else {
 

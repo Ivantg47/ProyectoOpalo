@@ -41,10 +41,18 @@ public class ControlVenta implements ActionListener, FocusListener{
 				
 				iguVentas.setCampoCliente(new DAOClientes().buscarCliente(iguVentas.getCampoCliente()));
 
+			} else if (evento.getActionCommand().equals("limpiarCliente")) {
+
+				iguVentas.limpiarCampoCliente();
+				
 			} else if (evento.getActionCommand().equals("buscarProducto")) {
 				
 				iguVentas.setCampoProducto(new DAOProducto().getProducto(iguVentas.getCampoProducto()));
 
+			} else if (evento.getActionCommand().equals("limpiarProducto")) {
+
+				iguVentas.limpiarCampoProducto();
+				
 			} else if (evento.getActionCommand().equals("agregar")) {
 				
 				iguVentas.agregarProducto();
