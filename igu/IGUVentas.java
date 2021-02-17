@@ -68,11 +68,6 @@ public class IGUVentas extends JFrame{
 
 	private JTextField campoFolio, campoFecha;
 
-	private JButton btAceptarP, btLimpiarP;
-	private JButton btAceptarC = new JButton("Aceptar"), btLimpiarC = new JButton("Limpiar");
-	private JButton btAgregar, btCancelar;
-
-
 	public IGUVentas(){
 
 	}
@@ -88,7 +83,7 @@ public class IGUVentas extends JFrame{
 
 		return panelVentas;
 
-	}
+	}//getPanelVentas
 
 	public JPanel getPanelVenta(){
 
@@ -107,7 +102,7 @@ public class IGUVentas extends JFrame{
 
 		return panelVentas;
 
-	}
+	}//getPanelVenta
 
 	public JPanel getPanelBuscar(){
 
@@ -140,7 +135,7 @@ public class IGUVentas extends JFrame{
         // panelBuscar.setBackground(new Color(255,155,100));
 		return panelBuscar;
 
-	}
+	}//getPanelBuscar
 
 	public JPanel getPanelDatos(){
 
@@ -176,7 +171,7 @@ public class IGUVentas extends JFrame{
 		// panel.setBackground(new Color(155,1,155));
 		return panel;
 
-	}
+	}//getPanelDatos
 
 	public JPanel getPanelDatosCliente(){
 
@@ -192,19 +187,28 @@ public class IGUVentas extends JFrame{
 			panelCliente.add(aTextoCliente[i]); 
 
 		}
+		//id cliente
+		aDatosCliente[0].setBounds(10, 12, 50, 25);
+		aTextoCliente[0].setBounds(10, 36, 50, 25);
+		//nombre cliente
+		aDatosCliente[1].setBounds(65, 12, 80, 25);
+		aTextoCliente[1].setBounds(65, 36, 240, 25);
+		aTextoCliente[1].setEnabled(false);
 
-		aDatosCliente[0].setBounds(10, 12, 60, 25);
-		aTextoCliente[0].setBounds(10, 36, 60, 25);
+		JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa (2).png")));
+		btBuscar.setToolTipText("Buscar cliente");
+		btBuscar.addActionListener(control);
+		btBuscar.setActionCommand("buscarCliente");
 
-		aDatosCliente[1].setBounds(75, 12, 80, 25);
-		aTextoCliente[1].setBounds(75, 36, 230, 25);
+		panelCliente.add(btBuscar);
+		btBuscar.setBounds(310, 36, 25, 25);
 
 		panelCliente.setPreferredSize(new Dimension(350, 75));
 		// panelCliente.setBackground(new Color(155,155,1));
 
 		return panelCliente;
 
-	}
+	}//getPanelDatosCliente
 		
 
 	public JPanel getPanelDatosProducto(){
@@ -222,30 +226,49 @@ public class IGUVentas extends JFrame{
 
 		}
 		//codigo
-		aDatosProducto[0].setBounds(10, 12, 60, 25);
-        aTextoProducto[0].setBounds(10, 35, 60, 25);
+		aDatosProducto[0].setBounds(10, 12, 50, 25);
+        aTextoProducto[0].setBounds(10, 35, 50, 25);
+        aTextoProducto[0].setHorizontalAlignment(JTextField.RIGHT);
+        aTextoProducto[0].addActionListener(control);
+        aTextoProducto[0].setActionCommand("buscarProducto");
         //descripcion
-        aDatosProducto[1].setBounds(75, 12, 80, 25);
-        aTextoProducto[1].setBounds(75, 35, 220, 25);
+        aDatosProducto[1].setBounds(65, 12, 80, 25);
+        aTextoProducto[1].setBounds(65, 35, 220, 25);
+        aTextoProducto[1].setEnabled(false);
         //precio
-        aDatosProducto[2].setBounds(300, 12, 70, 25);
-        aTextoProducto[2].setBounds(300, 35, 70, 25);
+        aDatosProducto[2].setBounds(290, 12, 70, 25);
+        aTextoProducto[2].setBounds(290, 35, 70, 25);
+        aTextoProducto[2].setHorizontalAlignment(JTextField.RIGHT);
+        aTextoProducto[2].setEnabled(false);
         //disponibles
-        aDatosProducto[3].setBounds(375, 12, 70, 25);
-        aTextoProducto[3].setBounds(375, 35, 70, 25);
+        aDatosProducto[3].setBounds(365, 12, 70, 25);
+        aTextoProducto[3].setBounds(365, 35, 70, 25);
+        aTextoProducto[3].setHorizontalAlignment(JTextField.RIGHT);
+        aTextoProducto[3].setEnabled(false);
         //catidad
-        aDatosProducto[4].setBounds(450, 12, 70, 25);
-        aTextoProducto[4].setBounds(450, 35, 70, 25);
+        aDatosProducto[4].setBounds(440, 12, 70, 25);
+        aTextoProducto[4].setBounds(440, 35, 70, 25);
+        aTextoProducto[4].setHorizontalAlignment(JTextField.RIGHT);
         //total
-        aDatosProducto[5].setBounds(525, 12, 100, 25);
-        aTextoProducto[5].setBounds(525, 35, 100, 25);
+    /*    aDatosProducto[5].setBounds(515, 12, 85, 25);
+        aTextoProducto[5].setBounds(515, 35, 85, 25);
+        aTextoProducto[5].setHorizontalAlignment(JTextField.RIGHT);
+        aTextoProducto[5].setEnabled(false);
+*/
+        JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa (2).png")));
+		btBuscar.setToolTipText("Buscar producto");
+		btBuscar.addActionListener(control);
+		// btBuscar.setActionCommand("buscarProducto");
+
+		panelProductos.add(btBuscar);
+		btBuscar.setBounds(605, 35, 25, 25);
 
         panelProductos.setPreferredSize(new Dimension(640, 68));
         // panelProductos.setBackground(new Color(155,155,100));
 
 		return panelProductos;
 
-	}
+	}//getPanelDatosProducto
 
 	public JPanel getPanelProducto(){
 
@@ -253,23 +276,23 @@ public class IGUVentas extends JFrame{
 
 		panel.add(getPanelDatosProducto());
 
-		btAceptarP = new JButton(new ImageIcon(getClass().getResource("/iconos/agregar3.png")));
-		btAceptarP.setPreferredSize(new Dimension(55, 55));
-		btAceptarP.addActionListener(control);
-        btAceptarP.setActionCommand("Verificar");
+		JButton btAgregar = new JButton(new ImageIcon(getClass().getResource("/iconos/agregar3.png")));
+		btAgregar.setPreferredSize(new Dimension(55, 55));
+		btAgregar.addActionListener(control);
+        btAgregar.setActionCommand("agregar");
 
-        btLimpiarP = new JButton(new ImageIcon(getClass().getResource("/iconos/quitar.png")));
-        btLimpiarP.setPreferredSize(new Dimension(55, 55));
-        btLimpiarP.addActionListener(control);
-        btLimpiarP.setActionCommand("Limpiar");
+        JButton btQuitar = new JButton(new ImageIcon(getClass().getResource("/iconos/quitar.png")));
+        btQuitar.setPreferredSize(new Dimension(55, 55));
+        btQuitar.addActionListener(control);
+        btQuitar.setActionCommand("quitar");
 
-		panel.add(btAceptarP);
-		panel.add(btLimpiarP);
+		panel.add(btAgregar);
+		panel.add(btQuitar);
 
 		panel.setPreferredSize(new Dimension(775, 85));
 		// panel.setBackground(new Color(255,100,100));
 		return panel;
-	}
+	}//getPanelProducto
 
 	public JPanel getPanelTablaProductos(){
 
@@ -289,27 +312,27 @@ public class IGUVentas extends JFrame{
 
 		return panelTabla;
 
-	}
+	}//getPanelTablaProductos
 
 	public JPanel getPanelBotonesVenta(){
 
 		JPanel botones = new JPanel();
 
-		btAgregar = new JButton(new ImageIcon(getClass().getResource("/iconos/save.png")));
+		JButton btAgregar = new JButton(new ImageIcon(getClass().getResource("/iconos/efectivo.png")));
 		btAgregar.setPreferredSize(new Dimension(80, 80));
 		btAgregar.addActionListener(control);
         // btAgregar.setActionCommand("Verificar");
 
-        btCancelar = new JButton(new ImageIcon(getClass().getResource("/iconos/trash.png")));
+        JButton btCancelar = new JButton(new ImageIcon(getClass().getResource("/iconos/trash.png")));
 		btCancelar.setPreferredSize(new Dimension(80, 80));
 		btCancelar.addActionListener(control);
         // btAgregar.setActionCommand("Verificar");
 
 
-		JLabel total = new JLabel("         Total Venta");
+		JLabel total = new JLabel("        Total Venta  $");
 		total.setFont(new Font("Tahoma", Font.PLAIN, 36));
 
-		texTotal = new JTextField("$ 0.00");
+		texTotal = new JTextField("0.00");
 		texTotal.setHorizontalAlignment(JTextField.RIGHT);
 		texTotal.setFont(new Font("Tahoma", Font.PLAIN, 30));
 		texTotal.setPreferredSize(new Dimension(200, 40));
@@ -322,272 +345,101 @@ public class IGUVentas extends JFrame{
 		botones.setPreferredSize(new Dimension(775, 85));
 		// botones.setBackground(new Color(255,100,255));
 		return botones;
-	}
+	}//getPanelBotonesVenta
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////	
-	public void leerDatosCliente(){
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+	public void setCampoCliente(DTOClientes cliente){
 
-		DAOClientes cliente = new DAOClientes();
-		DTOClientes clienteB = new DTOClientes();
+		if (cliente.getIdCliente() != 0){
 
-		int idCliente = Integer.valueOf(aTextoCliente[0].getText());
-		String tipoPago = aTextoCliente[1].getText();
-
-		clienteB = cliente.buscarCliente(idCliente);
-
-		if (clienteB.getIdCliente() == idCliente) {
-			
-			ventas.setIdCliente(idCliente);
-			ventas.setTipoPago(tipoPago);
-
-		}
-
-	}
-
-	public void limpiarDatosCliente(){
-
-		aTextoCliente[0].setText(null);
-		aTextoCliente[1].setText(null);
-
-		System.out.println("limpiado");
-
-	}
-
-	public JPanel getDatosProducto(){
-
-		JPanel panelProductos = new JPanel();
-
-		panelProductos.setBorder(BorderFactory.createTitledBorder("Datos del producto: "));
-
-		panelProductos.setLayout(new GridLayout(2,2,1,1));
-
-		for (int i = 0; i < aDatosProducto.length; i++){
-
-			panelProductos.add(aDatosProducto[i]);
-			panelProductos.add(aTextoProducto[i]);
-			panelProductos.add(getBotonesProducto()); 
-
-		}
-
-		btAceptarP.addActionListener(control);
-		btAceptarP.setActionCommand("btAceptarP");
-
-		btLimpiarP.addActionListener(control);
-		btLimpiarP.setActionCommand("btLimpiarP");
-
-
-		return panelProductos;
-
-	}
-
-
-	public void leerDatosProducto(){
-
-		DAOProducto producto = new DAOProducto();
-		DTOProducto productoB = new DTOProducto();
-
-		int idProdcuto = Integer.valueOf(aTextoProducto[0].getText());
-		float cantidad = Float.valueOf(aTextoProducto[1].getText());
-
-		productoB = producto.getProducto(idProdcuto);
-
-		if (productoB.getCodigo() == idProdcuto) {
-			
-			ventas.setIdProducto(idProdcuto);
-			ventas.setCantidadVendida(cantidad);
-
-
+			aTextoCliente[1].setText(cliente.getNombre() + " "
+									+ cliente.getPaterno() + " "
+									+ cliente.getMaterno());
 
 		} else {
 
-			JOptionPane.showMessageDialog(null, "no esxiste el producto");
+			aTextoCliente[0].setText(null);
 
 		}
 
+	}//setCampoCliente
 
-	}
+	public int getCampoCliente() throws NumberFormatException{
 
-	public void limpiarDatosProducto(){
+		return Integer.valueOf(aTextoCliente[0].getText());
+
+	}//getCampoCliente
+
+	public void setCampoProducto(DTOProducto producto){
+		
+		if (producto.getCodigo() != 0){
+
+			aTextoProducto[1].setText(producto.getNombre() + " " + producto.getDescripcion());
+			aTextoProducto[2].setText(String.valueOf(producto.getPrecio()));
+			aTextoProducto[3].setText(String.valueOf(producto.getActual()));
+
+		} 
+
+	}//setCampoProducto
+
+	public int getCampoProducto() throws NumberFormatException{
+
+		return Integer.valueOf(aTextoProducto[0].getText());
+
+	}//getCampoProducto
+
+	public void limpiarCampoProducto(){
+		
+		aTextoProducto[0].setText(null);
+		aTextoProducto[1].setText(null);
+		aTextoProducto[2].setText(null);
+		aTextoProducto[3].setText(null);
+		aTextoProducto[4].setText(null);
+		
+
+	}//limpiarCampoProducto
+
+	public void agregarProducto() throws NumberFormatException, IllegalArgumentException{
+
+		if (!aTextoProducto[1].getText().equals("")) {
+
+			if (!aTextoProducto[4].getText().equals("") && Integer.valueOf(aTextoProducto[4].getText()) != 0 && aTextoProducto[4].getText().compareTo(aTextoProducto[3].getText()) <= 0) {
+				
+				modelo.addRow(new Object[]{Integer.valueOf(aTextoProducto[0].getText()), aTextoProducto[1].getText(), aTextoProducto[2].getText(),
+									Integer.valueOf(aTextoProducto[4].getText()), 
+									(Integer.valueOf(aTextoProducto[4].getText()) * Float.valueOf(aTextoProducto[2].getText()))});
+
+				texTotal.setText(String.valueOf(Float.valueOf(texTotal.getText()) + (Integer.valueOf(aTextoProducto[4].getText()) * Float.valueOf(aTextoProducto[2].getText()))));
+
+			} else {
+
+				throw new IllegalArgumentException("No se a seleccionado un cantidad");
+
+			}
+
+		} else {
+
+			throw new IllegalArgumentException("No se a seleccionado un producto");
+
+		}
+
+	}//agregarProducto
+
+	public void limpiarCampoVenta(){
+		
 
 		aTextoProducto[0].setText(null);
 		aTextoProducto[1].setText(null);
+		aTextoProducto[2].setText(null);
+		aTextoProducto[3].setText(null);
+		aTextoProducto[4].setText(null);
+		
 
-		System.out.println("limpiado");
-
-	}
+	}//limpiarCampoProducto
 
 
-	public JPanel getEdicionVentas(){
-
-		JPanel panelEdicion = new JPanel();
-
-		panelEdicion.add(getBotonesVenta(), BorderLayout.EAST); 
-		panelEdicion.add(getBuscarVenta());
-
-		return panelEdicion;
-
-	}
-
-	public JPanel getBuscarVenta(){
-
-		JPanel panelBuscar = new JPanel();
-
-		JLabel buscar = new JLabel("Buscar");
-		panelBuscar.add(buscar);
-
-		campoBuscar.setPreferredSize(new Dimension(200,20));
-		panelBuscar.add(campoBuscar);
+/////////////////////////////////////////////////////////////////////////////////////////////////////	
 	
-
-		JButton btBuscar = new JButton(new ImageIcon("C:/Users/Gatit/Desktop/ProyectoOpalo/igu/lupita.png"));
-		btBuscar.setPreferredSize(new Dimension(32,32));
-		panelBuscar.add(btBuscar);
-		
-		btBuscar.addActionListener(control);
-		btBuscar.setActionCommand("btBuscar");		
-
-		return panelBuscar;
-
-	}
-
-	public int leerDatoBuscar(){
-		
-		int idVenta = Integer.valueOf(campoBuscar.getText());
-		ventas.setIdVenta(idVenta);
-
-		return idVenta;
-	}
-
-	public void mostrarDatosBusqueda(DTOVentas ventas){
-
-		JOptionPane.showMessageDialog(null,getTablaConsulta(ventas));
-
-	}
-
-	public JPanel getTablaConsulta(DTOVentas ventas){
-
-		JPanel panelTabla = new JPanel();
-
-		JTable tablaConsulta = new JTable();
-
-		String [] nombre = {
-                "id_venta", "tipoPago", "cancelacion", "fecha", "Estado"
-        };
-
-		tablaConsulta.setModel(new DefaultTableModel(
-            
-            new Object [][] {
-
-            	{"id_venta", "tipoPago", "cancelacion", "fecha", "Estado"},
-                {ventas.getIdVenta(), ventas.getTipoPago(), ventas.getDescripcion(), ventas.getFecha(), ventas.getEstado()}
-
-            }, nombre
-            
-        ));
-
-		panelTabla.add(tablaConsulta);
-		panelTabla.setBorder(BorderFactory.createTitledBorder("Consulta ventas"));
-
-		return panelTabla;
-
-	}
-
-	public JPanel getTablaProductos(){
-
-		JPanel panelTabla = new JPanel();
-
-		JTable tablaProducto = new JTable();
-		//JScrollPane jScroll = new JScrollPane(tablaVentas);
-
-		String [] nombre = {
-                "id producto", "nombre", "cantidad", "Total"
-        };
-
-		tablaProducto.setModel(new DefaultTableModel(
-            
-            new Object [][] {
-
-
-            	{"id Producto", "nombre", "cantidad", "Total"},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-
-            }, nombre
-            
-        ));
-
-		//jScroll.setViewportView(tablaVentas);
-
-		//panelTabla.add(jScroll);
-		panelTabla.add(tablaProducto);
-		panelTabla.setBorder(BorderFactory.createTitledBorder("Productos"));
-
-		return panelTabla;
-
-	}
-
-	public JPanel getTablaVentas(){
-
-		JPanel panel = new JPanel();
-		DAOVentas dao = new DAOVentas();
-
-		panel.setBorder(BorderFactory.createTitledBorder("Registros"));
-		modelo = new DefaultTableModel();
-        modelo.setColumnIdentifiers(new Object[]{"Venta","cancelacion","tipoPago", "fecha", "Estado"});
-		
-		tabla = new JTable(modelo);
-		JScrollPane jScroll = new JScrollPane(tabla);
-
-		dao.getTabla(modelo);
-
-        jScroll.setViewportView(tabla);
-
-
-		panel.add(jScroll, BorderLayout.SOUTH);
-
-		return panel;
-
-	}
-
-	public JPanel getBotonesCliente(){
-
-		JPanel botones = new JPanel();
-
-		botones.setLayout(new GridLayout(1,1));
-		botones.add(btAceptarC);
-		botones.add(btLimpiarC);
-		
-		return botones;
-	}
-	
-	public JPanel getBotonesProducto(){
-
-		JPanel botones = new JPanel();
-
-		botones.setLayout(new GridLayout(1,1));
-		botones.add(btAceptarP);
-		botones.add(btLimpiarP);
-		
-		return botones;
-	}
-
-
-	public JPanel getBotonesVenta(){
-
-		JPanel botones = new JPanel();
-
-		botones.setLayout(new GridLayout(1,1,10,10));
-		botones.add(btAgregar);
-		btAgregar.addActionListener(control);
-		btAgregar.setActionCommand("btAgregar");
-		botones.add(btCancelar);
-		btCancelar.addActionListener(control);
-		btCancelar.setActionCommand("btCancelar");
-
-		
-		return botones;
-	}
 
 /*
 	public static void main(String[] args) {

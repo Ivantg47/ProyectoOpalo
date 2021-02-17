@@ -46,12 +46,11 @@ public class ControlProducto implements ActionListener, FocusListener{
      */
 	public void actionPerformed(ActionEvent evento){
 
-		JButton fuente = (JButton) evento.getSource();
 		dao = new DAOProducto();
 
 		try{
 
-			if (fuente.getActionCommand().equals("buscar")) {
+			if (evento.getActionCommand().equals("buscar")) {
 				
 				if (!igu.getBuscar().equals("Codigo/Nombre")) {
 					
@@ -71,7 +70,7 @@ public class ControlProducto implements ActionListener, FocusListener{
 					igu.setBuscar();
 				}
 
-			} else if (fuente.getActionCommand().equals("agregar")) {
+			} else if (evento.getActionCommand().equals("agregar")) {
 				
 				dao.agregarProducto(igu.getCampos());
 				dao.getTabla(igu.getModelo());
@@ -80,7 +79,7 @@ public class ControlProducto implements ActionListener, FocusListener{
 				JOptionPane.showMessageDialog( null, "Producto registrado",
                					"Registro producto", JOptionPane.INFORMATION_MESSAGE);
 
-			} else if (fuente.getActionCommand().equals("eliminar")) {
+			} else if (evento.getActionCommand().equals("eliminar")) {
 				
 				dao.borrarProducto(igu.getCampos());
 				dao.getTabla(igu.getModelo());
@@ -89,7 +88,7 @@ public class ControlProducto implements ActionListener, FocusListener{
 				JOptionPane.showMessageDialog( null, "Producto eliminado",
                					"Eliminar producto", JOptionPane.INFORMATION_MESSAGE);
 
-			} else if (fuente.getActionCommand().equals("modificar")) {
+			} else if (evento.getActionCommand().equals("modificar")) {
 				
 				dao.actualizarProducto(igu.getCampos());
 				dao.getTabla(igu.getModelo());
@@ -98,7 +97,7 @@ public class ControlProducto implements ActionListener, FocusListener{
 				JOptionPane.showMessageDialog( null, "Producto actualizado",
                					"Actualizar producto", JOptionPane.INFORMATION_MESSAGE);
 
-			} else if (fuente.getActionCommand().equals("limpiar")) {
+			} else if (evento.getActionCommand().equals("limpiar")) {
 				
 				igu.limpiar();
 

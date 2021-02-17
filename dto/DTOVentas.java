@@ -10,10 +10,10 @@ public class DTOVentas{
 
 	private int idVenta;
 	private String stipoPago;
-	private int eIDcancelacion = 1;
-	private String sfecha = "";
-	private String sEstado = "";
-	private String sDescripcion = "";
+	private int eIDcancelacion;
+	private String sfecha;
+	private String sEstado;
+	private String sDescripcion;
 	private float fCantidadVendida;
 	private int eIdCliente;
 	private int eIdProducto;
@@ -117,7 +117,9 @@ public class DTOVentas{
 	}
 
 	public int getIdProducto(){
+
 		return eIdProducto;
+
 	}
 
 	public String getDescripcion(){

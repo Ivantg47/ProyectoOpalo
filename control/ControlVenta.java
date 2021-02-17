@@ -10,9 +10,9 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import ProyectoOpalo.igu.IGUVentas;
-import ProyectoOpalo.dao.DAOVentas;
-import ProyectoOpalo.dto.DTOVentas;
-import ProyectoOpalo.dto.DTOProducto;
+import ProyectoOpalo.dao.*;
+import ProyectoOpalo.dto.*;
+// import ProyectoOpalo.dto.DTOProducto;
 
 public class ControlVenta implements ActionListener, FocusListener{
 
@@ -28,34 +28,52 @@ public class ControlVenta implements ActionListener, FocusListener{
 
 	public void actionPerformed(ActionEvent evento){
 
-		JButton fuente = (JButton) evento.getSource();
+		if (evento.getSource() instanceof JTextField) {
+			JTextField fuente = (JTextField) evento.getSource();
+		} else {
+			JButton fuente = (JButton) evento.getSource();
+		}
 		
-		switch (fuente.getActionCommand()){
+		
+		try{
 
-			case "btAceptarC":
-				iguVentas.leerDatosCliente();		
-				break;
-			case "btLimpiarC":
-				iguVentas.limpiarDatosCliente();
-				break;
-			case "btAceptarP":
-				iguVentas.leerDatosProducto();
-				break;
-			case "btLimpiarP":
-				iguVentas.limpiarDatosProducto();
-				break;
-			case "btAgregar":
-				DAOVentas daoVentas = new DAOVentas();
-				daoVentas.agregarVenta(iguVentas.ventas);
-				break;
-			case "btBuscar":
-				DAOVentas daoVentasB = new DAOVentas();
-				iguVentas.ventas = daoVentasB.buscarVenta(iguVentas.leerDatoBuscar());
-				break;
-			case "btCancelar":
-				DAOVentas daoVentasC = new DAOVentas();
-				daoVentasC.CancelarVenta(iguVentas.leerDatoBuscar(), iguVentas.ventas);
-				break;
+			if (evento.getActionCommand().equals("buscarCliente")) {
+				
+				iguVentas.setCampoCliente(new DAOClientes().buscarCliente(iguVentas.getCampoCliente()));
+
+			} else if (evento.getActionCommand().equals("buscarProducto")) {
+				
+				iguVentas.setCampoProducto(new DAOProducto().getProducto(iguVentas.getCampoProducto()));
+
+			} else if (evento.getActionCommand().equals("agregar")) {
+				
+				iguVentas.agregarProducto();
+				iguVentas.limpiarCampoProducto();
+				
+			} else if (evento.getActionCommand().equals("quitar")) {
+				
+				
+				
+			} else if (evento.getActionCommand().equals("")) {
+
+
+			}
+
+		} catch (NullPointerException nullEx) {
+
+			JOptionPane.showMessageDialog(iguVentas, "No debe dejar campos vacios",
+           									"Campo vacio", JOptionPane.ERROR_MESSAGE);
+
+		} catch (NumberFormatException numEx) {
+
+			JOptionPane.showMessageDialog( null, "Dato incorrecto",
+           				"Error en formato de número", JOptionPane.ERROR_MESSAGE);
+
+		} catch (IllegalArgumentException illEx){
+
+			JOptionPane.showMessageDialog( null, illEx.getMessage(),
+           				"Error en formato de número", JOptionPane.ERROR_MESSAGE);
+
 		}
 	}
 

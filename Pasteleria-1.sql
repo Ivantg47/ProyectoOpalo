@@ -118,4 +118,11 @@ CREATE TABLE Venta_Cliente (id_venta 	INT 				REFERENCES Venta(id_venta)
 
 
 --Vistas
-CREATE OR REPLACE VIEW NombreConcatenado AS(SELECT nombre || " " || aPaterno|| " " || aMaterno FROM Cliente);
+CREATE OR REPLACE VIEW Precio_Fecha AS SELECT id_producto AS codigo, MAX(fecha) AS fecha FROM Precio GROUP BY id_producto;
+	
+CREATE OR REPLACE VIEW DatoProducto AS SELECT Pr.id_producto AS id_producto, Pr.nombre AS nombre, Pr.descripcion AS descripcion,Pr.existenciaMinima AS existenciaMinima, 
+	Pr.existenciaMaxima AS existenciaMaxima,Pr.existenciaActual AS existenciaActual, P.precio AS precio 
+	FROM Producto Pr INNER JOIN Precio P ON(Pr.id_producto = P.id_producto) INNER JOIN Precio_Fecha Pf ON(Pr.id_producto = Pf.codigo AND P.fecha = Pf.fecha);
+	
+CREATE OR REPLACE  VIEW NombreConcatenado AS SELECT id_cliente, nombre, aPaterno, aMaterno, correo, telefono, direccion,
+	CONCAT(nombre, ' ', aPaterno, ' ', aMaterno) AS completo FROM Cliente;

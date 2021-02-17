@@ -28,7 +28,7 @@ public class DAOVentas{
     public DAOVentas(){
 
     }
-
+/*
 	public void agregarVenta(DTOVentas ventas){
 		try {
 
@@ -329,4 +329,5 @@ public class DAOVentas{
         return conexion;
         
     } 
+    */
 }
