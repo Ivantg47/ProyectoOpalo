@@ -40,10 +40,10 @@ public class IGUCompras extends JFrame{
 	private JLabel aDatosProducto[] = {
 
 		//new JLabel("Codigo"),
-		new JLabel("Descripcion"),
+		new JLabel("Insumo"),
 		new JLabel("Precio"),
         new JLabel("Cantidad"),
-        new JLabel("Total")
+       // new JLabel("Total")
 
 	};
 
@@ -53,7 +53,7 @@ public class IGUCompras extends JFrame{
 		new JTextField(), // Descripcion
 		new JTextField(), // Precio
         new JTextField(), //Cantidad
-        new JTextField()  //Total
+        //new JTextField()  //Total
 
 	};
 
@@ -117,7 +117,7 @@ public class IGUCompras extends JFrame{
 		JLabel buscar = new JLabel("Buscar");
 		panelBuscar.add(buscar);
 
-		campoBuscar.setText("Folio/Fecha (dd-mm-aaaa)");
+		campoBuscar.setText("Folio");
 		campoBuscar.setForeground(new Color(111,111,111));
 		campoBuscar.setPreferredSize(new Dimension(200,20));
 		panelBuscar.add(campoBuscar);
@@ -196,8 +196,7 @@ public class IGUCompras extends JFrame{
         aDatosProducto[2].setBounds(435, 17, 70, 25);
         aTextoProducto[2].setBounds(435, 43, 70, 25);
 
-        aDatosProducto[3].setBounds(510, 17, 100, 25);
-        aTextoProducto[3].setBounds(510, 43, 100, 25);
+        
 
         panelProductos.setPreferredSize(new Dimension(620, 75));
         // panelProductos.setBackground(new Color(155,155,100));
@@ -220,7 +219,7 @@ public class IGUCompras extends JFrame{
         btCancelarP = new JButton(new ImageIcon(getClass().getResource("/iconos/quitar.png")));
         btCancelarP.setPreferredSize(new Dimension(55, 55));
         btCancelarP.addActionListener(control);
-        btCancelarP.setActionCommand("Limpiar");
+        btCancelarP.setActionCommand("Quitar");
 
 		panel.add(btAceptarP);
 		panel.add(btCancelarP);
@@ -276,7 +275,7 @@ public class IGUCompras extends JFrame{
         btCancelar = new JButton(new ImageIcon(getClass().getResource("/iconos/trash.png")));
 		btCancelar.setPreferredSize(new Dimension(80, 80));
 		btCancelar.addActionListener(control);
-        // btAgregar.setActionCommand("Verificar");
+        btCancelar.setActionCommand("Tirar");
 
 
 		total = new JLabel("         Total Compra");
@@ -497,7 +496,7 @@ public class IGUCompras extends JFrame{
 		aTextoProducto[0].setText(null);
 		aTextoProducto[1].setText(null);
 		aTextoProducto[2].setText(null);
-		aTextoProducto[3].setText(null);
+		//aTextoProducto[3].setText(null);
 
 	}
 

@@ -74,13 +74,19 @@ public class ControlCompra implements ActionListener, FocusListener{
                 }
                 llenarTabla(igu.getModeloDTO());
                 igu.setTotal(getTotal(aCompras));
+                igu.limpiarProducto();
                 break;
 
-            case "Limpiar":
+            case "Quitar":
+                aCompras[indice] = null;
+                indice--;
+                llenarTabla(igu.getModeloDTO());
+                igu.setTotal(getTotal(aCompras));
+                /*Limpiar
                 igu.limpiarProducto();
                 for (DTOCompra dtoCompra : aCompras) {
                     System.out.println(aCompras[indice].getNombre());
-                }
+                }*/
                 break;
                     
             case "btBuscar":
@@ -92,6 +98,14 @@ public class ControlCompra implements ActionListener, FocusListener{
                 dao.insertarCompras(aCompras, indice);
                 break;
 
+            case "Tirar":
+                for (int i = 0; i <= indice; i++) {
+                    aCompras[i] = null;
+                }
+                indice = -1;
+                llenarTabla(igu.getModeloDTO());
+                igu.setTotal(getTotal(aCompras));
+                break;
 
         }
 
