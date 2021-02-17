@@ -163,7 +163,7 @@ public class IGUVentas extends JFrame{
 		campoFolio.setEnabled(false);
 
 
-		cliente.setBounds(5, 5, 350, 68);
+		cliente.setBounds(5, 5, 375, 68);
 		folio.setBounds(520, 5, 40, 25);
 		campoFolio.setBounds(552, 5, 50, 25);
 		fecha.setBounds(610, 5, 40, 25);
@@ -201,15 +201,22 @@ public class IGUVentas extends JFrame{
 		aTextoCliente[1].setBounds(65, 36, 240, 25);
 		aTextoCliente[1].setEnabled(false);
 
-		JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/borrador (2).png")));
-		btBuscar.setToolTipText("Limpiar campos");
+		JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa (2).png")));
+		btBuscar.setToolTipText("Buscar cliente");
 		btBuscar.addActionListener(control);
-		btBuscar.setActionCommand("limpiarCliente");
+		btBuscar.setActionCommand("buscarCliente");
+
+		JButton btLimpiar = new JButton(new ImageIcon(getClass().getResource("/iconos/borrador (2).png")));
+		btLimpiar.setToolTipText("Limpiar campos");
+		btLimpiar.addActionListener(control);
+		btLimpiar.setActionCommand("limpiarCliente");
 
 		panelCliente.add(btBuscar);
+		panelCliente.add(btLimpiar);
 		btBuscar.setBounds(310, 36, 25, 25);
+		btLimpiar.setBounds(340, 36, 25, 25);
 
-		panelCliente.setPreferredSize(new Dimension(350, 75));
+		panelCliente.setPreferredSize(new Dimension(370, 75));
 		// panelCliente.setBackground(new Color(155,155,1));
 
 		return panelCliente;
@@ -239,21 +246,21 @@ public class IGUVentas extends JFrame{
         aTextoProducto[0].setActionCommand("buscarProducto");
         //descripcion
         aDatosProducto[1].setBounds(65, 12, 80, 25);
-        aTextoProducto[1].setBounds(65, 35, 250, 25);
+        aTextoProducto[1].setBounds(65, 35, 280, 25);
         aTextoProducto[1].setEnabled(false);
         //precio
-        aDatosProducto[2].setBounds(320, 12, 70, 25);
-        aTextoProducto[2].setBounds(320, 35, 70, 25);
+        aDatosProducto[2].setBounds(350, 12, 70, 25);
+        aTextoProducto[2].setBounds(350, 35, 70, 25);
         aTextoProducto[2].setHorizontalAlignment(JTextField.RIGHT);
         aTextoProducto[2].setEnabled(false);
         //disponibles
-        aDatosProducto[3].setBounds(395, 12, 70, 25);
-        aTextoProducto[3].setBounds(395, 35, 70, 25);
+        aDatosProducto[3].setBounds(425, 12, 70, 25);
+        aTextoProducto[3].setBounds(425, 35, 70, 25);
         aTextoProducto[3].setHorizontalAlignment(JTextField.RIGHT);
         aTextoProducto[3].setEnabled(false);
         //catidad
-        aDatosProducto[4].setBounds(470, 12, 70, 25);
-        aTextoProducto[4].setBounds(470, 35, 70, 25);
+        aDatosProducto[4].setBounds(500, 12, 70, 25);
+        aTextoProducto[4].setBounds(500, 35, 70, 25);
         aTextoProducto[4].setHorizontalAlignment(JTextField.RIGHT);
         aTextoProducto[4].setEnabled(false);
         //total
@@ -262,13 +269,20 @@ public class IGUVentas extends JFrame{
         aTextoProducto[5].setHorizontalAlignment(JTextField.RIGHT);
         aTextoProducto[5].setEnabled(false);
 */
-        JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/borrador (2).png")));
-		btBuscar.setToolTipText("Limpiar campos");
+        JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa (2).png")));
+		btBuscar.setToolTipText("Buscar producto");
 		btBuscar.addActionListener(control);
-		btBuscar.setActionCommand("limpiarProducto");
+		btBuscar.setActionCommand("buscarProducto");
+
+		JButton btLimpiar = new JButton(new ImageIcon(getClass().getResource("/iconos/borrador (2).png")));
+		btLimpiar.setToolTipText("Limpiar campos");
+		btLimpiar.addActionListener(control);
+		btLimpiar.setActionCommand("limpiarProducto");
 
 		panelProductos.add(btBuscar);
-		btBuscar.setBounds(605, 35, 25, 25);
+		panelProductos.add(btLimpiar);
+		btBuscar.setBounds(575, 35, 25, 25);
+		btLimpiar.setBounds(605, 35, 25, 25);
 
         panelProductos.setPreferredSize(new Dimension(640, 68));
         // panelProductos.setBackground(new Color(155,155,100));
