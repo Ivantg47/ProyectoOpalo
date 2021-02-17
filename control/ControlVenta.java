@@ -60,7 +60,7 @@ public class ControlVenta implements ActionListener, FocusListener{
 				
 			} else if (evento.getActionCommand().equals("quitar")) {
 				
-				
+				iguVentas.quitarProducto();
 				
 			} else if (evento.getActionCommand().equals("")) {
 
@@ -74,14 +74,18 @@ public class ControlVenta implements ActionListener, FocusListener{
 
 		} catch (NumberFormatException numEx) {
 
-			JOptionPane.showMessageDialog( null, "Dato incorrecto",
+			JOptionPane.showMessageDialog(iguVentas, "Dato incorrecto",
            				"Error en formato de número", JOptionPane.ERROR_MESSAGE);
 
 		} catch (IllegalArgumentException illEx){
 
-			JOptionPane.showMessageDialog( null, illEx.getMessage(),
+			JOptionPane.showMessageDialog(iguVentas, illEx.getMessage(),
            				"Error en formato de número", JOptionPane.ERROR_MESSAGE);
 
+		} catch (ArrayIndexOutOfBoundsException arEx){
+
+			JOptionPane.showMessageDialog(iguVentas, "No ha agregado productos",
+           									"Fuera de rango", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 

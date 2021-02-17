@@ -73,6 +73,8 @@ public class IGUVentas extends JFrame{
 
 	public IGUVentas(){
 
+		
+
 	}
 
 	public JPanel getPanelVentas(){
@@ -263,12 +265,14 @@ public class IGUVentas extends JFrame{
         aTextoProducto[4].setBounds(500, 35, 70, 25);
         aTextoProducto[4].setHorizontalAlignment(JTextField.RIGHT);
         aTextoProducto[4].setEnabled(false);
+        aTextoProducto[4].addActionListener(control);
+        aTextoProducto[4].setActionCommand("agregar");
         //total
-    /*    aDatosProducto[5].setBounds(515, 12, 85, 25);
-        aTextoProducto[5].setBounds(515, 35, 85, 25);
-        aTextoProducto[5].setHorizontalAlignment(JTextField.RIGHT);
-        aTextoProducto[5].setEnabled(false);
-*/
+        // aDatosProducto[5].setBounds(515, 12, 85, 25);
+        // aTextoProducto[5].setBounds(515, 35, 85, 25);
+        // aTextoProducto[5].setHorizontalAlignment(JTextField.RIGHT);
+        // aTextoProducto[5].setEnabled(false);
+
         JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa (2).png")));
 		btBuscar.setToolTipText("Buscar producto");
 		btBuscar.addActionListener(control);
@@ -318,13 +322,13 @@ public class IGUVentas extends JFrame{
 	public JPanel getPanelTablaProductos(){
 
 		JPanel panelTabla = new JPanel();
-		JTable tablaProducto = new JTable();
+		tabla = new JTable();
 
 		modelo = new DefaultTableModel();
 		modelo.setColumnIdentifiers(new Object[]{"#", "Nombre", "Precio Unitario", "Cantidad", "SubTotal"});
-		tablaProducto.setModel(modelo);
+		tabla.setModel(modelo);
 
-		JScrollPane jScroll = new JScrollPane(tablaProducto);
+		JScrollPane jScroll = new JScrollPane(tabla);
 		panelTabla.add(jScroll);
 		jScroll.setPreferredSize(new Dimension(755, 200));
 
@@ -405,10 +409,12 @@ public class IGUVentas extends JFrame{
 		
 		if (producto.getCodigo() != 0){
 
+			aTextoProducto[0].setEnabled(false);
 			aTextoProducto[1].setText(producto.getNombre() + " " + producto.getDescripcion());
 			aTextoProducto[2].setText(String.valueOf(producto.getPrecio()));
 			aTextoProducto[3].setText(String.valueOf(producto.getActual()));
 			aTextoProducto[4].setEnabled(true);
+			aTextoProducto[4].requestFocus();
 
 		} 
 
@@ -427,7 +433,9 @@ public class IGUVentas extends JFrame{
 		aTextoProducto[2].setText(null);
 		aTextoProducto[3].setText(null);
 		aTextoProducto[4].setText(null);
+		aTextoProducto[0].setEnabled(true);
 		aTextoProducto[4].setEnabled(false);
+		aTextoProducto[0].requestFocus();
 		
 
 	}//limpiarCampoProducto
@@ -444,6 +452,8 @@ public class IGUVentas extends JFrame{
 				
 				total = total + (Integer.valueOf(aTextoProducto[4].getText()) * Float.valueOf(aTextoProducto[2].getText()));
 				texTotal.setText(formato.format(total));
+				aTextoProducto[0].setEnabled(true);
+				aTextoProducto[0].requestFocus();
 
 			} else {
 
@@ -470,6 +480,22 @@ public class IGUVentas extends JFrame{
 		
 
 	}//limpiarCampoProducto
+
+	public void quitarProducto() throws IllegalArgumentException, ArrayIndexOutOfBoundsException{
+
+		if (tabla.getSelectedRow() != -1) {
+		
+				total = total - (Float) tabla.getValueAt(tabla.getSelectedRow(), 4);
+				texTotal.setText(formato.format(total));
+				modelo.removeRow(tabla.getSelectedRow());
+
+		} else {
+
+			throw new IllegalArgumentException("No se ha seleccionado un producto");
+
+		}
+	 
+	}
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////	
