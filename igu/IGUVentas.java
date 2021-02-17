@@ -360,8 +360,14 @@ public class IGUVentas extends JFrame{
 		btCancelar.addActionListener(control);
         // btAgregar.setActionCommand("Verificar");
 
+        JButton btNuevo = new JButton(new ImageIcon(getClass().getResource("/iconos/trash.png")));
+		btNuevo.setPreferredSize(new Dimension(80, 80));
+		btNuevo.addActionListener(control);
+        // btAgregar.setActionCommand("Verificar");
+
 		botones.add(btAgregar);
 		botones.add(btCancelar);
+		botones.add(btNuevo);
 		botones.add(getPanelTotal());
 
 		botones.setPreferredSize(new Dimension(775, 90));
@@ -375,13 +381,13 @@ public class IGUVentas extends JFrame{
 		pTotal.setLayout(null);
 
 		JLabel subtotal = new JLabel("Subtotal:");
-		subtotal.setBounds(10, 2, 60, 25);
+		subtotal.setBounds(10, 2, 60, 23);
 		pTotal.add(subtotal);
 		JLabel iva = new JLabel("I.V.A:");
-		iva.setBounds(10, 30, 60, 25);
+		iva.setBounds(10, 30, 60, 23);
 		pTotal.add(iva);
 		JLabel total = new JLabel("Total:");
-		total.setBounds(10, 57, 60, 25);
+		total.setBounds(10, 57, 60, 23);
 		pTotal.add(total);
 		// total.setFont(new Font("Tahoma", Font.PLAIN, 36));
 
@@ -389,19 +395,19 @@ public class IGUVentas extends JFrame{
 		texTotal[0].setText(formato.format(0));
 		texTotal[0].setHorizontalAlignment(JTextField.RIGHT);
 		pTotal.add(texTotal[0]);
-		texTotal[0].setBounds(70, 2, 100, 25);
+		texTotal[0].setBounds(70, 2, 100, 23);
 		texTotal[0].setEnabled(false);
 		//iva
 		texTotal[1].setText(formato.format(0));
 		texTotal[1].setHorizontalAlignment(JTextField.RIGHT);
 		pTotal.add(texTotal[1]);
-		texTotal[1].setBounds(70, 30, 100, 25);
+		texTotal[1].setBounds(70, 30, 100, 23);
 		texTotal[1].setEnabled(false);
 		//total
 		texTotal[2].setText(formato.format(0));
 		texTotal[2].setHorizontalAlignment(JTextField.RIGHT);
 		pTotal.add(texTotal[2]);
-		texTotal[2].setBounds(70, 57, 100, 25);
+		texTotal[2].setBounds(70, 57, 100, 23);
 		texTotal[2].setEnabled(false);
 		// texTotal.setFont(new Font("Tahoma", Font.PLAIN, 30));
 

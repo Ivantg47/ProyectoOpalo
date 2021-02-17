@@ -16,41 +16,42 @@ public class DTOVentas{
 	private String sDescripcion;
 	private float fCantidadVendida;
 	private int eIdCliente;
-	private int eIdProducto;
+	private int aIdProducto[];
+	private int aCantidad[];
 	
 	public DTOVentas(){
 
 	}
 
-	public DTOVentas(String stipoPago, int eIDcancelacion, String sfecha, 
-					 String sEstado, float fCantidadVendida, int eIdCliente, int eIdProducto){
+	// public DTOVentas(String stipoPago, int eIDcancelacion, String sfecha, 
+	// 				 String sEstado, float fCantidadVendida, int eIdCliente, int eIdProducto[]){
 
-		setIdCliente(eIdCliente);
-		setTipoPago(stipoPago);
-		setIdProducto(eIdProducto);
-		setCantidadVendida(fCantidadVendida);
+	// 	setIdCliente(eIdCliente);
+	// 	setTipoPago(stipoPago);
+	// 	setIdProducto(eIdProducto);
+	// 	setCantidadVendida(fCantidadVendida);
 
-		setFecha(sfecha);
-		setEstado(sEstado);
-		setCancelacion(eIDcancelacion);
+	// 	setFecha(sfecha);
+	// 	setEstado(sEstado);
+	// 	setCancelacion(eIDcancelacion);
 
-	}		
+	// }		
 
-	public DTOVentas(int idVenta, String stipoPago, int eIDcancelacion, String sfecha, 
-					 String sEstado, float fCantidadVendida, int eIdCliente, int eIdProducto,
-					 String sDescripcion){
+	// public DTOVentas(int idVenta, String stipoPago, int eIDcancelacion, String sfecha, 
+	// 				 String sEstado, float fCantidadVendida, int eIdCliente, int eIdProducto,
+	// 				 String sDescripcion){
 
-		setIdVenta(idVenta); 
-		setTipoPago(stipoPago);
-		setCancelacion(eIDcancelacion);
-		setFecha(sfecha);
-		setEstado(sEstado);
-		setCantidadVendida(fCantidadVendida);
-		setIdCliente(eIdCliente);
-		setIdProducto(eIdProducto);
-		setDescripcion(sDescripcion);
+	// 	setIdVenta(idVenta); 
+	// 	setTipoPago(stipoPago);
+	// 	setCancelacion(eIDcancelacion);
+	// 	setFecha(sfecha);
+	// 	setEstado(sEstado);
+	// 	setCantidadVendida(fCantidadVendida);
+	// 	setIdCliente(eIdCliente);
+	// 	setIdProducto(eIdProducto);
+	// 	setDescripcion(sDescripcion);
 
-	}		
+	// }		
 
 	public void setIdVenta(int idVenta){
 		this.idVenta = idVenta;
@@ -80,8 +81,12 @@ public class DTOVentas{
 		this.eIdCliente = eIdCliente;
 	}
 
-	public void setIdProducto(int eIdProducto){
-		this.eIdProducto = eIdProducto;
+	public void setIdProducto(int aIdProducto[]){
+		this.aIdProducto = aIdProducto;
+	}
+
+	public void setCantidad(int aCantidad[]){
+		this.aCantidad = aCantidad;
 	}
 
 	public void setDescripcion(String sDescripcion){
@@ -116,9 +121,15 @@ public class DTOVentas{
 		return eIdCliente;
 	}
 
-	public int getIdProducto(){
+	public int[] getIdProducto(){
 
-		return eIdProducto;
+		return aIdProducto;
+
+	}
+
+	public int[] getCantidad(){
+
+		return aCantidad; 
 
 	}
 
@@ -126,10 +137,10 @@ public class DTOVentas{
 		return sDescripcion;
 	}
 
-	public String toString(){
+	// public String toString(){
 
-		return "id: " + idVenta + "\ntipo pago: " + stipoPago + "\nCancelacion: " 
-				+ eIDcancelacion + "\nfecha: " + sfecha + "\nEstado: " + sEstado + 
-				"\nCantidad Vendida: " + fCantidadVendida;
-	}
+	// 	return "id: " + idVenta + "\ntipo pago: " + stipoPago + "\nCancelacion: " 
+	// 			+ eIDcancelacion + "\nfecha: " + sfecha + "\nEstado: " + sEstado + 
+	// 			"\nCantidad Vendida: " + fCantidadVendida;
+	// }
 }
