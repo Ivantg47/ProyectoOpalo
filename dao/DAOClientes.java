@@ -1,7 +1,7 @@
 /**
  * DAO de los clientes
  * @author Ximena Rojas
- * @version 1.0
+ * @version 1.2
  */
 
 package ProyectoOpalo.dao;
@@ -22,11 +22,11 @@ public class DAOClientes{
     private ResultSet result;
 	private DTOClientes oCliente;
 
-	public DAOClientes(){
+	public DAOClientes(){ //construsctor sin parametros
 
 	}
 
-	public Connection getConexion(){
+	public Connection getConexion(){ //Método usado para estalecer la conexión con la base de datos
 
 		try{
 
@@ -58,7 +58,10 @@ public class DAOClientes{
 	}//fin conexion
 
 
-	public void agregarCliente(DTOClientes oCliente){
+	/*Método utilizado para registrar un nuevo cliente
+	* @param oCliente es el cliente que se creó en la DTO
+	*/
+	public void agregarCliente(DTOClientes oCliente){ //Método utilizado para registrar un nuevo cliente
 
 		int eExecucion;
 		String buscar;
@@ -136,6 +139,9 @@ public class DAOClientes{
 	}//fin agregar
 
 
+	/*Método utilizado para eliminar clientes de la BD
+	* @param oCliente es el cliente que se creó en la DTO
+	*/
 	public void eliminarCliente(DTOClientes oCliente){
 
 		String eliminar;
@@ -182,6 +188,10 @@ public class DAOClientes{
 		}
 	}//fin eliminar
 
+	
+	/*Método utilizado para modificar los registros de un cliente de la BD
+	* @param oCliente es el cliente que se creó en la DTO
+	*/
 	public void modificarCliente(DTOClientes oCliente){
 
 		String modificar;
@@ -236,6 +246,9 @@ public class DAOClientes{
 
 	}//Fin modificar
 
+	/*Método utilizado para buscar un cliente registrado en la BD
+	* @param eId es el identificador único de cada cliente
+	*/
 	public DTOClientes buscarCliente(int eId){
 
 		String buscar;
@@ -300,6 +313,10 @@ public class DAOClientes{
 	}//fin buscar
 
 
+	/*Método utilizado para buscar clientes en la BD de acuerdo con su nombre
+	* @param nombre del cliente que se desea buscar
+	*@param modelo es el diseño de la tabla
+	*/
 	public DTOClientes buscarNombre(String nombre, DefaultTableModel modelo){
 
 		String buscar;
@@ -385,7 +402,9 @@ public class DAOClientes{
 
 	
 
-
+	/*Método utilizado para listar los datos de los clientes
+	* @param modelo es el modelo de la tabla de la interfaz
+	*/
 	public void getTabla(DefaultTableModel modelo){
 		
 		String oConsultaTabla;

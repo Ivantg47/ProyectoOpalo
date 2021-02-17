@@ -1,6 +1,6 @@
 /**Control de los clientes
 *@author Ximena Rojas
-* @version 1.0
+* @version 1.2
 */
 
 package ProyectoOpalo.control;
@@ -22,7 +22,9 @@ public class ControlClientes implements ActionListener, FocusListener{
 
 		this.igu = igu;
 	}
-
+	/*Método utilizado para establecer las acciones que realiza cada boton
+	* @param oEvento
+	*/
 	public void actionPerformed(ActionEvent oEvento){
 
 		dao = new DAOClientes();
@@ -127,6 +129,9 @@ public class ControlClientes implements ActionListener, FocusListener{
 	}//actionPerformed
 
 
+	/*Método utilizado para verificar que los datos de cliente ingresado sean correctos
+	* @param dto
+	*/
 	public boolean datosCorrectos(DTOClientes dto){
 
 		boolean bDatosCorrectos = false;
@@ -140,7 +145,9 @@ public class ControlClientes implements ActionListener, FocusListener{
 	}
 
 
-
+	/*Método utilizado para 
+	* @param e
+	*/
 	public void focusGained(FocusEvent e) {
 		
 		JTextField campo = (JTextField) e.getSource();
@@ -167,6 +174,9 @@ public class ControlClientes implements ActionListener, FocusListener{
         
     }
 
+    /*Método utilizado para verificar si el dato ingresado en in número
+	* @param sCadena
+	*/
     public static boolean isNumeric(String sCadena) {
 
         boolean oResultado;
@@ -185,6 +195,10 @@ public class ControlClientes implements ActionListener, FocusListener{
         return oResultado;
     }//isNumeric
 
+  	
+    /*Método utilizado comprobar la cadena ingresada
+	* @param sNombre wa la cadena nombre
+	*/
   	public boolean comprobarNombre(String sNombre){
 
   		
