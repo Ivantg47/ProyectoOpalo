@@ -1,6 +1,7 @@
 /**
- * Clase control de ventas.
+ * Clase IGU de Ventas.
  * @author Pamela Stephanie Moreno Parker
+ * @author Ivan Tronco
  * @version 1.0
  */
 
@@ -12,20 +13,37 @@ import javax.swing.*;
 import ProyectoOpalo.igu.IGUVentas;
 import ProyectoOpalo.dao.*;
 import ProyectoOpalo.dto.*;
-// import ProyectoOpalo.dto.DTOProducto;
 
 public class ControlVenta implements ActionListener, FocusListener{
 
+	/**
+ 	 * Atributo del tipo DAOVentas.
+	 */	
 	private DAOVentas daoVentas;
+	/**
+ 	 * Atributo del tipo DTOVentas.
+	 */	
 	private DTOVentas dtoventas;
+	/**
+ 	 * Atributo del tipo IGUVentas.
+	 */	
 	private IGUVentas iguVentas;
 
+	/**
+     * Constructor para la clase ControlVenta
+     * @param iguVentas objeto de la clase IGUVentas.
+     */	
 	public ControlVenta(IGUVentas iguVentas){
 
 		this.iguVentas = iguVentas;
 
 	}
 
+	/**
+     * actionPerformed es un método que sirve para configurar los eventos que suceden al 
+     * manipular la intefaz
+     * @param evento objeto del tipo ActionEvent
+     */
 	public void actionPerformed(ActionEvent evento){
 
 		daoVentas = new DAOVentas();
@@ -105,13 +123,21 @@ public class ControlVenta implements ActionListener, FocusListener{
 
 		}
 	}
-
+	
+	/**
+     * focusGained es un método que sirve para saber cuando se selecciona un campo de texto.
+     * @param e objeto del tipo FocusEvent
+     */	
 	public void focusGained(FocusEvent e) {
 
 		JTextField campo = (JTextField) e.getSource();
 
     }
 
+    /**
+     * focusLost es un método que sirve para saber cuando se deselcciona un campo de texto.
+     * @param e objeto del tipo FocusEvent
+     */	
     public void focusLost(FocusEvent e) {
 
     	JTextField campo = (JTextField) e.getSource();
