@@ -47,7 +47,7 @@ public class ControlProducto implements ActionListener, FocusListener{
 	public void actionPerformed(ActionEvent evento){
 
 		dao = new DAOProducto();
-
+		
 		try{
 
 			if (evento.getActionCommand().equals("buscar")) {
@@ -101,7 +101,7 @@ public class ControlProducto implements ActionListener, FocusListener{
 				
 				igu.limpiar();
 
-			}
+			} 
 
 		} catch (NullPointerException nullEx) {
 

@@ -330,6 +330,7 @@ public class IGUProducto extends JPanel{
 		}
 		
 		return producto;
+		
 	}
 
 	/**
