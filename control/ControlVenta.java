@@ -66,16 +66,16 @@ public class ControlVenta implements ActionListener, FocusListener{
 
 				iguVentas.limpiarCampoProducto();
 				
-			} else if (evento.getActionCommand().equals("agregar")) {
+			} else if (evento.getActionCommand().equals("agregarProducto")) {
 				
 				iguVentas.agregarProducto();
 				iguVentas.limpiarCampoProducto();
 				
-			} else if (evento.getActionCommand().equals("quitar")) {
+			} else if (evento.getActionCommand().equals("quitarProducto")) {
 				
 				iguVentas.quitarProducto();
 				
-			} else if (evento.getActionCommand().equals("venta")) {
+			} else if (evento.getActionCommand().equals("concretarVenta")) {
 
 				daoVentas.agregarVenta(iguVentas.generarVenta());
 				iguVentas.nuevaVenta();
@@ -83,7 +83,7 @@ public class ControlVenta implements ActionListener, FocusListener{
 				JOptionPane.showMessageDialog( null, "Venta registrada",
                					"Registro venta", JOptionPane.INFORMATION_MESSAGE);
 
-			} else if (evento.getActionCommand().equals("cancelar")) {
+			} else if (evento.getActionCommand().equals("cancelarVenta")) {
 
 				// daoVentas.cancelarVenta(iguVentas.generarVenta());
 				iguVentas.nuevaVenta();
@@ -91,11 +91,17 @@ public class ControlVenta implements ActionListener, FocusListener{
 				JOptionPane.showMessageDialog( null, "Venta cancelada",
                					"Cancelacion venta", JOptionPane.INFORMATION_MESSAGE);
 
-			} else if (evento.getActionCommand().equals("nueva")) {
+			} else if (evento.getActionCommand().equals("nuevaVenta")) {
 
 				iguVentas.nuevaVenta();
 
-			} 
+			} else if (evento.getActionCommand().equals("buscarVenta")) {
+				
+				iguVentas.nuevaVenta();
+				iguVentas.setVenta(daoVentas.buscarVenta(iguVentas.getCampoBuscar(), iguVentas.getModelo()));
+				
+
+			}
 
 		} catch (NullPointerException nullEx) {
 
@@ -116,10 +122,10 @@ public class ControlVenta implements ActionListener, FocusListener{
 
 			JOptionPane.showMessageDialog(iguVentas, "No se han agregado productos",
            									"Fuera de rango", JOptionPane.ERROR_MESSAGE);
+			
 		} catch (Exception ex){
 
-			// JOptionPane.showMessageDialog(iguVentas, "Error en base de datos",
-   //         				"Error en base de datos", JOptionPane.ERROR_MESSAGE);
+			ex.printStackTrace();
 
 		}
 	}
@@ -132,6 +138,12 @@ public class ControlVenta implements ActionListener, FocusListener{
 
 		JTextField campo = (JTextField) e.getSource();
 
+		if(campo.getText().equals("Folio")){
+
+	        campo.setForeground(Color.BLACK);
+	        campo.setText(null);
+
+    	}
     }
 
     /**
@@ -141,6 +153,13 @@ public class ControlVenta implements ActionListener, FocusListener{
     public void focusLost(FocusEvent e) {
 
     	JTextField campo = (JTextField) e.getSource();
+
+    	if(campo.getText().equals("")){
+
+	    	campo.setText("Folio");
+			campo.setForeground(new Color(111,111,111));
+
+		}
         
     }
 

@@ -119,68 +119,84 @@ public class DAOVentas{
 
 	}
 
-	// public DTOVentas buscarVenta(int idVenta){
+	public DTOVentas buscarVenta(int idVenta, DefaultTableModel modelo) throws IllegalArgumentException, SQLException{
 		
-	// 	DTOVentas ventas = new DTOVentas();
-	// 	IGUVentas iguVentas = new IGUVentas();
+		DTOVentas venta = new DTOVentas();
+		
+		try {
 
-	// 	try {
+			conexion = getConnection();
 
-	// 		conexion = getConnection();
+			String sql = "SELECT V.id_venta, C.id_cliente, fecha FROM Venta V INNER JOIN Venta_Cliente C ON (V.id_venta = C.id_venta) WHERE V.id_venta = ?;";
 
-	// 		String sql = "SELECT V.id_venta,C.descripcion,V.tipoPago,V.fecha,V.estado FROM Venta V, Cancelacion C WHERE V.id_cancelacion = C.id_cancelacion AND V.id_venta = ?;";
-	
-	// 		prepared = conexion.prepareStatement(sql);
-	
-	// 		prepared.setInt(1, idVenta);
+			prepared = conexion.prepareStatement(sql);
 
-	// 		result = prepared.executeQuery();
+			prepared.setInt(1, idVenta);
 
-	// 		if (result.next()) {
+			result = prepared.executeQuery();
+			
+			if (result.next()) {
+				
+				venta.setIdVenta(idVenta);
+				venta.setFecha(result.getString("fecha"));
+				venta.setIdCliente(result.getInt("id_cliente"));
 
-	// 			ventas.setIdVenta(result.getInt("V.id_venta"));				
-	// 			ventas.setTipoPago(result.getString("V.tipoPago"));
-	// 			ventas.setDescripcion(result.getString("C.descripcion"));
-	// 			ventas.setFecha(String.valueOf(result.getDate("V.fecha")));
-	// 			ventas.setEstado(result.getString("V.estado"));
+				sql = ("SELECT P.id_producto AS id, CONCAT(P.nombre, ' ', P.descripcion) AS nombre, VP.cantidad, Pr.precio"
+						+ " FROM Venta_Producto AS VP, Producto AS P ,"
+						+ " (SELECT id_producto AS idProd, MAX(fecha) AS fecha, precio FROM Precio"
+						+ " WHERE fecha <= ?"
+						+ " GROUP BY id_producto) AS Pr"
+						+ " WHERE VP.id_venta = ? AND VP.id_producto = P.id_producto AND P.id_producto = Pr.idProd;");
 
-	// 			iguVentas.mostrarDatosBusqueda(ventas);
+				prepared = conexion.prepareStatement(sql);
 
-	// 		} else {
+				prepared.setDate(1, result.getDate("fecha"));
+				prepared.setInt(2, idVenta);
 
-	// 			JOptionPane.showMessageDialog(null, "No hay ventas registradas con ese id");
+				result = prepared.executeQuery();
 
-	// 		}
+				while (result.next()){
+					
+					modelo.addRow(new Object[]{result.getInt("id"), result.getString("nombre"), result.getFloat("precio"),
+											result.getInt("cantidad"), (result.getInt("cantidad") * result.getFloat("precio"))});
 
-	// 		conexion.close();
+				}
 
-	// 	} catch (SQLException es) {
 
-	//         es.printStackTrace();
+			} else {
 
-	//     } catch (Exception e) {
-	         
-	//         e.printStackTrace();
+				throw new IllegalArgumentException("No hay ventas registradas con ese folio");
 
-	//     } finally {
+			}
+			
+			prepared.close();
+			result.close();
+			conexion.close();
 
-	//         try {
+		} catch (SQLException es) {
 
-	//             if (conexion != null) {
+	        es.printStackTrace();
+	        throw new SQLException();
 
-	//                conexion.close();
+	    } finally {
+
+	        try {
+
+	            if (conexion != null) {
+
+	               conexion.close();
 	               
-	//             } 
+	            } 
 
-	//         }catch (SQLException es){
+	        }catch (SQLException es){
 
-	//             es.printStackTrace();
+	            es.printStackTrace();
 
-	//         }
-	//     }
+	        }
+	    }
 
-	//     return ventas;
-	// }
+	    return venta;
+	}
 
 	// public void CancelarVenta(int idVenta, DTOVentas ventas){
 	// 	try {

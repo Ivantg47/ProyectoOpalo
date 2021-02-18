@@ -126,3 +126,4 @@ CREATE OR REPLACE VIEW DatoProducto AS SELECT Pr.id_producto AS id_producto, Pr.
 	
 CREATE OR REPLACE  VIEW NombreConcatenado AS SELECT id_cliente, nombre, aPaterno, aMaterno, correo, telefono, direccion,
 	CONCAT(nombre, ' ', aPaterno, ' ', aMaterno) AS completo FROM Cliente;
+

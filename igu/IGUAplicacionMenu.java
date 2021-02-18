@@ -24,7 +24,7 @@ public class IGUAplicacionMenu extends JFrame{
 		setJTabbedPane();
 		setSize(800, 670);
 		setLocationRelativeTo(null);
-		
+		setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 

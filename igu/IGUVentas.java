@@ -24,11 +24,15 @@ import ProyectoOpalo.dto.DTOClientes;
 
 public class IGUVentas extends JFrame{
 
+	private static final float IVA = 0.16f;
 	private ControlVenta control = new ControlVenta(this);
+	private DecimalFormat formato = new DecimalFormat("$ #,##0.00");
 	private DefaultTableModel modelo;
 	private JTable tabla;
 	private float total;
 	private JTextField campoBuscar;
+	private JTextField campoFolio;
+	private JTextField campoFecha;
 
 	private JTextField texTotal[] = {
 
@@ -74,8 +78,8 @@ public class IGUVentas extends JFrame{
 
 	};
 
-	private JTextField campoFolio, campoFecha;
-	private DecimalFormat formato = new DecimalFormat("$ #,##0.00");
+	
+	
 
 	public IGUVentas(){
 
@@ -135,12 +139,14 @@ public class IGUVentas extends JFrame{
 		campoBuscar.setPreferredSize(new Dimension(200,25));
 		panelBuscar.add(campoBuscar);
 		campoBuscar.addFocusListener(control);
+		campoBuscar.addActionListener(control);
+		campoBuscar.setActionCommand("buscarVenta");
 
 		JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa (2).png")));
 		btBuscar.setPreferredSize(new Dimension(25,25));
 		panelBuscar.add(btBuscar);
 		btBuscar.addActionListener(control);
-        btBuscar.setActionCommand("btBuscar");
+        btBuscar.setActionCommand("buscarVenta");
 
         panelBuscar.setPreferredSize(new Dimension(785, 55));
         // panelBuscar.setBackground(new Color(255,155,100));
@@ -310,13 +316,13 @@ public class IGUVentas extends JFrame{
 		btAgregar.setPreferredSize(new Dimension(50, 50));
 		btAgregar.setToolTipText("Agregar producto");
 		btAgregar.addActionListener(control);
-        btAgregar.setActionCommand("agregar");
+        btAgregar.setActionCommand("agregarProducto");
 
         JButton btQuitar = new JButton(new ImageIcon(getClass().getResource("/iconos/quitar.png")));
         btQuitar.setPreferredSize(new Dimension(50, 50));
         btQuitar.setToolTipText("Quitar producto");
         btQuitar.addActionListener(control);
-        btQuitar.setActionCommand("quitar");
+        btQuitar.setActionCommand("quitarProducto");
 
 		panel.add(btAgregar);
 		panel.add(btQuitar);
@@ -354,19 +360,19 @@ public class IGUVentas extends JFrame{
 		btVenta.setPreferredSize(new Dimension(80, 80));
 		btVenta.setToolTipText("Concretar venta");
 		btVenta.addActionListener(control);
-        btVenta.setActionCommand("venta");
+        btVenta.setActionCommand("concretarVenta");
 
         JButton btCancelar = new JButton(new ImageIcon(getClass().getResource("/iconos/cancel.png")));
 		btCancelar.setPreferredSize(new Dimension(80, 80));
 		btCancelar.setToolTipText("Cancelar venta");
 		btCancelar.addActionListener(control);
-        btCancelar.setActionCommand("cancelar");
+        btCancelar.setActionCommand("cancelarVenta");
 
         JButton btNuevo = new JButton(new ImageIcon(getClass().getResource("/iconos/agregar-archivo.png")));
 		btNuevo.setPreferredSize(new Dimension(80, 80));
 		btNuevo.setToolTipText("Nueva venta");
 		btNuevo.addActionListener(control);
-        btNuevo.setActionCommand("nueva");
+        btNuevo.setActionCommand("nuevaVenta");
 
         botones.add(btNuevo);
         botones.add(btCancelar);
@@ -503,8 +509,8 @@ public class IGUVentas extends JFrame{
 					
 					total = total + (Integer.valueOf(aTextoProducto[4].getText()) * Float.valueOf(aTextoProducto[2].getText()));
 					texTotal[2].setText(formato.format(total));
-					texTotal[1].setText(formato.format(total * 0.16));
-					texTotal[0].setText(formato.format(total - (total * 0.16)));
+					texTotal[1].setText(formato.format(total * IVA));
+					texTotal[0].setText(formato.format(total - (total * IVA)));
 					aTextoProducto[0].setEnabled(true);
 					aTextoProducto[0].requestFocus();
 					
@@ -593,6 +599,7 @@ public class IGUVentas extends JFrame{
 		venta.setEstado("CONCRETADA");
 
 		return venta;
+
 	}
 
 	public void campoVacio() throws NullPointerException, IllegalArgumentException {
@@ -619,8 +626,42 @@ public class IGUVentas extends JFrame{
 		texTotal[1].setText(formato.format(0));
 		texTotal[2].setText(formato.format(0));
 		total = 0.0f;
-		campoFecha = new JTextField(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+		campoFecha.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+		campoFolio.setText(null);
 
+	}
+
+	public int getCampoBuscar() throws NumberFormatException{
+
+		return Integer.valueOf(campoBuscar.getText());
+
+	}
+
+	public DefaultTableModel getModelo(){
+
+		return modelo;
+	}
+
+	public void setVenta(DTOVentas venta){
+
+		for (int con = 0; con < modelo.getRowCount(); con++) {
+
+			total = total + (float) tabla.getValueAt(con, 4);
+			
+			texTotal[2].setText(formato.format(total));
+			texTotal[1].setText(formato.format(total * IVA));
+			texTotal[0].setText(formato.format(total - (total * IVA)));
+		}
+
+		campoFolio.setText(String.valueOf(venta.getIdVenta()));
+		campoFecha.setText(venta.getFecha());
+
+		aTextoCliente[0].setText(String.valueOf(venta.getIdCliente()));
+		aTextoCliente[0].setEnabled(false);
+		aTextoProducto[0].setEnabled(false);
+
+		campoBuscar.setText("Folio");
+		campoBuscar.setForeground(new Color(111,111,111));
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////	
 	

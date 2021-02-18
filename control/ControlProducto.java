@@ -118,6 +118,10 @@ public class ControlProducto implements ActionListener, FocusListener{
 			JOptionPane.showMessageDialog( null, illEx.getMessage(),
            				"Error en formato de número", JOptionPane.ERROR_MESSAGE);
 
+		} catch (Exception ex){
+
+			ex.printStackTrace();
+
 		}
 		
 	}//actionPerformed
