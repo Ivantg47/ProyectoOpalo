@@ -28,7 +28,7 @@ public class DAOVentas{
 
     }
 
-	public void agregarVenta(DTOVentas venta) throws IllegalArgumentException{
+	public void agregarVenta(DTOVentas venta) throws IllegalArgumentException, SQLException{
 
 		try {
 
@@ -39,12 +39,11 @@ public class DAOVentas{
 			prepared = conexion.prepareStatement(sql);
 
 			prepared.setString(1, venta.getTipoPago());
-			java.sql.Date sqlFecha = new java.sql.Date.valueOf(venta.getFecha());
-			prepared.setDate(2, sqlFecha);
+			prepared.setDate(2, Date.valueOf(venta.getFecha()));
 			prepared.setString(3,venta.getEstado());
-System.out.println("preparo");
+
 			if (prepared.executeUpdate() != 0) {
-				System.out.println("registro venta");
+				
 				sql = "SELECT last_insert_id() AS codigo;";
 				prepared = conexion.prepareStatement(sql);
 				result = prepared.executeQuery();
@@ -57,13 +56,13 @@ System.out.println("preparo");
 					prepared.setInt(2, venta.getIdCliente());
 
 					if (prepared.executeUpdate() != 0) {
-						System.out.println("registro cliente");
+						
 						int producto[] = venta.getIdProducto();
 						int cantidad[] = venta.getCantidad();
 
 						for (int con = 0; con < producto.length; con++) {
 							
-							sql = "INSERT INTO Venta_Cliente (id_venta, id_cliente) VALUES (?, ?);";
+							sql = "INSERT INTO Venta_Producto VALUES (?, ?, ?);";
 							prepared = conexion.prepareStatement(sql);
 							prepared.setInt(1, result.getInt("codigo"));
 							prepared.setInt(2, producto[con]);
@@ -74,7 +73,7 @@ System.out.println("preparo");
 								throw new IllegalArgumentException("Error al registrar la venta ");
 
 							}
-							System.out.println("registro productos");
+
 						}
 
 					} else {
@@ -99,10 +98,7 @@ System.out.println("preparo");
 		} catch (SQLException es) {
 
 	        es.printStackTrace();
-
-	    } catch (Exception e) {
-	         
-	        e.printStackTrace();
+	        throw new SQLException();
 
 	    } finally {
 

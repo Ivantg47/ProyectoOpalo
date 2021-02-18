@@ -161,7 +161,7 @@ public class IGUVentas extends JFrame{
 		JLabel folio = new JLabel("Folio");
 		JLabel fecha = new JLabel("Fecha");
 		campoFolio = new JTextField();
-		campoFecha = new JTextField(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
+		campoFecha = new JTextField(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 
 		panel.add(folio);
 		panel.add(fecha);
@@ -356,19 +356,22 @@ public class IGUVentas extends JFrame{
 		btVenta.addActionListener(control);
         btVenta.setActionCommand("venta");
 
-        JButton btCancelar = new JButton(new ImageIcon(getClass().getResource("/iconos/trash.png")));
+        JButton btCancelar = new JButton(new ImageIcon(getClass().getResource("/iconos/cancel.png")));
 		btCancelar.setPreferredSize(new Dimension(80, 80));
+		btCancelar.setToolTipText("Cancelar venta");
 		btCancelar.addActionListener(control);
-        // btAgregar.setActionCommand("Verificar");
+        btCancelar.setActionCommand("cancelar");
 
-        JButton btNuevo = new JButton(new ImageIcon(getClass().getResource("/iconos/trash.png")));
+        JButton btNuevo = new JButton(new ImageIcon(getClass().getResource("/iconos/agregar-archivo.png")));
 		btNuevo.setPreferredSize(new Dimension(80, 80));
+		btNuevo.setToolTipText("Nueva venta");
 		btNuevo.addActionListener(control);
-        // btAgregar.setActionCommand("Verificar");
+        btNuevo.setActionCommand("nueva");
 
+        botones.add(btNuevo);
+        botones.add(btCancelar);
 		botones.add(btVenta);
-		botones.add(btCancelar);
-		botones.add(btNuevo);
+
 		botones.add(getPanelTotal());
 
 		botones.setPreferredSize(new Dimension(775, 90));
@@ -449,6 +452,7 @@ public class IGUVentas extends JFrame{
 		aTextoCliente[0].setText(null);
 		aTextoCliente[1].setText(null);
 		aTextoCliente[0].setEnabled(true);
+		aTextoCliente[0].requestFocus();
 		
 	}//limpiarCampo
 
@@ -533,7 +537,7 @@ public class IGUVentas extends JFrame{
 		aTextoProducto[3].setText(null);
 		aTextoProducto[4].setText(null);
 		
-	}//limpiarCampoProducto
+	}//limpiarCampoVenta
 
 	public void quitarProducto() throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
 
@@ -569,6 +573,9 @@ public class IGUVentas extends JFrame{
 
 		}
 
+		venta.setIdProducto(idPreoducto);
+		venta.setCantidad(idCantidad);
+
         Object[] options = { new ImageIcon(getClass().getResource("/iconos/efectivo (1).png")), 
         					new ImageIcon(getClass().getResource("/iconos/tarjeta-de-credito (1).png")) };
 
@@ -603,6 +610,16 @@ public class IGUVentas extends JFrame{
 	}
 
 	public void nuevaVenta(){
+
+		limpiarCampoProducto();
+		limpiarCampoCliente();
+
+		modelo.setRowCount(0);
+		texTotal[0].setText(formato.format(0));
+		texTotal[1].setText(formato.format(0));
+		texTotal[2].setText(formato.format(0));
+		total = 0.0f;
+		campoFecha = new JTextField(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////	

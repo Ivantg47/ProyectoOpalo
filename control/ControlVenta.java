@@ -76,7 +76,7 @@ public class ControlVenta implements ActionListener, FocusListener{
 			} else if (evento.getActionCommand().equals("nueva")) {
 
 				iguVentas.nuevaVenta();
-				
+
 			} 
 
 		} catch (NullPointerException nullEx) {
@@ -92,12 +92,17 @@ public class ControlVenta implements ActionListener, FocusListener{
 		} catch (IllegalArgumentException illEx){
 
 			JOptionPane.showMessageDialog(iguVentas, illEx.getMessage(),
-           				"Error en formato de número", JOptionPane.ERROR_MESSAGE);
+           				"Error", JOptionPane.ERROR_MESSAGE);
 
 		} catch (ArrayIndexOutOfBoundsException arEx){
 
 			JOptionPane.showMessageDialog(iguVentas, "No se han agregado productos",
            									"Fuera de rango", JOptionPane.ERROR_MESSAGE);
+		} catch (Exception ex){
+
+			// JOptionPane.showMessageDialog(iguVentas, "Error en base de datos",
+   //         				"Error en base de datos", JOptionPane.ERROR_MESSAGE);
+
 		}
 	}
 
