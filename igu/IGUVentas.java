@@ -47,8 +47,8 @@ public class IGUVentas extends JFrame{
 
 	public JTextField aTextoCliente[] = {
 
-		new JTextField(),
-		new JTextField()
+		new JTextField(), //0 -> id
+		new JTextField()  //1 -> nombre
 
 	};
 
@@ -229,8 +229,7 @@ public class IGUVentas extends JFrame{
 
 		return panelCliente;
 
-	}//getPanelDatosCliente
-		
+	}//getPanelDatosCliente	
 
 	public JPanel getPanelDatosProducto(){
 
@@ -308,12 +307,14 @@ public class IGUVentas extends JFrame{
 		panel.add(getPanelDatosProducto());
 
 		JButton btAgregar = new JButton(new ImageIcon(getClass().getResource("/iconos/agregar3.png")));
-		btAgregar.setPreferredSize(new Dimension(55, 55));
+		btAgregar.setPreferredSize(new Dimension(50, 50));
+		btAgregar.setToolTipText("Agregar producto");
 		btAgregar.addActionListener(control);
         btAgregar.setActionCommand("agregar");
 
         JButton btQuitar = new JButton(new ImageIcon(getClass().getResource("/iconos/quitar.png")));
-        btQuitar.setPreferredSize(new Dimension(55, 55));
+        btQuitar.setPreferredSize(new Dimension(50, 50));
+        btQuitar.setToolTipText("Quitar producto");
         btQuitar.addActionListener(control);
         btQuitar.setActionCommand("quitar");
 
@@ -349,11 +350,11 @@ public class IGUVentas extends JFrame{
 
 		JPanel botones = new JPanel();
 		
-
-		JButton btAgregar = new JButton(new ImageIcon(getClass().getResource("/iconos/efectivo.png")));
-		btAgregar.setPreferredSize(new Dimension(80, 80));
-		btAgregar.addActionListener(control);
-        // btAgregar.setActionCommand("Verificar");
+		JButton btVenta = new JButton(new ImageIcon(getClass().getResource("/iconos/payment-method.png")));
+		btVenta.setPreferredSize(new Dimension(80, 80));
+		btVenta.setToolTipText("Concretar venta");
+		btVenta.addActionListener(control);
+        btVenta.setActionCommand("venta");
 
         JButton btCancelar = new JButton(new ImageIcon(getClass().getResource("/iconos/trash.png")));
 		btCancelar.setPreferredSize(new Dimension(80, 80));
@@ -365,7 +366,7 @@ public class IGUVentas extends JFrame{
 		btNuevo.addActionListener(control);
         // btAgregar.setActionCommand("Verificar");
 
-		botones.add(btAgregar);
+		botones.add(btVenta);
 		botones.add(btCancelar);
 		botones.add(btNuevo);
 		botones.add(getPanelTotal());
@@ -373,6 +374,7 @@ public class IGUVentas extends JFrame{
 		botones.setPreferredSize(new Dimension(775, 90));
 		botones.setBackground(new Color(255,100,255));
 		return botones;
+
 	}//getPanelBotonesVenta
 
 	public JPanel getPanelTotal(){
@@ -418,7 +420,7 @@ public class IGUVentas extends JFrame{
 	}//getPanelTotal
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-	public void setCampoCliente(DTOClientes cliente){
+	public void setCampoCliente(DTOClientes cliente) {
 
 		if (cliente.getIdCliente() != 0){
 
@@ -426,6 +428,7 @@ public class IGUVentas extends JFrame{
 									+ cliente.getPaterno() + " "
 									+ cliente.getMaterno());
 			aTextoCliente[0].setEnabled(false);
+			aTextoProducto[0].requestFocus();
 
 		} else {
 
@@ -435,7 +438,7 @@ public class IGUVentas extends JFrame{
 
 	}//setCampoCliente
 
-	public int getCampoCliente() throws NumberFormatException{
+	public int getCampoCliente() throws NumberFormatException {
 
 		return Integer.valueOf(aTextoCliente[0].getText());
 
@@ -447,10 +450,9 @@ public class IGUVentas extends JFrame{
 		aTextoCliente[1].setText(null);
 		aTextoCliente[0].setEnabled(true);
 		
-
 	}//limpiarCampo
 
-	public void setCampoProducto(DTOProducto producto){
+	public void setCampoProducto(DTOProducto producto) {
 		
 		if (producto.getCodigo() != 0){
 
@@ -465,7 +467,7 @@ public class IGUVentas extends JFrame{
 
 	}//setCampoProducto
 
-	public int getCampoProducto() throws NumberFormatException{
+	public int getCampoProducto() throws NumberFormatException {
 
 		return Integer.valueOf(aTextoProducto[0].getText());
 
@@ -482,10 +484,9 @@ public class IGUVentas extends JFrame{
 		aTextoProducto[4].setEnabled(false);
 		aTextoProducto[0].requestFocus();
 		
-
 	}//limpiarCampoProducto
 
-	public void agregarProducto() throws NumberFormatException, IllegalArgumentException{
+	public void agregarProducto() throws NumberFormatException, IllegalArgumentException {
 
 		if (!aTextoProducto[1].getText().equals("")) {
 
@@ -497,9 +498,12 @@ public class IGUVentas extends JFrame{
 											(Integer.valueOf(aTextoProducto[4].getText()) * Float.valueOf(aTextoProducto[2].getText()))});
 					
 					total = total + (Integer.valueOf(aTextoProducto[4].getText()) * Float.valueOf(aTextoProducto[2].getText()));
-					// texTotal.setText(formato.format(total));
+					texTotal[2].setText(formato.format(total));
+					texTotal[1].setText(formato.format(total * 0.16));
+					texTotal[0].setText(formato.format(total - (total * 0.16)));
 					aTextoProducto[0].setEnabled(true);
 					aTextoProducto[0].requestFocus();
+					
 				} else {
 
 					throw new IllegalArgumentException("Solo hay: " + aTextoProducto[3].getText() + " producto disponibles.");
@@ -529,15 +533,14 @@ public class IGUVentas extends JFrame{
 		aTextoProducto[3].setText(null);
 		aTextoProducto[4].setText(null);
 		
-
 	}//limpiarCampoProducto
 
-	public void quitarProducto() throws IllegalArgumentException, ArrayIndexOutOfBoundsException{
+	public void quitarProducto() throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
 
 		if (tabla.getSelectedRow() != -1) {
 		
 				total = total - (Float) tabla.getValueAt(tabla.getSelectedRow(), 4);
-				// texTotal.setText(formato.format(total));
+				texTotal[2].setText(formato.format(total));
 				modelo.removeRow(tabla.getSelectedRow());
 
 		} else {
@@ -546,9 +549,62 @@ public class IGUVentas extends JFrame{
 
 		}
 	 
+	}//quitarProducto
+
+	public DTOVentas generarVenta(){
+
+		campoVacio();
+		DTOVentas venta = new DTOVentas();
+
+		venta.setFecha(campoFecha.getText());
+		venta.setIdCliente(Integer.valueOf(aTextoCliente[0].getText()));
+
+		int idPreoducto[] = new int[modelo.getRowCount()];
+		int idCantidad[] = new int[modelo.getRowCount()];
+
+		for (int con = 0; con < modelo.getRowCount(); con++) {
+			
+			idPreoducto[con] = (int) tabla.getValueAt(con, 0);
+			idCantidad[con] = (int) tabla.getValueAt(con, 3);
+
+		}
+
+        Object[] options = { new ImageIcon(getClass().getResource("/iconos/efectivo (1).png")), 
+        					new ImageIcon(getClass().getResource("/iconos/tarjeta-de-credito (1).png")) };
+
+		if (JOptionPane.showOptionDialog(this, "Seleccione metodo de pago", "Metodo de pago",
+			JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, null) == 0){
+
+			venta.setTipoPago("EFECTIVO");
+
+		} else {
+
+			venta.setTipoPago("TARJETA");
+
+		}
+		
+		venta.setEstado("CONCRETADA");
+
+		return venta;
 	}
 
+	public void campoVacio() throws NullPointerException, IllegalArgumentException {
 
+		if (aTextoCliente[1].getText().equals("")) {
+			
+			throw new IllegalArgumentException("No a sido seleccionado un cliente");
+
+		} else if (modelo.getRowCount() == 0) {
+			
+			throw new IllegalArgumentException("No se han ingresado productos");
+
+		}
+
+	}
+
+	public void nuevaVenta(){
+
+	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////	
 	
 

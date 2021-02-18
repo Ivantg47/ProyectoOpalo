@@ -15,7 +15,7 @@ import ProyectoOpalo.dto.DTOVentas;
 import ProyectoOpalo.igu.IGUVentas;
 import javax.swing.*;
 import javax.swing.table.*;
-import java.util.Date;
+// import java.util.Date;
 import java.sql.*;
 
 public class DAOVentas{
@@ -23,89 +23,77 @@ public class DAOVentas{
 	private Connection conexion = null;
 	private PreparedStatement prepared;
     private ResultSet result, resultF;
-    IGUVentas igu;
 
     public DAOVentas(){
 
     }
-/*
-	public void agregarVenta(DTOVentas ventas){
+
+	public void agregarVenta(DTOVentas venta) throws IllegalArgumentException{
+
 		try {
 
 			conexion = getConnection();
 
-			String sql = "INSERT INTO Venta (tipoPago,id_cancelacion,fecha,estado) VALUES (?, ?, ?, ?);";
+			String sql = "INSERT INTO Venta (tipoPago, fecha, estado) VALUES (?, ?, ?);";
 
 			prepared = conexion.prepareStatement(sql);
 
-			prepared.setString(1, ventas.getTipoPago());
-			prepared.setInt(2, ventas.getCancelacion());
-			java.util.Date fecha = new java.util.Date();
-			java.sql.Date sqlFecha = new java.sql.Date(fecha.getTime());
-			prepared.setDate(3, sqlFecha);
-			ventas.setEstado("realizado");
-			prepared.setString(4,ventas.getEstado());
-
-			int resultado = prepared.executeUpdate();
-
-			if (resultado == 1){
-
-				sql = "SELECT last_insert_id() AS id_venta from Venta;";
+			prepared.setString(1, venta.getTipoPago());
+			java.sql.Date sqlFecha = new java.sql.Date.valueOf(venta.getFecha());
+			prepared.setDate(2, sqlFecha);
+			prepared.setString(3,venta.getEstado());
+System.out.println("preparo");
+			if (prepared.executeUpdate() != 0) {
+				System.out.println("registro venta");
+				sql = "SELECT last_insert_id() AS codigo;";
 				prepared = conexion.prepareStatement(sql);
 				result = prepared.executeQuery();
 
 				if (result.next()){
-					
-					//Facturas
-					String facturasql = "INSERT INTO Factura (fecha) VALUES (?);";
 
-					prepared = conexion.prepareStatement(facturasql);
+					sql = "INSERT INTO Venta_Cliente (id_venta, id_cliente) VALUES (?, ?);";
+					prepared = conexion.prepareStatement(sql);
+					prepared.setInt(1, result.getInt("codigo"));
+					prepared.setInt(2, venta.getIdCliente());
 
-					java.util.Date fechaF = new java.util.Date();
-					java.sql.Date sqlFechaF = new java.sql.Date(fecha.getTime());
-					prepared.setDate(1,sqlFechaF);
+					if (prepared.executeUpdate() != 0) {
+						System.out.println("registro cliente");
+						int producto[] = venta.getIdProducto();
+						int cantidad[] = venta.getCantidad();
 
-					int resultadoF = prepared.executeUpdate();
+						for (int con = 0; con < producto.length; con++) {
+							
+							sql = "INSERT INTO Venta_Cliente (id_venta, id_cliente) VALUES (?, ?);";
+							prepared = conexion.prepareStatement(sql);
+							prepared.setInt(1, result.getInt("codigo"));
+							prepared.setInt(2, producto[con]);
+							prepared.setInt(3, cantidad[con]);
 
-					//Ventas y productos
-					String venta_Productosql = "INSERT INTO Venta_Producto (id_venta,id_producto,cantidad) VALUES (?, ?, ?);";
+							if (prepared.executeUpdate() == 0) {
+								
+								throw new IllegalArgumentException("Error al registrar la venta ");
 
-					prepared = conexion.prepareStatement(venta_Productosql);
-
-					prepared.setInt(1, result.getInt("id_venta"));
-					prepared.setInt(2, ventas.getIdProducto());
-					prepared.setFloat(3, ventas.getCantidadVendida());
-
-					int resultadoV_P = prepared.executeUpdate();
-
-					if (resultadoF == 1) {
-						facturasql = "SELECT last_insert_id() AS id_factura from Factura;";
-						prepared = conexion.prepareStatement(facturasql);
-						resultF = prepared.executeQuery();
-
-						if (resultF.next()){
-
-							//Ventas y clientes
-							String venta_Clientesql = "INSERT INTO Venta_Cliente (id_venta,id_cliente,id_factura) VALUES (?, ?, ?);";
-
-							prepared = conexion.prepareStatement(venta_Clientesql);
-
-							prepared.setInt(1, result.getInt("id_venta"));
-							prepared.setInt(2, ventas.getIdCliente());
-							prepared.setInt(3, resultF.getInt("id_factura"));
-
-							int resultadoV_C = prepared.executeUpdate();
-
+							}
+							System.out.println("registro productos");
 						}
+
+					} else {
+						
+						throw new IllegalArgumentException("Error al registrar la venta ");
+
 					}
 
 				}
 
 
-				JOptionPane.showMessageDialog(null, "Venta registrada");
+			} else {
+
+				throw new IllegalArgumentException("Error al registrar la venta ");
 
 			}
-
+			
+			prepared.close();
+			result.close();
 			conexion.close();
 
 		} catch (SQLException es) {
@@ -135,170 +123,170 @@ public class DAOVentas{
 
 	}
 
-	public DTOVentas buscarVenta(int idVenta){
+	// public DTOVentas buscarVenta(int idVenta){
 		
-		DTOVentas ventas = new DTOVentas();
-		IGUVentas iguVentas = new IGUVentas();
+	// 	DTOVentas ventas = new DTOVentas();
+	// 	IGUVentas iguVentas = new IGUVentas();
 
-		try {
+	// 	try {
 
-			conexion = getConnection();
+	// 		conexion = getConnection();
 
-			String sql = "SELECT V.id_venta,C.descripcion,V.tipoPago,V.fecha,V.estado FROM Venta V, Cancelacion C WHERE V.id_cancelacion = C.id_cancelacion AND V.id_venta = ?;";
+	// 		String sql = "SELECT V.id_venta,C.descripcion,V.tipoPago,V.fecha,V.estado FROM Venta V, Cancelacion C WHERE V.id_cancelacion = C.id_cancelacion AND V.id_venta = ?;";
 	
-			prepared = conexion.prepareStatement(sql);
+	// 		prepared = conexion.prepareStatement(sql);
 	
-			prepared.setInt(1, idVenta);
+	// 		prepared.setInt(1, idVenta);
 
-			result = prepared.executeQuery();
+	// 		result = prepared.executeQuery();
 
-			if (result.next()) {
+	// 		if (result.next()) {
 
-				ventas.setIdVenta(result.getInt("V.id_venta"));				
-				ventas.setTipoPago(result.getString("V.tipoPago"));
-				ventas.setDescripcion(result.getString("C.descripcion"));
-				ventas.setFecha(String.valueOf(result.getDate("V.fecha")));
-				ventas.setEstado(result.getString("V.estado"));
+	// 			ventas.setIdVenta(result.getInt("V.id_venta"));				
+	// 			ventas.setTipoPago(result.getString("V.tipoPago"));
+	// 			ventas.setDescripcion(result.getString("C.descripcion"));
+	// 			ventas.setFecha(String.valueOf(result.getDate("V.fecha")));
+	// 			ventas.setEstado(result.getString("V.estado"));
 
-				iguVentas.mostrarDatosBusqueda(ventas);
+	// 			iguVentas.mostrarDatosBusqueda(ventas);
 
-			} else {
+	// 		} else {
 
-				JOptionPane.showMessageDialog(null, "No hay ventas registradas con ese id");
+	// 			JOptionPane.showMessageDialog(null, "No hay ventas registradas con ese id");
 
-			}
+	// 		}
 
-			conexion.close();
+	// 		conexion.close();
 
-		} catch (SQLException es) {
+	// 	} catch (SQLException es) {
 
-	        es.printStackTrace();
+	//         es.printStackTrace();
 
-	    } catch (Exception e) {
+	//     } catch (Exception e) {
 	         
-	        e.printStackTrace();
+	//         e.printStackTrace();
 
-	    } finally {
+	//     } finally {
 
-	        try {
+	//         try {
 
-	            if (conexion != null) {
+	//             if (conexion != null) {
 
-	               conexion.close();
+	//                conexion.close();
 	               
-	            } 
+	//             } 
 
-	        }catch (SQLException es){
+	//         }catch (SQLException es){
 
-	            es.printStackTrace();
+	//             es.printStackTrace();
 
-	        }
-	    }
+	//         }
+	//     }
 
-	    return ventas;
-	}
+	//     return ventas;
+	// }
 
-	public void CancelarVenta(int idVenta, DTOVentas ventas){
-		try {
+	// public void CancelarVenta(int idVenta, DTOVentas ventas){
+	// 	try {
 
-			conexion = getConnection();
+	// 		conexion = getConnection();
 
-			String sql = "UPDATE Venta SET id_cancelacion = 2, estado = 'cancelado' WHERE id_venta = ?";
+	// 		String sql = "UPDATE Venta SET id_cancelacion = 2, estado = 'cancelado' WHERE id_venta = ?";
 
-			prepared = conexion.prepareStatement(sql);
+	// 		prepared = conexion.prepareStatement(sql);
 
-			ventas.setIdVenta(idVenta);
-			prepared.setInt(1,ventas.getIdVenta());
+	// 		ventas.setIdVenta(idVenta);
+	// 		prepared.setInt(1,ventas.getIdVenta());
 
-			int resultado = prepared.executeUpdate();
+	// 		int resultado = prepared.executeUpdate();
 
-			if (resultado == 1){
+	// 		if (resultado == 1){
 
-				JOptionPane.showMessageDialog(null, "Venta cancelada");
+	// 			JOptionPane.showMessageDialog(null, "Venta cancelada");
 
-			} else {
+	// 		} else {
 
-				JOptionPane.showMessageDialog(null, "No existe una venta con el id ingresado.");
+	// 			JOptionPane.showMessageDialog(null, "No existe una venta con el id ingresado.");
 
-			}
+	// 		}
 
-			conexion.close();
+	// 		conexion.close();
 
-		} catch (SQLException es) {
+	// 	} catch (SQLException es) {
 
-	        es.printStackTrace();
+	//         es.printStackTrace();
 
-	    } catch (Exception e) {
+	//     } catch (Exception e) {
 	         
-	        e.printStackTrace();
+	//         e.printStackTrace();
 
-	    } finally {
+	//     } finally {
 
-	        try {
+	//         try {
 
-	            if (conexion != null) {
+	//             if (conexion != null) {
 
-	               conexion.close();
+	//                conexion.close();
 	               
-	            } 
+	//             } 
 
-	        }catch (SQLException es){
+	//         }catch (SQLException es){
 
-	            es.printStackTrace();
+	//             es.printStackTrace();
 
-	        }
-	    }
+	//         }
+	//     }
 
-	}
+	// }
 
-	public void getTabla(DefaultTableModel modelo){
+	// public void getTabla(DefaultTableModel modelo){
 
-		try {
+	// 	try {
 
-			conexion = getConnection();
+	// 		conexion = getConnection();
 
-			String sql = "SELECT V.id_venta,C.descripcion,V.tipoPago,V.fecha,V.estado FROM Venta V, Cancelacion C WHERE V.id_cancelacion = C.id_cancelacion;";
+	// 		String sql = "SELECT V.id_venta,C.descripcion,V.tipoPago,V.fecha,V.estado FROM Venta V, Cancelacion C WHERE V.id_cancelacion = C.id_cancelacion;";
 	
-			prepared = conexion.prepareStatement(sql);
+	// 		prepared = conexion.prepareStatement(sql);
 
-			result = prepared.executeQuery();
+	// 		result = prepared.executeQuery();
 
-			modelo.setRowCount(0);
+	// 		modelo.setRowCount(0);
 
-			while (result.next()) {
+	// 		while (result.next()) {
 				
-				modelo.addRow(new Object[]{result.getInt("V.id_venta"), result.getString("C.descripcion"), result.getString("V.tipoPago"), result.getDate("V.fecha"), result.getString("V.estado")});
+	// 			modelo.addRow(new Object[]{result.getInt("V.id_venta"), result.getString("C.descripcion"), result.getString("V.tipoPago"), result.getDate("V.fecha"), result.getString("V.estado")});
 
-			} 
+	// 		} 
 
-			conexion.close();
+	// 		conexion.close();
 
-		} catch (SQLException es) {
+	// 	} catch (SQLException es) {
 
-	        es.printStackTrace();
+	//         es.printStackTrace();
 
-	    } catch (Exception e) {
+	//     } catch (Exception e) {
 	         
-	        e.printStackTrace();
+	//         e.printStackTrace();
 
-	    } finally {
+	//     } finally {
 
-	        try {
+	//         try {
 
-	            if (conexion != null) {
+	//             if (conexion != null) {
 
-	               conexion.close();
+	//                conexion.close();
 	               
-	            } 
+	//             } 
 
-	        }catch (SQLException es){
+	//         }catch (SQLException es){
 
-	            es.printStackTrace();
+	//             es.printStackTrace();
 
-	        }
-	    }
+	//         }
+	//     }
 
-    }
+ //    }
 
 	public Connection getConnection() {
    
@@ -329,5 +317,5 @@ public class DAOVentas{
         return conexion;
         
     } 
-    */
+    
 }

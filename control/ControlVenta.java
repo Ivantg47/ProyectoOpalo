@@ -46,12 +46,7 @@ public class ControlVenta implements ActionListener, FocusListener{
      */
 	public void actionPerformed(ActionEvent evento){
 
-		if (evento.getSource() instanceof JTextField) {
-			JTextField fuente = (JTextField) evento.getSource();
-		} else {
-			JButton fuente = (JButton) evento.getSource();
-		}
-		
+		daoVentas = new DAOVentas();
 		
 		try{
 
@@ -80,10 +75,27 @@ public class ControlVenta implements ActionListener, FocusListener{
 				
 				iguVentas.quitarProducto();
 				
-			} else if (evento.getActionCommand().equals("")) {
+			} else if (evento.getActionCommand().equals("venta")) {
 
+				daoVentas.agregarVenta(iguVentas.generarVenta());
+				iguVentas.nuevaVenta();
 
-			}
+				JOptionPane.showMessageDialog( null, "Venta registrada",
+               					"Registro venta", JOptionPane.INFORMATION_MESSAGE);
+
+			} else if (evento.getActionCommand().equals("cancelar")) {
+
+				// daoVentas.cancelarVenta(iguVentas.generarVenta());
+				iguVentas.nuevaVenta();
+
+				JOptionPane.showMessageDialog( null, "Venta cancelada",
+               					"Cancelacion venta", JOptionPane.INFORMATION_MESSAGE);
+
+			} else if (evento.getActionCommand().equals("nueva")) {
+
+				iguVentas.nuevaVenta();
+				
+			} 
 
 		} catch (NullPointerException nullEx) {
 
