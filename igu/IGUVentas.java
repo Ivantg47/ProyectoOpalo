@@ -358,7 +358,7 @@ public class IGUVentas extends JFrame{
 		
 		JButton btVenta = new JButton(new ImageIcon(getClass().getResource("/iconos/payment-method.png")));
 		btVenta.setPreferredSize(new Dimension(80, 80));
-		btVenta.setToolTipText("Concretar venta");
+		btVenta.setToolTipText("Generar venta");
 		btVenta.addActionListener(control);
         btVenta.setActionCommand("concretarVenta");
 
@@ -381,7 +381,7 @@ public class IGUVentas extends JFrame{
 		botones.add(getPanelTotal());
 
 		botones.setPreferredSize(new Dimension(775, 90));
-		botones.setBackground(new Color(255,100,255));
+		// botones.setBackground(new Color(255,100,255));
 		return botones;
 
 	}//getPanelBotonesVenta
@@ -392,13 +392,13 @@ public class IGUVentas extends JFrame{
 		pTotal.setLayout(null);
 
 		JLabel subtotal = new JLabel("Subtotal:");
-		subtotal.setBounds(10, 2, 60, 23);
+		subtotal.setBounds(210, 2, 60, 23);
 		pTotal.add(subtotal);
 		JLabel iva = new JLabel("I.V.A:");
-		iva.setBounds(10, 30, 60, 23);
+		iva.setBounds(210, 30, 60, 23);
 		pTotal.add(iva);
 		JLabel total = new JLabel("Total:");
-		total.setBounds(10, 57, 60, 23);
+		total.setBounds(210, 57, 60, 23);
 		pTotal.add(total);
 		// total.setFont(new Font("Tahoma", Font.PLAIN, 36));
 
@@ -406,24 +406,24 @@ public class IGUVentas extends JFrame{
 		texTotal[0].setText(formato.format(0));
 		texTotal[0].setHorizontalAlignment(JTextField.RIGHT);
 		pTotal.add(texTotal[0]);
-		texTotal[0].setBounds(70, 2, 100, 23);
+		texTotal[0].setBounds(270, 2, 100, 23);
 		texTotal[0].setEnabled(false);
 		//iva
 		texTotal[1].setText(formato.format(0));
 		texTotal[1].setHorizontalAlignment(JTextField.RIGHT);
 		pTotal.add(texTotal[1]);
-		texTotal[1].setBounds(70, 30, 100, 23);
+		texTotal[1].setBounds(270, 30, 100, 23);
 		texTotal[1].setEnabled(false);
 		//total
 		texTotal[2].setText(formato.format(0));
 		texTotal[2].setHorizontalAlignment(JTextField.RIGHT);
 		pTotal.add(texTotal[2]);
-		texTotal[2].setBounds(70, 57, 100, 23);
+		texTotal[2].setBounds(270, 57, 100, 23);
 		texTotal[2].setEnabled(false);
 		// texTotal.setFont(new Font("Tahoma", Font.PLAIN, 30));
 
-		pTotal.setPreferredSize(new Dimension(180, 85));
-		pTotal.setBackground(new Color(200,100,155));
+		pTotal.setPreferredSize(new Dimension(380, 85));
+		// pTotal.setBackground(new Color(200,100,155));
 		
 		return pTotal;
 	}//getPanelTotal
@@ -561,46 +561,61 @@ public class IGUVentas extends JFrame{
 	 
 	}//quitarProducto
 
-	public DTOVentas generarVenta(){
+	public DTOVentas generarVenta() throws IllegalArgumentException {
 
 		campoVacio();
-		DTOVentas venta = new DTOVentas();
 
-		venta.setFecha(campoFecha.getText());
-		venta.setIdCliente(Integer.valueOf(aTextoCliente[0].getText()));
+		if (!campoFolio.getText().equals("")) {
 
-		int idPreoducto[] = new int[modelo.getRowCount()];
-		int idCantidad[] = new int[modelo.getRowCount()];
-
-		for (int con = 0; con < modelo.getRowCount(); con++) {
+			DTOVentas venta = new DTOVentas();
+	
+			venta.setFecha(campoFecha.getText());
+			venta.setIdCliente(Integer.valueOf(aTextoCliente[0].getText()));
+	
+			int idPreoducto[] = new int[modelo.getRowCount()];
+			int idCantidad[] = new int[modelo.getRowCount()];
+	
+			for (int con = 0; con < modelo.getRowCount(); con++) {
+				
+				idPreoducto[con] = (int) tabla.getValueAt(con, 0);
+				idCantidad[con] = (int) tabla.getValueAt(con, 3);
+	
+			}
+	
+			venta.setIdProducto(idPreoducto);
+			venta.setCantidad(idCantidad);
+	
+	        Object[] options = { new ImageIcon(getClass().getResource("/iconos/efectivo (1).png")), 
+	        					new ImageIcon(getClass().getResource("/iconos/tarjeta-de-credito (1).png")) };
 			
-			idPreoducto[con] = (int) tabla.getValueAt(con, 0);
-			idCantidad[con] = (int) tabla.getValueAt(con, 3);
+			int opcion = JOptionPane.showOptionDialog(this, "Seleccione metodo de pago", "Metodo de pago",
+						 JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, null);
 
-		}
+			if (opcion == 0){
+	
+				venta.setTipoPago("EFECTIVO");
+	
+			} else if (opcion == 0){
+	
+				venta.setTipoPago("TARJETA");
+	
+			} else {
 
-		venta.setIdProducto(idPreoducto);
-		venta.setCantidad(idCantidad);
+				throw new IllegalArgumentException("cancelo");
 
-        Object[] options = { new ImageIcon(getClass().getResource("/iconos/efectivo (1).png")), 
-        					new ImageIcon(getClass().getResource("/iconos/tarjeta-de-credito (1).png")) };
-
-		if (JOptionPane.showOptionDialog(this, "Seleccione metodo de pago", "Metodo de pago",
-			JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, null) == 0){
-
-			venta.setTipoPago("EFECTIVO");
+			}
+				
+				venta.setEstado("CONCRETADA");
 
 		} else {
 
-			venta.setTipoPago("TARJETA");
+			throw new IllegalArgumentException("La venta ya esta registrada");
 
 		}
-		
-		venta.setEstado("CONCRETADA");
 
 		return venta;
 
-	}
+	} 
 
 	public void campoVacio() throws NullPointerException, IllegalArgumentException {
 
