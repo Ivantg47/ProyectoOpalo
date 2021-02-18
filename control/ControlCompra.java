@@ -140,9 +140,16 @@ public class ControlCompra implements ActionListener, FocusListener{
      * Metodo, que espera a que el campo buscar sea seleccionado y en caso de no tener datos los limpia.
      * @param evento indica cuando el campo buscar es seleccionado.
      */
-    public void focusGained(FocusEvent e) {
+    public void focusGained(FocusEvent evento) {
 
-		JTextField campo = (JTextField) e.getSource();
+		JTextField campo = (JTextField) evento.getSource();
+
+        if(campo.getText().equals("Folio")){
+
+            campo.setForeground(Color.BLACK);
+            campo.setText(null);
+
+        }
            
     }
 
@@ -150,9 +157,16 @@ public class ControlCompra implements ActionListener, FocusListener{
      * Metodo, que espera a que el campo buscar sea desseleccionado y en caso de no tener datos coloca un texto.
      * @param evento indica cuando el campo buscar es desseleccionado.
      */
-    public void focusLost(FocusEvent e) {
+    public void focusLost(FocusEvent evento) {
 
-    	JTextField campo = (JTextField) e.getSource();
+    	JTextField campo = (JTextField) evento.getSource();
+
+        if(campo.getText().equals("")){
+
+            campo.setText("Folio");
+            campo.setForeground(new Color(111,111,111));
+
+        }
 
         
     }

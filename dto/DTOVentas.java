@@ -34,10 +34,6 @@ public class DTOVentas{
 	 */
 	private String sCliente;
 	/**
- 	 * Atributo que guarda la cantidad vendida de un producto.
-	 */
-	private float fCantidadVendida;
-	/**
  	 * Atributo que guarda el id del cliente.
 	 */
 	private int eIdCliente;
@@ -95,14 +91,6 @@ public class DTOVentas{
      */
 	public void setEstado(String sEstado){
 		this.sEstado = sEstado;
-	}
-
-	/**
-     * setCantidadVendida es un método que modifica el valor de la cantidad vendida en una venta.
-     * @param fCantidadVendida atributo que define la cantidad vendida en una venta.
-     */
-	public void setCantidadVendida(float fCantidadVendida){
-		this.fCantidadVendida = fCantidadVendida;
 	}
 
 	/**
@@ -176,14 +164,6 @@ public class DTOVentas{
      */
 	public String getEstado(){
 		return sEstado;
-	}
-
-	/**
-     * getCantidadVendida es un método que devuelve la cantidad vendida de un producto.
-     * @return fCantidadVendida cantidad vendida de un producto.
-     */
-	public float getCantidadVendida(){
-		return fCantidadVendida;
 	}
 
 	/**

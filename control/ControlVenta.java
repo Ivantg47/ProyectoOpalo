@@ -132,11 +132,11 @@ public class ControlVenta implements ActionListener, FocusListener{
 	
 	/**
      * focusGained es un método que sirve para saber cuando se selecciona un campo de texto.
-     * @param e objeto del tipo FocusEvent
+     * @param evento objeto del tipo FocusEvent
      */	
-	public void focusGained(FocusEvent e) {
+	public void focusGained(FocusEvent evento) {
 
-		JTextField campo = (JTextField) e.getSource();
+		JTextField campo = (JTextField) evento.getSource();
 
 		if(campo.getText().equals("Folio")){
 
@@ -148,11 +148,11 @@ public class ControlVenta implements ActionListener, FocusListener{
 
     /**
      * focusLost es un método que sirve para saber cuando se deselcciona un campo de texto.
-     * @param e objeto del tipo FocusEvent
+     * @param evento objeto del tipo FocusEvent
      */	
-    public void focusLost(FocusEvent e) {
+    public void focusLost(FocusEvent evento) {
 
-    	JTextField campo = (JTextField) e.getSource();
+    	JTextField campo = (JTextField) evento.getSource();
 
     	if(campo.getText().equals("")){
 

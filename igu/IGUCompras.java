@@ -41,18 +41,20 @@ public class IGUCompras extends JFrame{
 	//arreglo de labels para los datos de la compra.
 	private JLabel aDatosProducto[] = {
 
-		new JLabel("Insumo"),
-		new JLabel("Precio"),
-        new JLabel("Cantidad"),
+		new JLabel("Codigo"),
+		new JLabel("Descripcion"),
+		new JLabel("Precio Unitario"),
+        new JLabel("Cantidad")
 
 	};
 
 	//arreglo de labels para los datos de la compra.
 	private JTextField aTextoProducto[] = {
 
-		new JTextField(), // Descripcion
-		new JTextField(), // Precio
-        new JTextField(), //Cantidad
+		new JTextField(), // 0 -> Codigo
+		new JTextField(), // 1 -> Descripcion
+		new JTextField(), // 2 -> Precio
+        new JTextField(), // 3 -> Cantidad
 
 	};
 
@@ -132,15 +134,17 @@ public class IGUCompras extends JFrame{
 
 		campoBuscar.setText("Folio");
 		campoBuscar.setForeground(new Color(111,111,111));
-		campoBuscar.setPreferredSize(new Dimension(200,20));
+		campoBuscar.setPreferredSize(new Dimension(200,25));
 		panelBuscar.add(campoBuscar);
 		campoBuscar.addFocusListener(control);
+		campoBuscar.addActionListener(control);
+        campoBuscar.setActionCommand("buscarCompra");
 
-		JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa.png")));
-		btBuscar.setPreferredSize(new Dimension(32,32));
+		JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa (2).png")));
+		btBuscar.setPreferredSize(new Dimension(25,25));
 		panelBuscar.add(btBuscar);
 		btBuscar.addActionListener(control);
-        btBuscar.setActionCommand("btBuscar");
+        btBuscar.setActionCommand("buscarCompra");
 
         panelBuscar.setPreferredSize(new Dimension(785, 55));
         
@@ -200,18 +204,40 @@ public class IGUCompras extends JFrame{
 
 		}
 		
-        aDatosProducto[0].setBounds(10, 17, 80, 25);
-        aTextoProducto[0].setBounds(10, 43, 250, 25);
+        aDatosProducto[0].setBounds(10, 12, 50, 25);
+        aTextoProducto[0].setBounds(10, 35, 50, 25);
+        aTextoProducto[0].setHorizontalAlignment(JTextField.RIGHT);
+        aTextoProducto[0].addActionListener(control);
+        aTextoProducto[0].setActionCommand("buscarInsertar");
 
-        aDatosProducto[1].setBounds(330, 17, 100, 25);
-        aTextoProducto[1].setBounds(330, 43, 100, 25);
+        aDatosProducto[1].setBounds(65, 12, 80, 25);
+        aTextoProducto[1].setBounds(65, 35, 280, 25);
+        aTextoProducto[1].setEnabled(false);
 
-        aDatosProducto[2].setBounds(435, 17, 70, 25);
-        aTextoProducto[2].setBounds(435, 43, 70, 25);
+        aDatosProducto[2].setBounds(350, 12, 100, 25);
+        aTextoProducto[2].setBounds(350, 35, 100, 25);
+        aTextoProducto[2].setHorizontalAlignment(JTextField.RIGHT);
 
+        aDatosProducto[3].setBounds(455, 12, 90, 25);
+        aTextoProducto[3].setBounds(455, 35, 90, 25);
+        aTextoProducto[3].setHorizontalAlignment(JTextField.RIGHT);
+
+        JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa (2).png")));
+		btBuscar.setToolTipText("Buscar insumo");
+		btBuscar.addActionListener(control);
+		btBuscar.setActionCommand("buscarProducto");
+
+		JButton btLimpiar = new JButton(new ImageIcon(getClass().getResource("/iconos/borrador (2).png")));
+		btLimpiar.setToolTipText("Limpiar campos");
+		btLimpiar.addActionListener(control);
+		btLimpiar.setActionCommand("limpiarProducto");
         
+        panelProductos.add(btBuscar);
+		panelProductos.add(btLimpiar);
+		btBuscar.setBounds(550, 35, 25, 25);
+		btLimpiar.setBounds(580, 35, 25, 25);
 
-        panelProductos.setPreferredSize(new Dimension(620, 75));
+        panelProductos.setPreferredSize(new Dimension(615, 75));
 
 		return panelProductos;
 

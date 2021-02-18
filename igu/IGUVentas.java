@@ -62,8 +62,7 @@ public class IGUVentas extends JFrame{
 		new JLabel("Descripcion"),
 		new JLabel("Precio"),
 		new JLabel("Disponible"),
-		new JLabel("Cantidad"),
-		new JLabel("Total"),
+		new JLabel("Cantidad")
 
 	};
 
@@ -74,7 +73,6 @@ public class IGUVentas extends JFrame{
 		new JTextField(), //2 -> Precio
 		new JTextField(), //3 -> Disponible
 		new JTextField(), //4 -> cantidad
-		new JTextField()  //5 -> total
 
 	};
 
@@ -278,11 +276,7 @@ public class IGUVentas extends JFrame{
         aTextoProducto[4].setEnabled(false);
         aTextoProducto[4].addActionListener(control);
         aTextoProducto[4].setActionCommand("agregar");
-        //total
-        // aDatosProducto[5].setBounds(515, 12, 85, 25);
-        // aTextoProducto[5].setBounds(515, 35, 85, 25);
-        // aTextoProducto[5].setHorizontalAlignment(JTextField.RIGHT);
-        // aTextoProducto[5].setEnabled(false);
+        
 
         JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa (2).png")));
 		btBuscar.setToolTipText("Buscar producto");
@@ -564,10 +558,10 @@ public class IGUVentas extends JFrame{
 	public DTOVentas generarVenta() throws IllegalArgumentException {
 
 		campoVacio();
+		DTOVentas venta = new DTOVentas();
 
 		if (!campoFolio.getText().equals("")) {
 
-			DTOVentas venta = new DTOVentas();
 	
 			venta.setFecha(campoFecha.getText());
 			venta.setIdCliente(Integer.valueOf(aTextoCliente[0].getText()));
