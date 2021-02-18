@@ -28,7 +28,9 @@ public class DAOVentas{
 
     }
 
-	public void agregarVenta(DTOVentas venta) throws IllegalArgumentException, SQLException{
+	public int agregarVenta(DTOVentas venta) throws IllegalArgumentException, SQLException{
+
+		int folio = 0;
 
 		try {
 
@@ -50,9 +52,10 @@ public class DAOVentas{
 
 				if (result.next()){
 
+					folio = result.getInt("codigo");
 					sql = "INSERT INTO Venta_Cliente (id_venta, id_cliente) VALUES (?, ?);";
 					prepared = conexion.prepareStatement(sql);
-					prepared.setInt(1, result.getInt("codigo"));
+					prepared.setInt(1, folio);
 					prepared.setInt(2, venta.getIdCliente());
 
 					if (prepared.executeUpdate() != 0) {
@@ -117,6 +120,7 @@ public class DAOVentas{
 	        }
 	    }
 
+	    return folio;
 	}
 
 	public DTOVentas buscarVenta(int idVenta, DefaultTableModel modelo) throws IllegalArgumentException, SQLException{
@@ -127,7 +131,7 @@ public class DAOVentas{
 
 			conexion = getConnection();
 
-			String sql = "SELECT V.id_venta, C.id_cliente, fecha FROM Venta V INNER JOIN Venta_Cliente C ON (V.id_venta = C.id_venta) WHERE V.id_venta = ?;";
+			String sql = "SELECT * FROM DatosVenta WHERE id_venta = ?;";
 
 			prepared = conexion.prepareStatement(sql);
 
@@ -140,6 +144,7 @@ public class DAOVentas{
 				venta.setIdVenta(idVenta);
 				venta.setFecha(result.getString("fecha"));
 				venta.setIdCliente(result.getInt("id_cliente"));
+				venta.setCliente(result.getString("nombre"));
 
 				sql = ("SELECT P.id_producto AS id, CONCAT(P.nombre, ' ', P.descripcion) AS nombre, VP.cantidad, Pr.precio"
 						+ " FROM Venta_Producto AS VP, Producto AS P ,"

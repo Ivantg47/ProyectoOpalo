@@ -192,11 +192,11 @@ public class DAOProducto{
 
 			conexion = getConnection();
 
-			String sql = "SELECT COUNT(*) AS filas FROM DatoProducto WHERE nombre = ?;";
+			String sql = "SELECT COUNT(*) AS filas FROM DatoProducto WHERE nombre LIKE ?;";
 	
 			prepared = conexion.prepareStatement(sql);
 	
-			prepared.setString(1, nombre);
+			prepared.setString(1, "%" + nombre + "%");
 
 			result = prepared.executeQuery();
 
@@ -206,9 +206,9 @@ public class DAOProducto{
 
 				if (filas != 0) {
 					
-					sql = "SELECT * FROM DatoProducto WHERE nombre = ?;";
+					sql = "SELECT * FROM DatoProducto WHERE nombre LIKE ?;";
 					prepared = conexion.prepareStatement(sql);
-					prepared.setString(1, nombre);
+					prepared.setString(1, "%" + nombre + "%");
 					result = prepared.executeQuery();
 
 					if (filas == 1 && result.next()) {
@@ -445,11 +445,11 @@ public class DAOProducto{
 
 			conexion = getConnection();
 
-			String sql = "SELECT id_producto, nombre, descripcion, existenciaActual FROM Producto WHERE nombre = ? ORDER BY id_producto;";
+			String sql = "SELECT id_producto, nombre, descripcion, existenciaActual FROM Producto WHERE nombre LIKE ? ORDER BY id_producto;";
 	
 			prepared = conexion.prepareStatement(sql);
 
-			prepared.setString(1, nombre);
+			prepared.setString(1, "%" + nombre + "%");
 
 			result = prepared.executeQuery();
 

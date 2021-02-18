@@ -77,10 +77,10 @@ public class ControlVenta implements ActionListener, FocusListener{
 				
 			} else if (evento.getActionCommand().equals("concretarVenta")) {
 
-				daoVentas.agregarVenta(iguVentas.generarVenta());
+				int folio = daoVentas.agregarVenta(iguVentas.generarVenta());
 				iguVentas.nuevaVenta();
 
-				JOptionPane.showMessageDialog( null, "Venta registrada",
+				JOptionPane.showMessageDialog( null, "Venta registrada con folio: " + folio,
                					"Registro venta", JOptionPane.INFORMATION_MESSAGE);
 
 			} else if (evento.getActionCommand().equals("cancelarVenta")) {

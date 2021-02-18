@@ -659,6 +659,7 @@ public class IGUVentas extends JFrame{
 		aTextoCliente[0].setText(String.valueOf(venta.getIdCliente()));
 		aTextoCliente[0].setEnabled(false);
 		aTextoProducto[0].setEnabled(false);
+		aTextoCliente[1].setText(venta.getCliente());
 
 		campoBuscar.setText("Folio");
 		campoBuscar.setForeground(new Color(111,111,111));

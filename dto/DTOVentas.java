@@ -30,9 +30,9 @@ public class DTOVentas{
 	 */
 	private String sEstado;
 	/**
- 	 * Atributo que guarda la descripcion de un producto.
+ 	 * Atributo que guarda el nombre del cliente.
 	 */
-	private String sDescripcion;
+	private String sCliente;
 	/**
  	 * Atributo que guarda la cantidad vendida de un producto.
 	 */
@@ -134,8 +134,8 @@ public class DTOVentas{
      * setDescripcion es un método que modifica el valor de la descripcion de un producto.
      * @param sDescripcion atributo que define la descripcion de un producto.
      */
-	public void setDescripcion(String sDescripcion){
-		this.sDescripcion = sDescripcion;
+	public void setCliente(String sCliente){
+		this.sCliente = sCliente;
 	}
 
 	/**
@@ -218,8 +218,8 @@ public class DTOVentas{
      * getDescripcion es un método que devuelve la descripcion de un producto.
      * @return sDescripcion descripcion del producto.
      */
-	public String getDescripcion(){
-		return sDescripcion;
+	public String getCliente(){
+		return sCliente;
 	}
 
 }

@@ -127,3 +127,8 @@ CREATE OR REPLACE VIEW DatoProducto AS SELECT Pr.id_producto AS id_producto, Pr.
 CREATE OR REPLACE  VIEW NombreConcatenado AS SELECT id_cliente, nombre, aPaterno, aMaterno, correo, telefono, direccion,
 	CONCAT(nombre, ' ', aPaterno, ' ', aMaterno) AS completo FROM Cliente;
 
+CREATE OR REPLACE  VIEW DatosVenta AS
+SELECT V.id_venta, C.id_cliente, fecha, CONCAT(nombre, ' ', aPaterno, ' ', aMaterno) AS nombre
+FROM Venta V INNER JOIN Venta_Cliente VC ON (V.id_venta = VC.id_venta)
+INNER JOIN Cliente C ON (VC.id_cliente = C.id_cliente);
+
