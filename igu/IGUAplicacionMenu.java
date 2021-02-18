@@ -14,6 +14,9 @@ public class IGUAplicacionMenu extends JFrame{
 
 	// private ControlProducto producto;
 
+	/**
+     * Constructor sin parametros para la clase principal.
+     */
 	public IGUAplicacionMenu(){
 
 		super("Pasteler\u00EDa Fun Cake");
@@ -27,6 +30,9 @@ public class IGUAplicacionMenu extends JFrame{
 
 	}
 
+	/**
+     * Metodo que añade las taps de cada modulo a la interfaz principal
+     */
 	public void setJTabbedPane(){
 		
 		JTabbedPane tpPanel = new JTabbedPane();
@@ -46,6 +52,9 @@ public class IGUAplicacionMenu extends JFrame{
 		add(tpPanel);
 	}
 
+	/**
+     * Metodo principal
+     */
 	public static void main(String[] args) {
 		
 		IGUAplicacionMenu oIGUAplicacionMenu = new IGUAplicacionMenu();
