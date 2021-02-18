@@ -156,52 +156,70 @@ public class DTOVentas{
 
 	/**
      * getCancelacion es un método que devuelve el id de cancelacion.
-     * @return eIDcancelacion id de cancelación de laa venta.
+     * @return eIDcancelacion id de cancelación de la venta.
      */
 	public int getCancelacion(){
 		return eIDcancelacion;
 	}
 
 	/**
-     * getCancelacion es un método que devuelve el id de cancelacion.
-     * @return eIDcancelacion id de cancelación de laa venta.
+     * getFecha es un método que devuelve la fecha.
+     * @return sfecha fecha de la venta.
      */
 	public String getFecha(){
 		return sfecha;
 	}
 
+	/**
+     * getEstado es un método que devuelve el estado de la venta.
+     * @return sEstado estado de la venta.
+     */
 	public String getEstado(){
 		return sEstado;
 	}
 
+	/**
+     * getCantidadVendida es un método que devuelve la cantidad vendida de un producto.
+     * @return fCantidadVendida cantidad vendida de un producto.
+     */
 	public float getCantidadVendida(){
 		return fCantidadVendida;
 	}
 
+	/**
+     * getIdCliente es un método que devuelve el id del cliente.
+     * @return eIdCliente id del cliente.
+     */
 	public int getIdCliente(){
 		return eIdCliente;
 	}
 
+	/**
+     * getIdProducto es un método que devuelve los id de los productos vendidos.
+     * @return aIdProducto arreglo con los id de los productos vendidos.
+     */
 	public int[] getIdProducto(){
 
 		return aIdProducto;
 
 	}
 
+	/**
+     * getCantidad es un método que devuelve la cantidad vendida de un producto.
+     * @return aCantidad arreglo con las cantidades vendidas de un producto.
+     */
 	public int[] getCantidad(){
 
 		return aCantidad; 
 
 	}
 
+	/**
+     * getDescripcion es un método que devuelve la descripcion de un producto.
+     * @return sDescripcion descripcion del producto.
+     */
 	public String getDescripcion(){
 		return sDescripcion;
 	}
 
-	// public String toString(){
-
-	// 	return "id: " + idVenta + "\ntipo pago: " + stipoPago + "\nCancelacion: " 
-	// 			+ eIDcancelacion + "\nfecha: " + sfecha + "\nEstado: " + sEstado + 
-	// 			"\nCantidad Vendida: " + fCantidadVendida;
-	// }
 }
