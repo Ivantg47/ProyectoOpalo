@@ -428,26 +428,36 @@ public class IGUCompras extends JFrame{
 		campoVacio();
 		DTOCompra compra = new DTOCompra();
 		String sFecha = "";
+		Date oFecha;
 
-		sFecha = texDia.getText() + "/" + texMes.getText() + "/" + texAnio.getText();
-		java.sql.Date.valueOf(sFecha);
-			
-		int aIDInsumos[] = new int[modelo.getRowCount()];
-		int  aCantidades[] = new int[modelo.getRowCount()];
-		float aCostosUnitarios[] = new float[modelo.getRowCount()];
+		try{
 
-		for (int con = 0; con < modelo.getRowCount(); con++) {
-			
-			aIDInsumos[con] = (int) tabla.getValueAt(con, 0);
-			aCantidades[con] = (int) tabla.getValueAt(con, 2);
-			aCostosUnitarios[con] = (float) tabla.getValueAt(con, 3);
+			sFecha = texAnio.getText() + "-" + texMes.getText() + "-" + texDia.getText();
+		
+			oFecha = java.sql.Date.valueOf(sFecha);
+
+			int aIDInsumos[] = new int[modeloDTO.getRowCount()];
+			int  aCantidades[] = new int[modeloDTO.getRowCount()];
+			float aCostosUnitarios[] = new float[modeloDTO.getRowCount()];
+
+			for (int con = 0; con < modeloDTO.getRowCount(); con++) {
+				
+				aIDInsumos[con] = (int) tabla.getValueAt(con, 0);
+				aCantidades[con] = (int) tabla.getValueAt(con, 2);
+				aCostosUnitarios[con] = (float) tabla.getValueAt(con, 3);
+			}
+
+			compra.setFechaCompra(sFecha);
+			compra.setIDInsumos(aIDInsumos);
+			compra.setCantidades(aCantidades);
+			compra.setCostosUnitarios(aCostosUnitarios);
+
+			return compra;
+
+		}catch(IllegalArgumentException illEx){
+
+			throw new IllegalArgumentException("Fecha invalida");
 		}
-
-		compra.setIDInsumos(aIDInsumos);
-		compra.setCantidades(aCantidades);
-		compra.setCostosUnitarios(aCostosUnitarios);
-
-		throw new IllegalArgumentException("No se ha seleccionado un producto");
 
 	}
 
@@ -458,6 +468,19 @@ public class IGUCompras extends JFrame{
 			throw new IllegalArgumentException("No se han ingresado insumos");
 
 		}
+
+	}
+
+	public void nuevaVenta(){
+
+		limpiarCampoInsumo();
+
+		modeloDTO.setRowCount(0);
+		texDia.setText(formato.format(0));
+		texMes.setText(formato.format(0));
+		texAnio.setText(formato.format(0));
+		fTotal = 0.0f;
+		
 
 	}
 }

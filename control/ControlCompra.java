@@ -60,13 +60,13 @@ public class ControlCompra implements ActionListener, FocusListener{
                 oIGU.quitarInsumo();
 
             } else if (evento.getActionCommand().equals("Registrar")) {
-JOptionPane.showMessageDialog( null, "Venta registrada con folio");
-                /*int folio = oDAO.agregar(*/oIGU.generarCompra();/*);
+
+                int folio = oDAO.agregar(oIGU.generarCompra());
                 oIGU.nuevaVenta();
 
                 JOptionPane.showMessageDialog( null, "Venta registrada con folio: " + folio,
                                 "Registro venta", JOptionPane.INFORMATION_MESSAGE);
-*/
+
             }     
 
         }catch (Exception ex){
