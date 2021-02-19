@@ -12,6 +12,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.text.DecimalFormat;
 
 import ProyectoOpalo.control.ControlVenta;
 import ProyectoOpalo.dao.DAOVentas;
@@ -23,12 +24,24 @@ import ProyectoOpalo.dto.DTOClientes;
 
 public class IGUVentas extends JFrame{
 
+	private static final float IVA = 0.16f;
 	private ControlVenta control = new ControlVenta(this);
-	public DTOVentas ventas = new DTOVentas();
+	private DecimalFormat formato = new DecimalFormat("$ #,##0.00");
 	private DefaultTableModel modelo;
 	private JTable tabla;
+	private float total;
+	private JTextField campoBuscar;
+	private JTextField campoFolio;
+	private JTextField campoFecha;
+	private JLabel estado;
 
-	JTextField campoBuscar, texTotal;
+	private JTextField texTotal[] = {
+
+		new JTextField(), //0 -> subtotal
+		new JTextField(), //1 -> iva
+		new JTextField(), //2 -> total
+
+	};
 
 	private JLabel aDatosCliente[] = {
 
@@ -39,8 +52,8 @@ public class IGUVentas extends JFrame{
 
 	public JTextField aTextoCliente[] = {
 
-		new JTextField(),
-		new JTextField()
+		new JTextField(), //0 -> id
+		new JTextField()  //1 -> nombre
 
 	};
 
@@ -50,8 +63,7 @@ public class IGUVentas extends JFrame{
 		new JLabel("Descripcion"),
 		new JLabel("Precio"),
 		new JLabel("Disponible"),
-		new JLabel("Cantidad"),
-		new JLabel("Total"),
+		new JLabel("Cantidad")
 
 	};
 
@@ -62,16 +74,11 @@ public class IGUVentas extends JFrame{
 		new JTextField(), //2 -> Precio
 		new JTextField(), //3 -> Disponible
 		new JTextField(), //4 -> cantidad
-		new JTextField()  //5 -> total
 
 	};
 
-	private JTextField campoFolio, campoFecha;
-
-	private JButton btAceptarP, btLimpiarP;
-	private JButton btAceptarC = new JButton("Aceptar"), btLimpiarC = new JButton("Limpiar");
-	private JButton btAgregar, btCancelar;
-
+	
+	
 
 	public IGUVentas(){
 
@@ -88,7 +95,7 @@ public class IGUVentas extends JFrame{
 
 		return panelVentas;
 
-	}
+	}//getPanelVentas
 
 	public JPanel getPanelVenta(){
 
@@ -107,7 +114,7 @@ public class IGUVentas extends JFrame{
 
 		return panelVentas;
 
-	}
+	}//getPanelVenta
 
 	public JPanel getPanelBuscar(){
 
@@ -126,21 +133,23 @@ public class IGUVentas extends JFrame{
 		campoBuscar = new JTextField();
 		campoBuscar.setText("Folio");
 		campoBuscar.setForeground(new Color(111,111,111));
-		campoBuscar.setPreferredSize(new Dimension(200,20));
+		campoBuscar.setPreferredSize(new Dimension(200,25));
 		panelBuscar.add(campoBuscar);
 		campoBuscar.addFocusListener(control);
+		campoBuscar.addActionListener(control);
+		campoBuscar.setActionCommand("buscarVenta");
 
-		JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa.png")));
-		btBuscar.setPreferredSize(new Dimension(32,32));
+		JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa (2).png")));
+		btBuscar.setPreferredSize(new Dimension(25,25));
 		panelBuscar.add(btBuscar);
 		btBuscar.addActionListener(control);
-        btBuscar.setActionCommand("btBuscar");
+        btBuscar.setActionCommand("buscarVenta");
 
         panelBuscar.setPreferredSize(new Dimension(785, 55));
         // panelBuscar.setBackground(new Color(255,155,100));
 		return panelBuscar;
 
-	}
+	}//getPanelBuscar
 
 	public JPanel getPanelDatos(){
 
@@ -155,7 +164,7 @@ public class IGUVentas extends JFrame{
 		JLabel folio = new JLabel("Folio");
 		JLabel fecha = new JLabel("Fecha");
 		campoFolio = new JTextField();
-		campoFecha = new JTextField(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
+		campoFecha = new JTextField(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 
 		panel.add(folio);
 		panel.add(fecha);
@@ -165,18 +174,26 @@ public class IGUVentas extends JFrame{
 		campoFolio.setEnabled(false);
 
 
-		cliente.setBounds(5, 5, 350, 68);
+		cliente.setBounds(5, 5, 375, 68);
 		folio.setBounds(520, 5, 40, 25);
 		campoFolio.setBounds(552, 5, 50, 25);
 		fecha.setBounds(610, 5, 40, 25);
 		campoFecha.setBounds(655, 5, 90, 25);
 		campoFecha.setForeground(Color.BLACK);
 
+		estado = new JLabel();
+		estado.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		estado.setHorizontalAlignment(JTextField.CENTER);
+
+        panel.add(estado);
+        estado.setBounds(400, 40, 350, 30);
+
 		panel.setPreferredSize(new Dimension(775, 75));
 		// panel.setBackground(new Color(155,1,155));
+
 		return panel;
 
-	}
+	}//getPanelDatos
 
 	public JPanel getPanelDatosCliente(){
 
@@ -192,20 +209,38 @@ public class IGUVentas extends JFrame{
 			panelCliente.add(aTextoCliente[i]); 
 
 		}
+		//id cliente
+		aDatosCliente[0].setBounds(10, 12, 50, 25);
+		aTextoCliente[0].setBounds(10, 36, 50, 25);
+		aTextoCliente[0].addActionListener(control);
+		aTextoCliente[0].setActionCommand("buscarCliente");
+		aTextoCliente[0].setHorizontalAlignment(JTextField.RIGHT);
+		//nombre cliente
+		aDatosCliente[1].setBounds(65, 12, 80, 25);
+		aTextoCliente[1].setBounds(65, 36, 240, 25);
+		aTextoCliente[1].setEnabled(false);
 
-		aDatosCliente[0].setBounds(10, 12, 60, 25);
-		aTextoCliente[0].setBounds(10, 36, 60, 25);
+		JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa (2).png")));
+		btBuscar.setToolTipText("Buscar cliente");
+		btBuscar.addActionListener(control);
+		btBuscar.setActionCommand("buscarCliente");
 
-		aDatosCliente[1].setBounds(75, 12, 80, 25);
-		aTextoCliente[1].setBounds(75, 36, 230, 25);
+		JButton btLimpiar = new JButton(new ImageIcon(getClass().getResource("/iconos/borrador (2).png")));
+		btLimpiar.setToolTipText("Limpiar campos");
+		btLimpiar.addActionListener(control);
+		btLimpiar.setActionCommand("limpiarCliente");
 
-		panelCliente.setPreferredSize(new Dimension(350, 75));
+		panelCliente.add(btBuscar);
+		panelCliente.add(btLimpiar);
+		btBuscar.setBounds(310, 36, 25, 25);
+		btLimpiar.setBounds(340, 36, 25, 25);
+
+		panelCliente.setPreferredSize(new Dimension(370, 75));
 		// panelCliente.setBackground(new Color(155,155,1));
 
 		return panelCliente;
 
-	}
-		
+	}//getPanelDatosCliente	
 
 	public JPanel getPanelDatosProducto(){
 
@@ -222,30 +257,55 @@ public class IGUVentas extends JFrame{
 
 		}
 		//codigo
-		aDatosProducto[0].setBounds(10, 12, 60, 25);
-        aTextoProducto[0].setBounds(10, 35, 60, 25);
+		aDatosProducto[0].setBounds(10, 12, 50, 25);
+        aTextoProducto[0].setBounds(10, 35, 50, 25);
+        aTextoProducto[0].setHorizontalAlignment(JTextField.RIGHT);
+        aTextoProducto[0].addActionListener(control);
+        aTextoProducto[0].setActionCommand("buscarProducto");
         //descripcion
-        aDatosProducto[1].setBounds(75, 12, 80, 25);
-        aTextoProducto[1].setBounds(75, 35, 220, 25);
+        aDatosProducto[1].setBounds(65, 12, 80, 25);
+        aTextoProducto[1].setBounds(65, 35, 280, 25);
+        aTextoProducto[1].setEnabled(false);
         //precio
-        aDatosProducto[2].setBounds(300, 12, 70, 25);
-        aTextoProducto[2].setBounds(300, 35, 70, 25);
+        aDatosProducto[2].setBounds(350, 12, 70, 25);
+        aTextoProducto[2].setBounds(350, 35, 70, 25);
+        aTextoProducto[2].setHorizontalAlignment(JTextField.RIGHT);
+        aTextoProducto[2].setEnabled(false);
         //disponibles
-        aDatosProducto[3].setBounds(375, 12, 70, 25);
-        aTextoProducto[3].setBounds(375, 35, 70, 25);
+        aDatosProducto[3].setBounds(425, 12, 70, 25);
+        aTextoProducto[3].setBounds(425, 35, 70, 25);
+        aTextoProducto[3].setHorizontalAlignment(JTextField.RIGHT);
+        aTextoProducto[3].setEnabled(false);
         //catidad
-        aDatosProducto[4].setBounds(450, 12, 70, 25);
-        aTextoProducto[4].setBounds(450, 35, 70, 25);
-        //total
-        aDatosProducto[5].setBounds(525, 12, 100, 25);
-        aTextoProducto[5].setBounds(525, 35, 100, 25);
+        aDatosProducto[4].setBounds(500, 12, 70, 25);
+        aTextoProducto[4].setBounds(500, 35, 70, 25);
+        aTextoProducto[4].setHorizontalAlignment(JTextField.RIGHT);
+        aTextoProducto[4].setEnabled(false);
+        aTextoProducto[4].addActionListener(control);
+        aTextoProducto[4].setActionCommand("agregarProducto");
+        
+
+        JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa (2).png")));
+		btBuscar.setToolTipText("Buscar producto");
+		btBuscar.addActionListener(control);
+		btBuscar.setActionCommand("buscarProducto");
+
+		JButton btLimpiar = new JButton(new ImageIcon(getClass().getResource("/iconos/borrador (2).png")));
+		btLimpiar.setToolTipText("Limpiar campos");
+		btLimpiar.addActionListener(control);
+		btLimpiar.setActionCommand("limpiarProducto");
+
+		panelProductos.add(btBuscar);
+		panelProductos.add(btLimpiar);
+		btBuscar.setBounds(575, 35, 25, 25);
+		btLimpiar.setBounds(605, 35, 25, 25);
 
         panelProductos.setPreferredSize(new Dimension(640, 68));
         // panelProductos.setBackground(new Color(155,155,100));
 
 		return panelProductos;
 
-	}
+	}//getPanelDatosProducto
 
 	public JPanel getPanelProducto(){
 
@@ -253,341 +313,436 @@ public class IGUVentas extends JFrame{
 
 		panel.add(getPanelDatosProducto());
 
-		btAceptarP = new JButton(new ImageIcon(getClass().getResource("/iconos/agregar3.png")));
-		btAceptarP.setPreferredSize(new Dimension(55, 55));
-		btAceptarP.addActionListener(control);
-        btAceptarP.setActionCommand("Verificar");
+		JButton btAgregar = new JButton(new ImageIcon(getClass().getResource("/iconos/agregar3.png")));
+		btAgregar.setPreferredSize(new Dimension(50, 50));
+		btAgregar.setToolTipText("Agregar producto");
+		btAgregar.addActionListener(control);
+        btAgregar.setActionCommand("agregarProducto");
 
-        btLimpiarP = new JButton(new ImageIcon(getClass().getResource("/iconos/quitar.png")));
-        btLimpiarP.setPreferredSize(new Dimension(55, 55));
-        btLimpiarP.addActionListener(control);
-        btLimpiarP.setActionCommand("Limpiar");
+        JButton btQuitar = new JButton(new ImageIcon(getClass().getResource("/iconos/quitar.png")));
+        btQuitar.setPreferredSize(new Dimension(50, 50));
+        btQuitar.setToolTipText("Quitar producto");
+        btQuitar.addActionListener(control);
+        btQuitar.setActionCommand("quitarProducto");
 
-		panel.add(btAceptarP);
-		panel.add(btLimpiarP);
+		panel.add(btAgregar);
+		panel.add(btQuitar);
 
 		panel.setPreferredSize(new Dimension(775, 85));
 		// panel.setBackground(new Color(255,100,100));
 		return panel;
-	}
+	}//getPanelProducto
 
 	public JPanel getPanelTablaProductos(){
 
 		JPanel panelTabla = new JPanel();
-		JTable tablaProducto = new JTable();
+		tabla = new JTable();
 
 		modelo = new DefaultTableModel();
 		modelo.setColumnIdentifiers(new Object[]{"#", "Nombre", "Precio Unitario", "Cantidad", "SubTotal"});
-		tablaProducto.setModel(modelo);
+		tabla.setModel(modelo);
 
-		JScrollPane jScroll = new JScrollPane(tablaProducto);
+		JScrollPane jScroll = new JScrollPane(tabla);
 		panelTabla.add(jScroll);
-		jScroll.setPreferredSize(new Dimension(755, 200));
+		jScroll.setPreferredSize(new Dimension(755, 190));
 
-		panelTabla.setPreferredSize(new Dimension(775, 210));
+		panelTabla.setPreferredSize(new Dimension(775, 200));
 		// panelTabla.setBackground(new Color(100,100,100));
 
 		return panelTabla;
 
-	}
+	}//getPanelTablaProductos
 
 	public JPanel getPanelBotonesVenta(){
 
 		JPanel botones = new JPanel();
+		
+		JButton btVenta = new JButton(new ImageIcon(getClass().getResource("/iconos/payment-method.png")));
+		btVenta.setPreferredSize(new Dimension(80, 80));
+		btVenta.setToolTipText("Generar venta");
+		btVenta.addActionListener(control);
+        btVenta.setActionCommand("concretarVenta");
 
-		btAgregar = new JButton(new ImageIcon(getClass().getResource("/iconos/save.png")));
-		btAgregar.setPreferredSize(new Dimension(80, 80));
-		btAgregar.addActionListener(control);
-        // btAgregar.setActionCommand("Verificar");
-
-        btCancelar = new JButton(new ImageIcon(getClass().getResource("/iconos/trash.png")));
+        JButton btCancelar = new JButton(new ImageIcon(getClass().getResource("/iconos/cancel.png")));
 		btCancelar.setPreferredSize(new Dimension(80, 80));
+		btCancelar.setToolTipText("Cancelar venta");
 		btCancelar.addActionListener(control);
-        // btAgregar.setActionCommand("Verificar");
+        btCancelar.setActionCommand("cancelarVenta");
 
+        JButton btNuevo = new JButton(new ImageIcon(getClass().getResource("/iconos/agregar-archivo.png")));
+		btNuevo.setPreferredSize(new Dimension(80, 80));
+		btNuevo.setToolTipText("Nueva venta");
+		btNuevo.addActionListener(control);
+        btNuevo.setActionCommand("nuevaVenta");
 
-		JLabel total = new JLabel("         Total Venta");
-		total.setFont(new Font("Tahoma", Font.PLAIN, 36));
+        botones.add(btNuevo);
+        botones.add(btCancelar);
+		botones.add(btVenta);
 
-		texTotal = new JTextField("$ 0.00");
-		texTotal.setHorizontalAlignment(JTextField.RIGHT);
-		texTotal.setFont(new Font("Tahoma", Font.PLAIN, 30));
-		texTotal.setPreferredSize(new Dimension(200, 40));
+		botones.add(getPanelTotal());
 
-		botones.add(btAgregar);
-		botones.add(btCancelar);
-		botones.add(total);
-		botones.add(texTotal);
-
-		botones.setPreferredSize(new Dimension(775, 85));
+		botones.setPreferredSize(new Dimension(775, 90));
 		// botones.setBackground(new Color(255,100,255));
 		return botones;
-	}
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////	
-	public void leerDatosCliente(){
+	}//getPanelBotonesVenta
 
-		DAOClientes cliente = new DAOClientes();
-		DTOClientes clienteB = new DTOClientes();
+	public JPanel getPanelTotal(){
 
-		int idCliente = Integer.valueOf(aTextoCliente[0].getText());
-		String tipoPago = aTextoCliente[1].getText();
+		JPanel pTotal = new JPanel();
+		pTotal.setLayout(null);
 
-		clienteB = cliente.buscarCliente(idCliente);
+		JLabel subtotal = new JLabel("Subtotal:");
+		subtotal.setHorizontalAlignment(JLabel.RIGHT);
+		subtotal.setBounds(205, 2, 60, 23);
+		pTotal.add(subtotal);
+		JLabel iva = new JLabel("I.V.A:");
+		iva.setHorizontalAlignment(JLabel.RIGHT);
+		iva.setBounds(205, 30, 60, 23);
+		pTotal.add(iva);
+		JLabel total = new JLabel("Total:");
+		total.setHorizontalAlignment(JLabel.RIGHT);
+		total.setBounds(205, 57, 60, 23);
+		pTotal.add(total);
+		// total.setFont(new Font("Tahoma", Font.PLAIN, 36));
 
-		if (clienteB.getIdCliente() == idCliente) {
-			
-			ventas.setIdCliente(idCliente);
-			ventas.setTipoPago(tipoPago);
+		//subtotal
+		texTotal[0].setText(formato.format(0));
+		texTotal[0].setHorizontalAlignment(JTextField.RIGHT);
+		pTotal.add(texTotal[0]);
+		texTotal[0].setBounds(270, 2, 100, 23);
+		texTotal[0].setEnabled(false);
+		//iva
+		texTotal[1].setText(formato.format(0));
+		texTotal[1].setHorizontalAlignment(JTextField.RIGHT);
+		pTotal.add(texTotal[1]);
+		texTotal[1].setBounds(270, 30, 100, 23);
+		texTotal[1].setEnabled(false);
+		//total
+		texTotal[2].setText(formato.format(0));
+		texTotal[2].setHorizontalAlignment(JTextField.RIGHT);
+		pTotal.add(texTotal[2]);
+		texTotal[2].setBounds(270, 57, 100, 23);
+		texTotal[2].setEnabled(false);
+		// texTotal.setFont(new Font("Tahoma", Font.PLAIN, 30));
 
-		}
+		pTotal.setPreferredSize(new Dimension(380, 85));
+		// pTotal.setBackground(new Color(200,100,155));
+		
+		return pTotal;
 
-	}
+	}//getPanelTotal
 
-	public void limpiarDatosCliente(){
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+	public void setCampoCliente(DTOClientes cliente) {
 
-		aTextoCliente[0].setText(null);
-		aTextoCliente[1].setText(null);
+		if (cliente.getIdCliente() != 0){
 
-		System.out.println("limpiado");
-
-	}
-
-	public JPanel getDatosProducto(){
-
-		JPanel panelProductos = new JPanel();
-
-		panelProductos.setBorder(BorderFactory.createTitledBorder("Datos del producto: "));
-
-		panelProductos.setLayout(new GridLayout(2,2,1,1));
-
-		for (int i = 0; i < aDatosProducto.length; i++){
-
-			panelProductos.add(aDatosProducto[i]);
-			panelProductos.add(aTextoProducto[i]);
-			panelProductos.add(getBotonesProducto()); 
-
-		}
-
-		btAceptarP.addActionListener(control);
-		btAceptarP.setActionCommand("btAceptarP");
-
-		btLimpiarP.addActionListener(control);
-		btLimpiarP.setActionCommand("btLimpiarP");
-
-
-		return panelProductos;
-
-	}
-
-
-	public void leerDatosProducto(){
-
-		DAOProducto producto = new DAOProducto();
-		DTOProducto productoB = new DTOProducto();
-
-		int idProdcuto = Integer.valueOf(aTextoProducto[0].getText());
-		float cantidad = Float.valueOf(aTextoProducto[1].getText());
-
-		productoB = producto.getProducto(idProdcuto);
-
-		if (productoB.getCodigo() == idProdcuto) {
-			
-			ventas.setIdProducto(idProdcuto);
-			ventas.setCantidadVendida(cantidad);
-
-
+			aTextoCliente[1].setText(cliente.getNombre() + " "
+									+ cliente.getPaterno() + " "
+									+ cliente.getMaterno());
+			aTextoCliente[0].setEnabled(false);
+			aTextoProducto[0].requestFocus();
 
 		} else {
 
-			JOptionPane.showMessageDialog(null, "no esxiste el producto");
+			aTextoCliente[0].setText(null);
 
 		}
 
+	}//setCampoCliente
 
-	}
+	public int getCampoCliente() throws NumberFormatException {
 
-	public void limpiarDatosProducto(){
+		return Integer.valueOf(aTextoCliente[0].getText());
+
+	}//getCampoCliente
+
+	public void limpiarCampoCliente(){
+
+		aTextoCliente[0].setText(null);
+		aTextoCliente[1].setText(null);
+		aTextoCliente[0].setEnabled(true);
+		aTextoCliente[0].requestFocus();
+		
+	}//limpiarCampo
+
+	public void setCampoProducto(DTOProducto producto) {
+		
+		if (producto.getCodigo() != 0){
+
+			aTextoProducto[0].setEnabled(false);
+			aTextoProducto[1].setText(producto.getNombre() + " " + producto.getDescripcion());
+			aTextoProducto[2].setText(String.valueOf(producto.getPrecio()));
+			aTextoProducto[3].setText(String.valueOf(producto.getActual()));
+			aTextoProducto[4].setEnabled(true);
+			aTextoProducto[4].requestFocus();
+
+		} 
+
+	}//setCampoProducto
+
+	public int getCampoProducto() throws NumberFormatException {
+
+		return Integer.valueOf(aTextoProducto[0].getText());
+
+	}//getCampoProducto
+
+	public void limpiarCampoProducto(){
+		
+		aTextoProducto[0].setText(null);
+		aTextoProducto[1].setText(null);
+		aTextoProducto[2].setText(null);
+		aTextoProducto[3].setText(null);
+		aTextoProducto[4].setText(null);
+		aTextoProducto[0].setEnabled(true);
+		aTextoProducto[4].setEnabled(false);
+		aTextoProducto[0].requestFocus();
+		
+	}//limpiarCampoProducto
+
+	public void agregarProducto() throws NumberFormatException, IllegalArgumentException {
+
+		if (!aTextoProducto[1].getText().equals("")) {
+
+			if (!aTextoProducto[4].getText().equals("") && Integer.valueOf(aTextoProducto[4].getText()) != 0) {
+				
+				if (aTextoProducto[4].getText().compareTo(aTextoProducto[3].getText()) <= 0){
+
+					modelo.addRow(new Object[]{Integer.valueOf(aTextoProducto[0].getText()), aTextoProducto[1].getText(), aTextoProducto[2].getText(),
+											Integer.valueOf(aTextoProducto[4].getText()), 
+											(Integer.valueOf(aTextoProducto[4].getText()) * Float.valueOf(aTextoProducto[2].getText()))});
+					
+					total += (Integer.valueOf(aTextoProducto[4].getText()) * Float.valueOf(aTextoProducto[2].getText()));
+					
+					texTotal[2].setText(formato.format(total));
+					texTotal[1].setText(formato.format(total * IVA));
+					texTotal[0].setText(formato.format(total - (total * IVA)));
+					
+					aTextoProducto[0].setEnabled(true);
+					aTextoProducto[0].requestFocus();
+					
+				} else {
+
+					throw new IllegalArgumentException("Solo hay: " + aTextoProducto[3].getText() + " producto disponibles.");
+
+				}
+
+			} else {
+
+				throw new IllegalArgumentException("No se a seleccionado un cantidad");
+
+			}
+
+		} else {
+
+			throw new IllegalArgumentException("No se a seleccionado un producto");
+
+		}
+
+	}//agregarProducto
+
+	public void limpiarCampoVenta(){
+		
 
 		aTextoProducto[0].setText(null);
 		aTextoProducto[1].setText(null);
+		aTextoProducto[2].setText(null);
+		aTextoProducto[3].setText(null);
+		aTextoProducto[4].setText(null);
+		
+	}//limpiarCampoVenta
 
-		System.out.println("limpiado");
+	public void quitarProducto() throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
 
-	}
+		if (tabla.getSelectedRow() != -1) {
+		
+				total = total - (Float) tabla.getValueAt(tabla.getSelectedRow(), 4);
+				texTotal[2].setText(formato.format(total));
+				modelo.removeRow(tabla.getSelectedRow());
 
+		} else {
 
-	public JPanel getEdicionVentas(){
+			throw new IllegalArgumentException("No se ha seleccionado un producto");
 
-		JPanel panelEdicion = new JPanel();
+		}
+	 
+	}//quitarProducto
 
-		panelEdicion.add(getBotonesVenta(), BorderLayout.EAST); 
-		panelEdicion.add(getBuscarVenta());
+	public DTOVentas generarVenta() throws IllegalArgumentException {
 
-		return panelEdicion;
+		DTOVentas venta = new DTOVentas();
 
-	}
+		if (campoFolio.getText().equals("")) {
 
-	public JPanel getBuscarVenta(){
-
-		JPanel panelBuscar = new JPanel();
-
-		JLabel buscar = new JLabel("Buscar");
-		panelBuscar.add(buscar);
-
-		campoBuscar.setPreferredSize(new Dimension(200,20));
-		panelBuscar.add(campoBuscar);
+			campoVacio();
+			
+			venta.setFecha(campoFecha.getText());
+			venta.setIdCliente(Integer.valueOf(aTextoCliente[0].getText()));
 	
-
-		JButton btBuscar = new JButton(new ImageIcon("C:/Users/Gatit/Desktop/ProyectoOpalo/igu/lupita.png"));
-		btBuscar.setPreferredSize(new Dimension(32,32));
-		panelBuscar.add(btBuscar);
-		
-		btBuscar.addActionListener(control);
-		btBuscar.setActionCommand("btBuscar");		
-
-		return panelBuscar;
-
-	}
-
-	public int leerDatoBuscar(){
-		
-		int idVenta = Integer.valueOf(campoBuscar.getText());
-		ventas.setIdVenta(idVenta);
-
-		return idVenta;
-	}
-
-	public void mostrarDatosBusqueda(DTOVentas ventas){
-
-		JOptionPane.showMessageDialog(null,getTablaConsulta(ventas));
-
-	}
-
-	public JPanel getTablaConsulta(DTOVentas ventas){
-
-		JPanel panelTabla = new JPanel();
-
-		JTable tablaConsulta = new JTable();
-
-		String [] nombre = {
-                "id_venta", "tipoPago", "cancelacion", "fecha", "Estado"
-        };
-
-		tablaConsulta.setModel(new DefaultTableModel(
-            
-            new Object [][] {
-
-            	{"id_venta", "tipoPago", "cancelacion", "fecha", "Estado"},
-                {ventas.getIdVenta(), ventas.getTipoPago(), ventas.getDescripcion(), ventas.getFecha(), ventas.getEstado()}
-
-            }, nombre
-            
-        ));
-
-		panelTabla.add(tablaConsulta);
-		panelTabla.setBorder(BorderFactory.createTitledBorder("Consulta ventas"));
-
-		return panelTabla;
-
-	}
-
-	public JPanel getTablaProductos(){
-
-		JPanel panelTabla = new JPanel();
-
-		JTable tablaProducto = new JTable();
-		//JScrollPane jScroll = new JScrollPane(tablaVentas);
-
-		String [] nombre = {
-                "id producto", "nombre", "cantidad", "Total"
-        };
-
-		tablaProducto.setModel(new DefaultTableModel(
-            
-            new Object [][] {
-
-
-            	{"id Producto", "nombre", "cantidad", "Total"},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-
-            }, nombre
-            
-        ));
-
-		//jScroll.setViewportView(tablaVentas);
-
-		//panelTabla.add(jScroll);
-		panelTabla.add(tablaProducto);
-		panelTabla.setBorder(BorderFactory.createTitledBorder("Productos"));
-
-		return panelTabla;
-
-	}
-
-	public JPanel getTablaVentas(){
-
-		JPanel panel = new JPanel();
-		DAOVentas dao = new DAOVentas();
-
-		panel.setBorder(BorderFactory.createTitledBorder("Registros"));
-		modelo = new DefaultTableModel();
-        modelo.setColumnIdentifiers(new Object[]{"Venta","cancelacion","tipoPago", "fecha", "Estado"});
-		
-		tabla = new JTable(modelo);
-		JScrollPane jScroll = new JScrollPane(tabla);
-
-		dao.getTabla(modelo);
-
-        jScroll.setViewportView(tabla);
-
-
-		panel.add(jScroll, BorderLayout.SOUTH);
-
-		return panel;
-
-	}
-
-	public JPanel getBotonesCliente(){
-
-		JPanel botones = new JPanel();
-
-		botones.setLayout(new GridLayout(1,1));
-		botones.add(btAceptarC);
-		botones.add(btLimpiarC);
-		
-		return botones;
-	}
+			int idPreoducto[] = new int[modelo.getRowCount()];
+			int idCantidad[] = new int[modelo.getRowCount()];
 	
-	public JPanel getBotonesProducto(){
+			for (int con = 0; con < modelo.getRowCount(); con++) {
+				
+				idPreoducto[con] = (int) tabla.getValueAt(con, 0);
+				idCantidad[con] = (int) tabla.getValueAt(con, 3);
+	
+			}
+	
+			venta.setIdProducto(idPreoducto);
+			venta.setCantidad(idCantidad);
+	
+	        Object[] options = { new ImageIcon(getClass().getResource("/iconos/efectivo (1).png")), 
+	        					new ImageIcon(getClass().getResource("/iconos/tarjeta-de-credito (1).png")) };
+			
+			int opcion = JOptionPane.showOptionDialog(this, "Seleccione metodo de pago", "Metodo de pago",
+						 JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, null);
 
-		JPanel botones = new JPanel();
+			if (opcion == 0){
+	
+				venta.setTipoPago("EFECTIVO");
+	
+			} else if (opcion == 1){
+	
+				venta.setTipoPago("TARJETA");
+	
+			} else {
 
-		botones.setLayout(new GridLayout(1,1));
-		botones.add(btAceptarP);
-		botones.add(btLimpiarP);
-		
-		return botones;
+				throw new IllegalArgumentException("cancela");
+
+			}
+				
+				venta.setEstado("REALIZADA");
+
+		} else {
+
+			throw new IllegalArgumentException("La venta ya esta registrada");
+
+		}
+
+		return venta;
+
+	}//generarVenta
+
+	public void campoVacio() throws NullPointerException, IllegalArgumentException {
+
+		if (aTextoCliente[1].getText().equals("")) {
+			
+			throw new IllegalArgumentException("No ha sido seleccionado un cliente");
+
+		} else if (modelo.getRowCount() == 0) {
+			
+			throw new IllegalArgumentException("No se han ingresado productos");
+
+		}
+
+	}//campoVacio
+
+	public void nuevaVenta(){
+
+		limpiarCampoProducto();
+		limpiarCampoCliente();
+
+		modelo.setRowCount(0);
+		estado.setText(null);
+		texTotal[0].setText(formato.format(0));
+		texTotal[1].setText(formato.format(0));
+		texTotal[2].setText(formato.format(0));
+		total = 0.0f;
+		campoFecha.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+		campoFolio.setText(null);
+
+	}//nuevaVenta
+
+	public int getCampoBuscar() throws NumberFormatException{
+
+		return Integer.valueOf(campoBuscar.getText());
+
+	}//getCampoBuscar
+
+	public DefaultTableModel getModelo(){
+
+		return modelo;
+
+	}//getModelo
+
+	public void setVenta(DTOVentas venta){
+
+		for (int con = 0; con < modelo.getRowCount(); con++) {
+
+			total += (float) tabla.getValueAt(con, 4);
+			
+			texTotal[2].setText(formato.format(total));
+			texTotal[1].setText(formato.format(total * IVA));
+			texTotal[0].setText(formato.format(total - (total * IVA)));
+		}
+
+		campoFolio.setText(String.valueOf(venta.getIdVenta()));
+		campoFecha.setText(venta.getFecha());
+
+		aTextoCliente[0].setText(String.valueOf(venta.getIdCliente()));
+		aTextoCliente[0].setEnabled(false);
+		aTextoProducto[0].setEnabled(false);
+		aTextoCliente[1].setText(venta.getCliente());
+
+		campoBuscar.setText("Folio");
+		campoBuscar.setForeground(new Color(111,111,111));
+
+		if (venta.getEstado().equals("REALIZADA")) {
+			
+			estado.setText("Estado: " + venta.getEstado());
+			estado.setForeground(Color.GREEN);
+
+		} else {
+
+			estado.setText("Estado: " + venta.getEstado());
+			estado.setForeground(Color.RED);
+
+		}
+
+	}//setVenta
+
+	public DTOVentas cancelarVenta(){
+
+		DTOVentas venta = new DTOVentas();
+
+		try{
+
+			if (!campoFolio.getText().equals("")) {
+
+				if (estado.getText().equals("Estado: CANCELADA")) {
+					
+					throw new IllegalArgumentException("La venta ya se encuentra cancelada.");
+
+				} else {
+
+					venta.setIdVenta(Integer.valueOf(campoFolio.getText()));
+					
+					String motivo = JOptionPane.showInputDialog(null,"Motivo de cancelacion",
+								   "Cancelacion", JOptionPane.PLAIN_MESSAGE).toString();
+
+					venta.setEstado("CANCELADA");
+					venta.setMotivo(motivo);
+
+				}
+						
+			} else {
+
+				throw new IllegalArgumentException("No ha sido seleccionada una venta");
+
+			}
+		} catch (NullPointerException ex) {
+
+			throw new NullPointerException("cancela");
+
+		}
+
+		return venta; 
 	}
 
-
-	public JPanel getBotonesVenta(){
-
-		JPanel botones = new JPanel();
-
-		botones.setLayout(new GridLayout(1,1,10,10));
-		botones.add(btAgregar);
-		btAgregar.addActionListener(control);
-		btAgregar.setActionCommand("btAgregar");
-		botones.add(btCancelar);
-		btCancelar.addActionListener(control);
-		btCancelar.setActionCommand("btCancelar");
-
-		
-		return botones;
-	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////	
+	
 
 /*
 	public static void main(String[] args) {

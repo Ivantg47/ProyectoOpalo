@@ -1,17 +1,12 @@
 /**
  * Clase que conecta con la BD para los métodos de compras de insumos.
  * @author Diego Puebla Aldama
- * @version 1.0
- */
-
- /*
- ;
-
+ * @version 2.0
  */
 
 package ProyectoOpalo.dao;
-import java.sql.*;
 
+import java.sql.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.DriverManager;
@@ -24,20 +19,26 @@ import javax.swing.table.*;
 
 public class DAOCompra{
 
+	//Variables globales.
     private Connection conexion = null;
 	private PreparedStatement prepared;
     private ResultSet result;
     static Statement stmt = null;
 
-    //Método constructor para instanciar en la clase control.
+	/**
+	 * Método constructor para instanciar en la clase control. 
+	 */
     public DAOCompra(){
 
     }
 
-    //Necesito insertar en Compras y en Compra_Insumo por cada compra, pero debo obtener la PK de el insumo que se compró para Compra_Insumo y si no existe mandar a registrarlo.
+	/**
+	 * Función que verifica la existencia del insumo en la relación Insumo de la BD y en caso de existir devuelve el objeto con su ID.
+	 * @param oCompra una compra que le hace falta el ID del insumo.
+	 * @return oCompra que es el objeto con o sin el ID dependiendo del resultado.
+	 */
     public DTOCompra verificarInsumo(DTOCompra oCompra){
         
-        //primero verificamos que exista o no el insumo.
         try {
            
             conexion = getConnection();
@@ -67,6 +68,10 @@ public class DAOCompra{
 
     }
 
+	/**
+	 * Método que devuelve la tabla con la información necesarioa del registro a la intefaz.
+	 * @param modelo Recibe el modelo de la interfaz y lo llena.
+	 */
     public void getTabla(DefaultTableModel modelo){
 
 		try {
@@ -116,6 +121,11 @@ public class DAOCompra{
 
     }
 
+	/**
+	 * Método que inserta las compras en la BD.
+	 * @param aCompras el arreglo de la lista de compras.
+	 * @param indice el número de registros que tiene la lista.
+	 */
 	public void insertarCompras(DTOCompra[] aCompras, int indice){
 
 		String insertCompras, insertCompra_Insumo, lastID, mensaje = "";
@@ -123,8 +133,8 @@ public class DAOCompra{
 		ResultSet resID;
 		int prueba, indica = -1;
 
-		int intArray[];    //declaring array
-		intArray = new int[10];  // allocating memory to array
+		int intArray[];
+		intArray = new int[10];
 
 		for (int i = 0; i <= indice; i++) {
 			
@@ -195,7 +205,11 @@ public class DAOCompra{
 
 	}
 
-    //mét pam
+    /**
+	 * Función que busca la compra y si la encuentra la retorna.
+	 * @param idCompra el id que está buscando el usuario.
+	 * @return compra que es el objeto con la compra si es que existe.
+	 */
     public DTOCompra buscarCompra(int idCompra){
 		
 		DTOCompra compra = new DTOCompra();
@@ -264,7 +278,10 @@ public class DAOCompra{
 	    return compra;
 	}
 
-    //Método que establece la conexión con la BD
+    /**
+	 * Método que establece la conexión con la BD.
+	 * @return conexion que es un objeto de la clase Connection.
+	 */
     public Connection getConnection() {
    
         try {

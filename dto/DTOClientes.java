@@ -25,13 +25,24 @@ public class DTOClientes {
 	//constructor que inicializa los atributos
 	public DTOClientes(String sNombre, String aPaterno, String aMaterno, String sCorreo, String sTelefono, String sDireccion){
 
-		//this.eIdCliente = eIdCliente;
 		this.sNombre = sNombre;
 		this.aPaterno = aPaterno;
 		this.aMaterno = aMaterno;
 		this.sCorreo = sCorreo;
 		this.sTelefono = sTelefono;
 		this.sDireccion = sDireccion;
+
+	}
+
+	public DTOClientes(DTOClientes oCliente){
+		
+		this.eIdCliente = oCliente.getIdCliente();
+		this.sNombre = oCliente.getNombre();
+		this.aPaterno = oCliente.getPaterno();
+		this.aMaterno = oCliente.getMaterno();
+		this.sCorreo = oCliente.getCorreo();
+		this.sTelefono = oCliente.getTelefono();
+		this.sDireccion = oCliente.getDireccion();
 
 	}
 

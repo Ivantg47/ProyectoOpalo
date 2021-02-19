@@ -1,6 +1,7 @@
 /**
- * Clase control de ventas.
+ * Clase IGU de Ventas.
  * @author Pamela Stephanie Moreno Parker
+ * @author Ivan Tronco
  * @version 1.0
  */
 
@@ -10,64 +11,165 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import ProyectoOpalo.igu.IGUVentas;
-import ProyectoOpalo.dao.DAOVentas;
-import ProyectoOpalo.dto.DTOVentas;
-import ProyectoOpalo.dto.DTOProducto;
+import ProyectoOpalo.dao.*;
+import ProyectoOpalo.dto.*;
 
 public class ControlVenta implements ActionListener, FocusListener{
 
+	/**
+ 	 * Atributo del tipo DAOVentas.
+	 */	
 	private DAOVentas daoVentas;
+	/**
+ 	 * Atributo del tipo DTOVentas.
+	 */	
 	private DTOVentas dtoventas;
+	/**
+ 	 * Atributo del tipo IGUVentas.
+	 */	
 	private IGUVentas iguVentas;
 
+	/**
+     * Constructor para la clase ControlVenta
+     * @param iguVentas objeto de la clase IGUVentas.
+     */	
 	public ControlVenta(IGUVentas iguVentas){
 
 		this.iguVentas = iguVentas;
 
 	}
 
+	/**
+     * actionPerformed es un método que sirve para configurar los eventos que suceden al 
+     * manipular la intefaz
+     * @param evento objeto del tipo ActionEvent
+     */
 	public void actionPerformed(ActionEvent evento){
 
-		JButton fuente = (JButton) evento.getSource();
+		daoVentas = new DAOVentas();
 		
-		switch (fuente.getActionCommand()){
+		try{
 
-			case "btAceptarC":
-				iguVentas.leerDatosCliente();		
-				break;
-			case "btLimpiarC":
-				iguVentas.limpiarDatosCliente();
-				break;
-			case "btAceptarP":
-				iguVentas.leerDatosProducto();
-				break;
-			case "btLimpiarP":
-				iguVentas.limpiarDatosProducto();
-				break;
-			case "btAgregar":
-				DAOVentas daoVentas = new DAOVentas();
-				daoVentas.agregarVenta(iguVentas.ventas);
-				break;
-			case "btBuscar":
-				DAOVentas daoVentasB = new DAOVentas();
-				iguVentas.ventas = daoVentasB.buscarVenta(iguVentas.leerDatoBuscar());
-				break;
-			case "btCancelar":
-				DAOVentas daoVentasC = new DAOVentas();
-				daoVentasC.CancelarVenta(iguVentas.leerDatoBuscar(), iguVentas.ventas);
-				break;
+			if (evento.getActionCommand().equals("buscarCliente")) {
+				
+				iguVentas.setCampoCliente(new DAOClientes().buscarCliente(iguVentas.getCampoCliente()));
+
+			} else if (evento.getActionCommand().equals("limpiarCliente")) {
+
+				iguVentas.limpiarCampoCliente();
+				
+			} else if (evento.getActionCommand().equals("buscarProducto")) {
+				
+				iguVentas.setCampoProducto(new DAOProducto().getProducto(iguVentas.getCampoProducto()));
+
+			} else if (evento.getActionCommand().equals("limpiarProducto")) {
+
+				iguVentas.limpiarCampoProducto();
+				
+			} else if (evento.getActionCommand().equals("agregarProducto")) {
+				
+				iguVentas.agregarProducto();
+				iguVentas.limpiarCampoProducto();
+				
+			} else if (evento.getActionCommand().equals("quitarProducto")) {
+				
+				iguVentas.quitarProducto();
+				
+			} else if (evento.getActionCommand().equals("concretarVenta")) {
+
+				int folio = daoVentas.agregarVenta(iguVentas.generarVenta());
+				iguVentas.nuevaVenta();
+
+				JOptionPane.showMessageDialog( null, "Venta registrada con folio: " + folio,
+               					"Registro venta", JOptionPane.INFORMATION_MESSAGE);
+
+			} else if (evento.getActionCommand().equals("cancelarVenta")) {
+				// iguVentas.cancelarVenta();
+				daoVentas.cancelarVenta(iguVentas.cancelarVenta());
+				iguVentas.nuevaVenta();
+
+				JOptionPane.showMessageDialog( null, "Venta cancelada",
+               					"Cancelacion venta", JOptionPane.INFORMATION_MESSAGE);
+
+			} else if (evento.getActionCommand().equals("nuevaVenta")) {
+
+				iguVentas.nuevaVenta();
+
+			} else if (evento.getActionCommand().equals("buscarVenta")) {
+				
+				iguVentas.nuevaVenta();
+				iguVentas.setVenta(daoVentas.buscarVenta(iguVentas.getCampoBuscar(), iguVentas.getModelo()));
+				
+
+			}
+
+		} catch (NullPointerException nullEx) {
+
+			if (!nullEx.getMessage().equals("cancela")) {
+
+				JOptionPane.showMessageDialog(iguVentas, "No debe dejar campos vacios",
+           									"Campo vacio", JOptionPane.ERROR_MESSAGE);
+
+			} 
+			
+
+		} catch (NumberFormatException numEx) {
+
+			JOptionPane.showMessageDialog(iguVentas, "Dato incorrecto",
+           				"Error en formato de número", JOptionPane.ERROR_MESSAGE);
+
+		} catch (IllegalArgumentException illEx){
+
+			if (!illEx.getMessage().equals("cancela")) {
+				
+				JOptionPane.showMessageDialog(iguVentas, illEx.getMessage(),
+           				"Error", JOptionPane.ERROR_MESSAGE);
+
+			}
+			
+
+		} catch (ArrayIndexOutOfBoundsException arEx){
+
+			JOptionPane.showMessageDialog(iguVentas, "No se han agregado productos",
+           									"Fuera de rango", JOptionPane.ERROR_MESSAGE);
+			
+		} catch (Exception ex){
+
+			ex.printStackTrace();
+
 		}
 	}
+	
+	/**
+     * focusGained es un método que sirve para saber cuando se selecciona un campo de texto.
+     * @param evento objeto del tipo FocusEvent
+     */	
+	public void focusGained(FocusEvent evento) {
 
-	public void focusGained(FocusEvent e) {
+		JTextField campo = (JTextField) evento.getSource();
 
-		JTextField campo = (JTextField) e.getSource();
+		if(campo.getText().equals("Folio")){
 
+	        campo.setForeground(Color.BLACK);
+	        campo.setText(null);
+
+    	}
     }
 
-    public void focusLost(FocusEvent e) {
+    /**
+     * focusLost es un método que sirve para saber cuando se deselcciona un campo de texto.
+     * @param evento objeto del tipo FocusEvent
+     */	
+    public void focusLost(FocusEvent evento) {
 
-    	JTextField campo = (JTextField) e.getSource();
+    	JTextField campo = (JTextField) evento.getSource();
+
+    	if(campo.getText().equals("")){
+
+	    	campo.setText("Folio");
+			campo.setForeground(new Color(111,111,111));
+
+		}
         
     }
 

@@ -126,10 +126,10 @@ public class IGUInsumo extends JFrame{
 		oCampoTxBuscar.addFocusListener(oControl);
 		oPanel.add(oCampoTxBuscar);
 
-		JButton oBotonBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa.png")));
+		JButton oBotonBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa (2).png")));
 		oBotonBuscar.addActionListener(oControl);
 		oBotonBuscar.setActionCommand("btBuscar");
-		oBotonBuscar.setPreferredSize(new Dimension(32,32));
+		oBotonBuscar.setPreferredSize(new Dimension(25,25));
 		
 
 		oPanel.add(oBotonBuscar);

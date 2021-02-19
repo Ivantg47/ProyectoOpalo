@@ -12,7 +12,7 @@ import javax.swing.table.*;
 
 public class IGUReporte extends JFrame{
 
-	public static final String ICONOS = "/iconos/"; //ruta para la carpeta de imagenes
+	private JTable tabla;
 	private JComboBox<String> combo1;
 
 	private JLabel etiquetas[] = {
@@ -29,15 +29,15 @@ public class IGUReporte extends JFrame{
 
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
-		panel.add(getPanel1(), BorderLayout.NORTH);
-		panel.add(getPanel2(), BorderLayout.CENTER);
-		panel.add(getPanelLayoutGeneral(), BorderLayout.WEST);
+		panel.add(getPanelTitulo(), BorderLayout.NORTH);
+		panel.add(getPanelTabla(), BorderLayout.CENTER);
+		panel.add(getPanelGeneral(), BorderLayout.WEST);
 
 		return panel;
 
 	}
 
-	public JPanel getPanel1(){
+	public JPanel getPanelTitulo(){
 
 		JPanel panel = new JPanel();
 
@@ -52,7 +52,7 @@ public class IGUReporte extends JFrame{
 
 	}
 
-	public JPanel getPanel2(){
+	public JPanel getPanelTabla(){
 
 		JPanel panel = new JPanel();
 
@@ -60,7 +60,7 @@ public class IGUReporte extends JFrame{
 		panel.setLayout(new FlowLayout());
 
 		//creacion de la tabla
-		JTable tabla = new JTable();
+		tabla = new JTable();
 		JScrollPane jScroll = new JScrollPane(tabla);
 
 		String [] nombre = {
@@ -87,7 +87,7 @@ public class IGUReporte extends JFrame{
 
 		panel.add(jScroll);
 
-		JLabel venta = new JLabel("Ventas semanal");
+		JLabel venta = new JLabel("     Ventas semanal");
 		venta.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		panel.add(venta);
 		JTextField campo = new JTextField();
@@ -101,17 +101,17 @@ public class IGUReporte extends JFrame{
 
 	}
 	
-	public JPanel getPanelLayoutGeneral(){
+	public JPanel getPanelGeneral(){
 
 		JPanel panel = new JPanel();
 
-		panel.add(getPanelLayout(), BorderLayout.NORTH);
+		panel.add(getPanelConsulta(), BorderLayout.NORTH);
 
 		return panel;
 
 	}
 
-	public JPanel getPanelLayout(){
+	public JPanel getPanelConsulta(){
 
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(7, 1, 50, 10));
@@ -151,6 +151,12 @@ public class IGUReporte extends JFrame{
 	public static void main(String[] args) {
 		IGUReporte ventana = new IGUReporte();
 		
+	}
+
+	public JTable getTabla(){
+
+		return tabla;
+
 	}
 	
 }

@@ -14,32 +14,28 @@ public class IGUAplicacionMenu extends JFrame{
 
 	// private ControlProducto producto;
 
+	/**
+     * Constructor sin parametros para la clase principal.
+     */
 	public IGUAplicacionMenu(){
 
 		super("Pasteler\u00EDa Fun Cake");
 
-		//add(getBarraHtas(), BorderLayout.NORTH);
-
-	//	setJMenuBar(getBarraMenu());
 		setJTabbedPane();
 		setSize(800, 670);
 		setLocationRelativeTo(null);
-		
+		setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 
 	}
 
+	/**
+     * Metodo que añade las taps de cada modulo a la interfaz principal
+     */
 	public void setJTabbedPane(){
-
+		
 		JTabbedPane tpPanel = new JTabbedPane();
-		// IGUInsumo iguInsumo = new IGUInsumo();
-		// IGUProducto iguProducto = new IGUProducto();
-		// IGUCompras iguCompras = new IGUCompras();
-		// IGUClientes iguClientes = new IGUClientes();
-		// IGUVentas iguVentas = new IGUVentas();
-		// IGUReporte iguReporte = new IGUReporte();
-//		producto = new ControlProducto(iguProducto);
 
 		tpPanel.addTab("", new ImageIcon(getClass().getResource("/iconos/cliente (2).png")), new IGUClientes().getIGUClientes());
 
@@ -56,6 +52,9 @@ public class IGUAplicacionMenu extends JFrame{
 		add(tpPanel);
 	}
 
+	/**
+     * Metodo principal
+     */
 	public static void main(String[] args) {
 		
 		IGUAplicacionMenu oIGUAplicacionMenu = new IGUAplicacionMenu();

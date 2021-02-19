@@ -123,10 +123,12 @@ public class IGUProducto extends JPanel{
 		campoBuscar.setForeground(new Color(111,111,111));
 		campoBuscar.setPreferredSize(new Dimension(200,25));
 		campoBuscar.addFocusListener(control);
+		campoBuscar.addActionListener(control);
+		campoBuscar.setActionCommand("buscar");
 		panel.add(campoBuscar);
 
-		JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa.png")));
-		btBuscar.setPreferredSize(new Dimension(32,32));
+		JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa (2).png")));
+		btBuscar.setPreferredSize(new Dimension(25, 25));
 
 		btBuscar.addActionListener(control);
 		btBuscar.setActionCommand("buscar");
@@ -283,6 +285,8 @@ public class IGUProducto extends JPanel{
 
 	}
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	/**
      * Metodo que limpia los campos de texto de datos del producto.
      */
@@ -328,6 +332,7 @@ public class IGUProducto extends JPanel{
 		}
 		
 		return producto;
+		
 	}
 
 	/**

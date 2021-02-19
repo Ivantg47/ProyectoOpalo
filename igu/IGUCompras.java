@@ -16,16 +16,17 @@ import ProyectoOpalo.dao.DAOCompra;
 
 public class IGUCompras extends JFrame{
 
-	public DTOCompra compras = new DTOCompra();
-	private DefaultTableModel modelo, modeloDTO;
+	public DTOCompra compras = new DTOCompra(); //instancia de la clase DTO que se usa para recopilar los datos de la interfaz.
+	private DefaultTableModel modelo, modeloDTO; //Modelos para las tablas usadas.
 	private JTable tabla;
 
-    private ControlCompra control = new ControlCompra(this);
-	private DTOCompra[] comprasTabla; //areglo de las compras que se van agregando.
-	public static int indiceTabla = 0; //indice del arreglo que incrementra según se agregan objetos osea filas.
-	private DAOCompra oDao = new DAOCompra();
+    private ControlCompra control = new ControlCompra(this); 
+	private DTOCompra[] comprasTabla; //Areglo de las compras que se van agregando.
+	public static int indiceTabla = 0; //Indice del arreglo que incrementra según se agregan objetos osea filas.
+	private DAOCompra oDao = new DAOCompra(); //Instancia de la clase DAO que accede a la BD.
 
-	private JLabel folio = new JLabel("Folio: ");
+	//Labels y textfields de fecha y folio.
+	private JLabel folio = new JLabel("Folio: "); 
 	private JTextField texFolio = new JTextField();
 
 	private JLabel dia = new JLabel("D\u00EDa: ");
@@ -37,39 +38,45 @@ public class IGUCompras extends JFrame{
 	private JLabel anio = new JLabel("A\u00F1o: ");
 	private JTextField texAnio = new JTextField();
 
+	//arreglo de labels para los datos de la compra.
 	private JLabel aDatosProducto[] = {
 
-		//new JLabel("Codigo"),
+		new JLabel("Codigo"),
 		new JLabel("Descripcion"),
-		new JLabel("Precio"),
-        new JLabel("Cantidad"),
-        new JLabel("Total")
+		new JLabel("Precio Unitario"),
+        new JLabel("Cantidad")
 
 	};
 
+	//arreglo de labels para los datos de la compra.
 	private JTextField aTextoProducto[] = {
 
-		//new JTextField(), //Codigo
-		new JTextField(), // Descripcion
-		new JTextField(), // Precio
-        new JTextField(), //Cantidad
-        new JTextField()  //Total
+		new JTextField(), // 0 -> Codigo
+		new JTextField(), // 1 -> Descripcion
+		new JTextField(), // 2 -> Precio
+        new JTextField(), // 3 -> Cantidad
 
 	};
 
     //botones de pre registro
 	private JButton btAceptarP, btCancelarP, btLimpiar;
-
 	private JButton btAgregar, btCancelar;
 
+	//áreas dónde se imprimirá la suma del total de la compra.
 	private JLabel total;
 	private JTextField texTotal;
 
-
+	/**
+	 * Método constructor de la clase interfaz.
+	 */
 	public IGUCompras(){
 
 	}
 
+	/**
+	 * Función para obtener el panel superior de la vista.
+	 * @return panelCompras que es el panel dónde se busca una compra registrada en la BD.
+	 */
 	public JPanel getPanelCompras(){
 
 		JPanel panelCompras = new JPanel();
@@ -83,6 +90,10 @@ public class IGUCompras extends JFrame{
 
 	}
 
+	/**
+	 * Función para obtener el panel dónde se registra un insumo comprado.
+	 * @return panelCompras que es el panel con los labels y textfields de registro de compras.
+	 */
 	public JPanel getPanelCompra(){
 
 		JPanel panelCompras = new JPanel();
@@ -96,13 +107,17 @@ public class IGUCompras extends JFrame{
 		panelCompras.add(getPanelBotonesCompra());
 		
 		panelCompras.setPreferredSize(new Dimension(785, 500));
-		// panelCompras.setBackground(new Color(155,255,100));
+
 		return panelCompras;
 
 	} 
 
 	private JTextField campoBuscar = new JTextField();
 
+	/**
+	 * Funciuón que devulve a la interfaz el componente de busqueda.
+	 * @return panelBuscar que es un pequeño componente con un textfield y un botón de busqueda.
+	 */
 	public JPanel getPanelBuscar(){
 
 		JPanel panelBuscar = new JPanel();
@@ -117,35 +132,36 @@ public class IGUCompras extends JFrame{
 		JLabel buscar = new JLabel("Buscar");
 		panelBuscar.add(buscar);
 
-		campoBuscar.setText("Folio/Fecha (dd-mm-aaaa)");
+		campoBuscar.setText("Folio");
 		campoBuscar.setForeground(new Color(111,111,111));
-		campoBuscar.setPreferredSize(new Dimension(200,20));
+		campoBuscar.setPreferredSize(new Dimension(200,25));
 		panelBuscar.add(campoBuscar);
 		campoBuscar.addFocusListener(control);
+		campoBuscar.addActionListener(control);
+        campoBuscar.setActionCommand("buscarCompra");
 
-		JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa.png")));
-		btBuscar.setPreferredSize(new Dimension(32,32));
+		JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa (2).png")));
+		btBuscar.setPreferredSize(new Dimension(25,25));
 		panelBuscar.add(btBuscar);
 		btBuscar.addActionListener(control);
-        btBuscar.setActionCommand("btBuscar");
+        btBuscar.setActionCommand("buscarCompra");
 
         panelBuscar.setPreferredSize(new Dimension(785, 55));
-        // panelBuscar.setBackground(new Color(255,155,100));
+        
 		return panelBuscar;
 
 	}
 
+	/**
+	 * Método que devuelve a la vista un conjunto de textfields que sirven para que un usuario ingrese la fecha de la compra.
+	 * @return panelFecha que es un componente para realizar el registro de la fecha.
+	 */
 	public JPanel getPanelFecha(){
 
 		JPanel panelFecha = new JPanel();
 
 		panelFecha.setLayout(null);
-/*
-		panelFecha.add(folio);
-		folio.setBounds(420,4,35,25);
-		panelFecha.add(texFolio);
-		texFolio.setBounds(460,4,60,25);
-*/
+
 		panelFecha.add(dia);
 		dia.setBounds(530,4,30,25);
 		texDia.setPreferredSize(new Dimension(40, 25));
@@ -164,11 +180,15 @@ public class IGUCompras extends JFrame{
 		texAnio.setBounds(735,4,40,25);
 
 		panelFecha.setPreferredSize(new Dimension(775, 35));
-		// panelFecha.setBackground(new Color(255,255,100));
+		
 		return panelFecha;
 
 	}
 
+	/**
+	 * Función que devuelve un componente que permite agregar una compra a la lista de compras.
+	 * @return panelProductos que consta de 3 textfields para llenar los datos del producto.
+	 */
 	public JPanel getPanelDatosInsumo(){
 
 		JPanel panelProductos = new JPanel();
@@ -183,29 +203,50 @@ public class IGUCompras extends JFrame{
 			panelProductos.add(aTextoProducto[i]);
 
 		}
-		/*
-		aDatosProducto[0].setBounds(10, 17, 60, 25);
-        aTextoProducto[0].setBounds(10, 43, 60, 25);
-*/
-        aDatosProducto[0].setBounds(10, 17, 80, 25);
-        aTextoProducto[0].setBounds(10, 43, 250, 25);
+		
+        aDatosProducto[0].setBounds(10, 12, 50, 25);
+        aTextoProducto[0].setBounds(10, 35, 50, 25);
+        aTextoProducto[0].setHorizontalAlignment(JTextField.RIGHT);
+        aTextoProducto[0].addActionListener(control);
+        aTextoProducto[0].setActionCommand("buscarInsertar");
 
-        aDatosProducto[1].setBounds(330, 17, 100, 25);
-        aTextoProducto[1].setBounds(330, 43, 100, 25);
+        aDatosProducto[1].setBounds(65, 12, 80, 25);
+        aTextoProducto[1].setBounds(65, 35, 280, 25);
+        aTextoProducto[1].setEnabled(false);
 
-        aDatosProducto[2].setBounds(435, 17, 70, 25);
-        aTextoProducto[2].setBounds(435, 43, 70, 25);
+        aDatosProducto[2].setBounds(350, 12, 100, 25);
+        aTextoProducto[2].setBounds(350, 35, 100, 25);
+        aTextoProducto[2].setHorizontalAlignment(JTextField.RIGHT);
 
-        aDatosProducto[3].setBounds(510, 17, 100, 25);
-        aTextoProducto[3].setBounds(510, 43, 100, 25);
+        aDatosProducto[3].setBounds(455, 12, 90, 25);
+        aTextoProducto[3].setBounds(455, 35, 90, 25);
+        aTextoProducto[3].setHorizontalAlignment(JTextField.RIGHT);
 
-        panelProductos.setPreferredSize(new Dimension(620, 75));
-        // panelProductos.setBackground(new Color(155,155,100));
+        JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa (2).png")));
+		btBuscar.setToolTipText("Buscar insumo");
+		btBuscar.addActionListener(control);
+		btBuscar.setActionCommand("buscarProducto");
+
+		JButton btLimpiar = new JButton(new ImageIcon(getClass().getResource("/iconos/borrador (2).png")));
+		btLimpiar.setToolTipText("Limpiar campos");
+		btLimpiar.addActionListener(control);
+		btLimpiar.setActionCommand("limpiarProducto");
+        
+        panelProductos.add(btBuscar);
+		panelProductos.add(btLimpiar);
+		btBuscar.setBounds(550, 35, 25, 25);
+		btLimpiar.setBounds(580, 35, 25, 25);
+
+        panelProductos.setPreferredSize(new Dimension(615, 75));
 
 		return panelProductos;
 
 	}
 
+	/**
+	 * Función que devuelve a la vista dos botones para agregar o quitar de la lista de compras.
+	 * @return panel que consta de dos botones, uno para agregar y uno para quitar una compra de la lista.
+	 */
 	public JPanel getPanelInsumo(){
 
 		JPanel panel = new JPanel();
@@ -220,30 +261,35 @@ public class IGUCompras extends JFrame{
         btCancelarP = new JButton(new ImageIcon(getClass().getResource("/iconos/quitar.png")));
         btCancelarP.setPreferredSize(new Dimension(55, 55));
         btCancelarP.addActionListener(control);
-        btCancelarP.setActionCommand("Limpiar");
+        btCancelarP.setActionCommand("Quitar");
 
 		panel.add(btAceptarP);
 		panel.add(btCancelarP);
 
 		panel.setPreferredSize(new Dimension(775, 85));
-		// panel.setBackground(new Color(255,100,100));
+		
 		return panel;
 	}
 
-	//Método que sea un getModeloDTO() como el otro
-
+	/**
+	 * Función que permite recuperar el modelo con el que está diseñado la lista de compras.
+	 * @return modeloDTO que es el modelo de la tabla.
+	 */
 	public DefaultTableModel getModeloDTO(){
 
 		return modeloDTO;
 
 	}
 
+	/**
+	 * Función que devuelve a la vista una tabla con las compras que se han ido agregando.
+	 * @return panelTabla que consta de una tabla con los productos que se han ido agregando.
+	 */
     public JPanel getPanelTablaCompras(){
 
 		JPanel panelTabla = new JPanel();
 
 		JTable tablaCompras = new JTable();
-		//JScrollPane jScroll = new JScrollPane(tablaCompras);
 
 		modeloDTO = new DefaultTableModel();
 
@@ -252,18 +298,19 @@ public class IGUCompras extends JFrame{
 		tablaCompras.setModel(modeloDTO);
 		JScrollPane jScroll = new JScrollPane(tablaCompras);
 
-		//jScroll.setViewportView(tablaCompras);
-
 		panelTabla.add(jScroll);
 
 		jScroll.setPreferredSize(new Dimension(755, 230));
 		panelTabla.setPreferredSize(new Dimension(775, 240));
-		// panelTabla.setBackground(new Color(100,100,100));
 
 		return panelTabla;
 
 	}
 
+	/**
+	 * Función que devuelve a la interfáz dos botones para registrar los productos de la lista o desechar la lista.
+	 * @return botones que son dos botones para registrar los productos de la lista o desechar la lista.
+	 */
 	public JPanel getPanelBotonesCompra(){
 
 		JPanel botones = new JPanel();
@@ -276,7 +323,7 @@ public class IGUCompras extends JFrame{
         btCancelar = new JButton(new ImageIcon(getClass().getResource("/iconos/trash.png")));
 		btCancelar.setPreferredSize(new Dimension(80, 80));
 		btCancelar.addActionListener(control);
-        // btAgregar.setActionCommand("Verificar");
+        btCancelar.setActionCommand("Tirar");
 
 
 		total = new JLabel("         Total Compra");
@@ -297,61 +344,10 @@ public class IGUCompras extends JFrame{
 		return botones;
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////
-	// public JPanel getEdicionCompras(){
-
-	// 	JPanel panelEdicion = new JPanel();
-
-	// 	panelEdicion.add(getBotonesCompra()/*, BorderLayout.EAST*/); 
-	// 	panelEdicion.add(getBuscarCompra());
-
-	// 	return panelEdicion;
-
-	// }
-
-
-	//Método que sea un getModelo() como el otro
-
-    
-/*
-    public JPanel getTablaListado(){
-
-		JPanel panelTabla = new JPanel();
-
-		JTable tablaCompras = new JTable();
-		//JScrollPane jScroll = new JScrollPane(tablaCompras);
-
-		String [] nombre = {
-                "#", "Nombre", "Cantidad", "Costo", "Fecha de Compra","Total"
-        };
-
-		tablaCompras.setModel(new DefaultTableModel(
-            
-            new Object [][] {
-
-
-            	{"#", "Nombre", "Cantidad", "Costo", "Fecha de Compra","Total"},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
-
-            }, nombre
-            
-        ));
-
-		//jScroll.setViewportView(tablaCompras);
-
-		//panelTabla.add(jScroll);
-		panelTabla.add(tablaCompras);
-		panelTabla.setBorder(BorderFactory.createTitledBorder("Resultados de la busqueda"));
-
-		return panelTabla;
-
-	}
-*/
-	//nuevo
+	/**
+	 * Función que define la estructura de la tabla de lista de compras.
+	 * @return panel es un panel con la tabla, almenos la estructura básica.
+	 */
 	public JPanel getTablaListado(){
 
 		JPanel panel = new JPanel();
@@ -375,6 +371,10 @@ public class IGUCompras extends JFrame{
 
 	}
 
+	/**
+	 * Función que devuelve un objeto compra con los datos que el usuario tecleó en la interfaz.
+	 * @return compra que es una instancia de DTOCompra con los atributos llenos excepto el idInsumo que se recupera luego en la BD.
+	 */
     public DTOCompra getCampos(){
 
         DTOCompra compra = new DTOCompra();
@@ -391,10 +391,19 @@ public class IGUCompras extends JFrame{
 
     }
 	
+	/**
+	 * Método que establece el total y lo despliega en la sección correspondiente.
+	 * @param fTotal recibe el total de la clase control.
+	 */
 	public void setTotal(Float fTotal){
 		texTotal.setText("$" + String.valueOf(fTotal));
 	}
 
+	/**
+	 * Función que devuelve la lista de las compras.
+	 * @param aCompras recibe las compras de la control.
+	 * @return ticket que es la lista de compras.
+	 */
 	public JPanel getTicket(DTOCompra[] aCompras){
 
 		JPanel ticket = new JPanel();
@@ -419,6 +428,10 @@ public class IGUCompras extends JFrame{
 
 	}
 
+	/**
+	 * Método que agrega una compra a la tabla.
+	 * @param compra recibe la compra a gregar de la clase control.
+	 */
 	public void agregarCompraTabla(DTOCompra compra){
 
 		comprasTabla[indiceTabla] = compra;
@@ -428,6 +441,10 @@ public class IGUCompras extends JFrame{
 	private DefaultTableModel oModelo;
 	private JTable oTabla;
 
+	/**
+	 * Función que devuelve la lista de las compras.
+	 * @return oPanel que se refiere a la lista de compras.
+	 */
 	public JPanel getPanelInventario(){
 
 		JPanel oPanel = new JPanel();
@@ -436,13 +453,9 @@ public class IGUCompras extends JFrame{
 		oPanel.setBorder(BorderFactory.createTitledBorder("Pre Registro"));
 		oModelo = new DefaultTableModel();
 		oModelo.setColumnIdentifiers(new Object[]{"Numero", "Nombre", "Cantidad", "Costo"});
-		//oPanel.setLayout(new GridLayout(1,4));
 
-		//creacion de la oTabla
 		oTabla = new JTable(oModelo);
 		JScrollPane jScroll = new JScrollPane(oTabla);
-
-		//oDAO.getTabla(oModelo);
 
 		jScroll.setViewportView(oTabla);
 
@@ -451,13 +464,21 @@ public class IGUCompras extends JFrame{
 
 	}
 
+	/**
+	 * Método que muestra los datos de la compra que se buscó desde el panel de consulta.
+	 * @param compras recibe la compra del método buscar.
+	 */
 	public void mostrarDatosBusqueda(DTOCompra compras){
 
 		JOptionPane.showMessageDialog(null,getTablaConsulta(compras));
 		
 	}
 
-//Método de búsqueda de PAM
+	/**
+	 * Función que establece la forma de presentar la compra buscada.
+	 * @param compras Recibe la compra buscada.
+	 * @return panelTabla que es un panel con los datos de la compra consultada.
+	 */
 	public JPanel getTablaConsulta(DTOCompra compras){
 
 		JPanel panelTabla = new JPanel();
@@ -486,21 +507,31 @@ public class IGUCompras extends JFrame{
 
 	}
 
+	/**
+	 * Función que devuelve el modelo de la tabla de inventario.
+	 * @return oModelo que es un DefaultTableModel.
+	 */
 	public DefaultTableModel getModelo(){
 
 		return oModelo;
 
 	}
 
+	/**
+	 * Método que limpia los campos del texto introducido por el usuario.
+	 */
 	public void limpiarProducto(){
 
 		aTextoProducto[0].setText(null);
 		aTextoProducto[1].setText(null);
 		aTextoProducto[2].setText(null);
-		aTextoProducto[3].setText(null);
 
 	}
 
+	/**
+	 * Función que lee el dato que se va a buscar y lo devuelve a la clase control.
+	 * @return idCompra es el número que quiere buscar el usuario.
+	 */
 	public int leerDatoBuscar(){
 		
 		int idCompra = Integer.valueOf(campoBuscar.getText());
@@ -508,10 +539,10 @@ public class IGUCompras extends JFrame{
 		return idCompra;
 
 	}
-
+	/*
 	public static void main(String[] args) {
 		
 		IGUCompras prueba = new IGUCompras();
 	}
-
+*/
 }
