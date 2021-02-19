@@ -169,6 +169,7 @@ public class DAOCompra{
 
 				compra.setId(idCompra);
 				compra.setFechaCompra(result.getString("fechaCompra"));
+				compra.setEstado(result.getString("estado"));
 
 				sql = ("SELECT I.id_Insumo AS IdInsumo, I.nombre AS nombre, "
 					+ "CI.cantidad AS cantidad, CI.costoTotal AS precio, fechaCompra "
