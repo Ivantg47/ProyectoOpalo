@@ -37,6 +37,7 @@ public class DAOCompra{
 	 * @param oCompra una compra que le hace falta el ID del insumo.
 	 * @return oCompra que es el objeto con o sin el ID dependiendo del resultado.
 	 */
+/*
     public DTOCompra verificarInsumo(DTOCompra oCompra){
         
         try {
@@ -67,11 +68,12 @@ public class DAOCompra{
         return oCompra; //Ya tiene el ID y se pasa a la tabla de pre-registro.
 
     }
-
+*/
 	/**
 	 * Método que devuelve la tabla con la información necesarioa del registro a la intefaz.
 	 * @param modelo Recibe el modelo de la interfaz y lo llena.
 	 */
+/*
     public void getTabla(DefaultTableModel modelo){
 
 		try {
@@ -120,12 +122,13 @@ public class DAOCompra{
 	    }
 
     }
-
+*/
 	/**
 	 * Método que inserta las compras en la BD.
 	 * @param aCompras el arreglo de la lista de compras.
 	 * @param indice el número de registros que tiene la lista.
 	 */
+/*
 	public void insertarCompras(DTOCompra[] aCompras, int indice){
 
 		String insertCompras, insertCompra_Insumo, lastID, mensaje = "";
@@ -204,12 +207,13 @@ public class DAOCompra{
 		JOptionPane.showMessageDialog(null, "Se han insertado las compras: " + mensaje + ".");
 
 	}
-
+*/
     /**
 	 * Función que busca la compra y si la encuentra la retorna.
 	 * @param idCompra el id que está buscando el usuario.
 	 * @return compra que es el objeto con la compra si es que existe.
 	 */
+/*
     public DTOCompra buscarCompra(int idCompra){
 		
 		DTOCompra compra = new DTOCompra();
@@ -277,11 +281,12 @@ public class DAOCompra{
 
 	    return compra;
 	}
-
+*/
     /**
 	 * Método que establece la conexión con la BD.
 	 * @return conexion que es un objeto de la clase Connection.
 	 */
+/*
     public Connection getConnection() {
    
         try {
@@ -311,5 +316,6 @@ public class DAOCompra{
         return conexion;
         
     } 
+ */
 
 }

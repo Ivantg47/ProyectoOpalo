@@ -9,10 +9,15 @@ package ProyectoOpalo.igu;
 
 import java.awt.*;
 import javax.swing.*;
+import java.sql.*;
 import javax.swing.table.*;
 import ProyectoOpalo.control.ControlCompra;
 import ProyectoOpalo.dto.DTOCompra;
 import ProyectoOpalo.dao.DAOCompra;
+import java.text.DecimalFormat;
+
+import ProyectoOpalo.dao.*;
+import ProyectoOpalo.dto.*;
 
 public class IGUCompras extends JFrame{
 
@@ -24,6 +29,9 @@ public class IGUCompras extends JFrame{
 	private DTOCompra[] comprasTabla; //Areglo de las compras que se van agregando.
 	public static int indiceTabla = 0; //Indice del arreglo que incrementra según se agregan objetos osea filas.
 	private DAOCompra oDao = new DAOCompra(); //Instancia de la clase DAO que accede a la BD.
+
+	private float fTotal = 0;
+	private DecimalFormat formato = new DecimalFormat("$ #,##0.00");
 
 	//Labels y textfields de fecha y folio.
 	private JLabel folio = new JLabel("Folio: "); 
@@ -42,8 +50,8 @@ public class IGUCompras extends JFrame{
 	private JLabel aDatosProducto[] = {
 
 		new JLabel("Codigo"),
-		new JLabel("Descripcion"),
-		new JLabel("Precio Unitario"),
+		new JLabel("Nombre"),
+		new JLabel("Costo Unitario"),
         new JLabel("Cantidad")
 
 	};
@@ -103,7 +111,7 @@ public class IGUCompras extends JFrame{
 
 		panelCompras.add(getPanelFecha());
 		panelCompras.add(getPanelInsumo());
-		panelCompras.add(getPanelTablaCompras());
+		panelCompras.add(getPaneltabla());
 		panelCompras.add(getPanelBotonesCompra());
 		
 		panelCompras.setPreferredSize(new Dimension(785, 500));
@@ -144,7 +152,7 @@ public class IGUCompras extends JFrame{
 		btBuscar.setPreferredSize(new Dimension(25,25));
 		panelBuscar.add(btBuscar);
 		btBuscar.addActionListener(control);
-        btBuscar.setActionCommand("buscarCompra");
+        btBuscar.setActionCommand("Buscar");
 
         panelBuscar.setPreferredSize(new Dimension(785, 55));
         
@@ -225,12 +233,12 @@ public class IGUCompras extends JFrame{
         JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa (2).png")));
 		btBuscar.setToolTipText("Buscar insumo");
 		btBuscar.addActionListener(control);
-		btBuscar.setActionCommand("buscarProducto");
+		btBuscar.setActionCommand("BuscarInsumo");
 
 		JButton btLimpiar = new JButton(new ImageIcon(getClass().getResource("/iconos/borrador (2).png")));
 		btLimpiar.setToolTipText("Limpiar campos");
 		btLimpiar.addActionListener(control);
-		btLimpiar.setActionCommand("limpiarProducto");
+		btLimpiar.setActionCommand("limpiarInsumo");
         
         panelProductos.add(btBuscar);
 		panelProductos.add(btLimpiar);
@@ -256,7 +264,7 @@ public class IGUCompras extends JFrame{
 		btAceptarP = new JButton(new ImageIcon(getClass().getResource("/iconos/agregar3.png")));
 		btAceptarP.setPreferredSize(new Dimension(55, 55));
 		btAceptarP.addActionListener(control);
-        btAceptarP.setActionCommand("Verificar");
+        btAceptarP.setActionCommand("AgregarInsumo");
 
         btCancelarP = new JButton(new ImageIcon(getClass().getResource("/iconos/quitar.png")));
         btCancelarP.setPreferredSize(new Dimension(55, 55));
@@ -285,18 +293,17 @@ public class IGUCompras extends JFrame{
 	 * Función que devuelve a la vista una tabla con las compras que se han ido agregando.
 	 * @return panelTabla que consta de una tabla con los productos que se han ido agregando.
 	 */
-    public JPanel getPanelTablaCompras(){
+    public JPanel getPaneltabla(){
 
 		JPanel panelTabla = new JPanel();
-
-		JTable tablaCompras = new JTable();
+		tabla = new JTable();
 
 		modeloDTO = new DefaultTableModel();
 
 		modeloDTO.setColumnIdentifiers(new Object[]{"#", "Nombre", "Cantidad", "Costo Unitario", "SubTotal"});
 
-		tablaCompras.setModel(modeloDTO);
-		JScrollPane jScroll = new JScrollPane(tablaCompras);
+		tabla.setModel(modeloDTO);
+		JScrollPane jScroll = new JScrollPane(tabla);
 
 		panelTabla.add(jScroll);
 
@@ -344,205 +351,113 @@ public class IGUCompras extends JFrame{
 		return botones;
 	}
 
-	/**
-	 * Función que define la estructura de la tabla de lista de compras.
-	 * @return panel es un panel con la tabla, almenos la estructura básica.
-	 */
-	public JPanel getTablaListado(){
+		public void setCampoInsumo(DTOInsumo oInsumo) {
 
-		JPanel panel = new JPanel();
-		DAOCompra dao = new DAOCompra();
+		if (oInsumo.getId() != 0){
 
-		panel.setBorder(BorderFactory.createTitledBorder("Registros"));
-		modelo = new DefaultTableModel();
-        modelo.setColumnIdentifiers(new Object[]{"ID", "Insumo", "Cantidad", "Costo Total", "Fecha Compra"});
-		//creacion de la tabla
-		tabla = new JTable(modelo);
-		JScrollPane jScroll = new JScrollPane(tabla);
+			aTextoProducto[1].setText(oInsumo.getNombre());//nombre
 
-		dao.getTabla(modelo);
+		} 
 
-        jScroll.setViewportView(tabla);
+	}//setCampoInsumo
 
+	public int getCampoInsumo() throws NumberFormatException {
 
-		panel.add(jScroll, BorderLayout.CENTER);
+		return Integer.valueOf(aTextoProducto[0].getText());
 
-		return panel;
+	}//getCampoProducto
 
-	}
-
-	/**
-	 * Función que devuelve un objeto compra con los datos que el usuario tecleó en la interfaz.
-	 * @return compra que es una instancia de DTOCompra con los atributos llenos excepto el idInsumo que se recupera luego en la BD.
-	 */
-    public DTOCompra getCampos(){
-
-        DTOCompra compra = new DTOCompra();
-		String fecha;
-
-		fecha = texAnio.getText() + "-" +  texMes.getText() + "-" + texDia.getText();
-
-        compra.setNombre(aTextoProducto[0].getText());// Descripcion
-        compra.setTotal(Float.valueOf(aTextoProducto[1].getText()));// Precio
-        compra.setCantidad(Float.valueOf(aTextoProducto[2].getText()));//Cantidad
-		compra.setFechaCompra(fecha);//Total
-
-        return compra;
-
-    }
-	
-	/**
-	 * Método que establece el total y lo despliega en la sección correspondiente.
-	 * @param fTotal recibe el total de la clase control.
-	 */
-	public void setTotal(Float fTotal){
-		texTotal.setText("$" + String.valueOf(fTotal));
-	}
-
-	/**
-	 * Función que devuelve la lista de las compras.
-	 * @param aCompras recibe las compras de la control.
-	 * @return ticket que es la lista de compras.
-	 */
-	public JPanel getTicket(DTOCompra[] aCompras){
-
-		JPanel ticket = new JPanel();
-
-		ticket.setBorder(BorderFactory.createTitledBorder("Ticket:"));
-
-		ticket.setLayout(new GridLayout(4,1,1,1));
-
-		JLabel primerRegistro = new JLabel();
-		JLabel segundoRegistro = new JLabel();
-		JLabel tercerRegistro = new JLabel();
-		JLabel cuartoRegistro = new JLabel();
-		JLabel quintoRegistro = new JLabel();
-
-		ticket.add(primerRegistro);
-		ticket.add(segundoRegistro);
-		ticket.add(tercerRegistro);
-		ticket.add(cuartoRegistro);
-		ticket.add(quintoRegistro);
-
-		return ticket;
-
-	}
-
-	/**
-	 * Método que agrega una compra a la tabla.
-	 * @param compra recibe la compra a gregar de la clase control.
-	 */
-	public void agregarCompraTabla(DTOCompra compra){
-
-		comprasTabla[indiceTabla] = compra;
-
-	}
-
-	private DefaultTableModel oModelo;
-	private JTable oTabla;
-
-	/**
-	 * Función que devuelve la lista de las compras.
-	 * @return oPanel que se refiere a la lista de compras.
-	 */
-	public JPanel getPanelInventario(){
-
-		JPanel oPanel = new JPanel();
-		DAOCompra oDAO = new DAOCompra();
-
-		oPanel.setBorder(BorderFactory.createTitledBorder("Pre Registro"));
-		oModelo = new DefaultTableModel();
-		oModelo.setColumnIdentifiers(new Object[]{"Numero", "Nombre", "Cantidad", "Costo"});
-
-		oTabla = new JTable(oModelo);
-		JScrollPane jScroll = new JScrollPane(oTabla);
-
-		jScroll.setViewportView(oTabla);
-
-		oPanel.add(jScroll, BorderLayout.CENTER);
-		return oPanel;
-
-	}
-
-	/**
-	 * Método que muestra los datos de la compra que se buscó desde el panel de consulta.
-	 * @param compras recibe la compra del método buscar.
-	 */
-	public void mostrarDatosBusqueda(DTOCompra compras){
-
-		JOptionPane.showMessageDialog(null,getTablaConsulta(compras));
+	public void limpiarCampoInsumo(){
 		
-	}
-
-	/**
-	 * Función que establece la forma de presentar la compra buscada.
-	 * @param compras Recibe la compra buscada.
-	 * @return panelTabla que es un panel con los datos de la compra consultada.
-	 */
-	public JPanel getTablaConsulta(DTOCompra compras){
-
-		JPanel panelTabla = new JPanel();
-
-		JTable tablaConsulta = new JTable();
-
-		String [] nombre = {
-                "ID", "Insumo", "Cantidad", "Costo Unitario", "Fecha Compra", "Total"
-        };
-
-		tablaConsulta.setModel(new DefaultTableModel(
-            
-            new Object [][] {
-
-            	{"Insumo", "Cantidad", "Costo Unitario", "Fecha Compra", "Total"},
-                {compras.getNombre(), compras.getCantidad(), compras.getTotal(), compras.getFechaCompra(), compras.getFinal()}
-
-            }, nombre
-            
-        ));
-
-		panelTabla.add(tablaConsulta);
-		panelTabla.setBorder(BorderFactory.createTitledBorder("Consulta Compras"));
-
-		return panelTabla;
-
-	}
-
-	/**
-	 * Función que devuelve el modelo de la tabla de inventario.
-	 * @return oModelo que es un DefaultTableModel.
-	 */
-	public DefaultTableModel getModelo(){
-
-		return oModelo;
-
-	}
-
-	/**
-	 * Método que limpia los campos del texto introducido por el usuario.
-	 */
-	public void limpiarProducto(){
-
 		aTextoProducto[0].setText(null);
 		aTextoProducto[1].setText(null);
 		aTextoProducto[2].setText(null);
+		aTextoProducto[3].setText(null);
 
-	}
+	}//limpiarCampoProducto
 
-	/**
-	 * Función que lee el dato que se va a buscar y lo devuelve a la clase control.
-	 * @return idCompra es el número que quiere buscar el usuario.
-	 */
-	public int leerDatoBuscar(){
+
+	public void agregarInsumo() throws NumberFormatException, IllegalArgumentException {
+
+		if (!aTextoProducto[0].getText().equals("")) {
+
+			if (Float.valueOf(aTextoProducto[2].getText()) > 0 && Integer.valueOf(aTextoProducto[3].getText()) > 0){
+
+				modeloDTO.addRow(new Object[]{	Integer.valueOf(aTextoProducto[0].getText()), 
+											aTextoProducto[1].getText(), 
+											Integer.valueOf(aTextoProducto[3].getText()),
+											Float.valueOf(aTextoProducto[2].getText()), 
+											(Integer.valueOf(aTextoProducto[3].getText()) * Float.valueOf(aTextoProducto[3].getText()))});
+					
+
+				fTotal += (Integer.valueOf(aTextoProducto[3].getText()) * Float.valueOf(aTextoProducto[3].getText()));
+				texTotal.setText(formato.format(fTotal));
+
+			} else {
+
+				throw new IllegalArgumentException("Error, Las cantidades deben ser mayores a 0");
+
+			}
+
+		} else {
+
+			throw new IllegalArgumentException("Error, primero busque un producto");
+
+		} 
+
+	}//AgregarInsumo
+
+	public void quitarInsumo() throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+
+		if (tabla.getSelectedRow() != -1) {
 		
-		int idCompra = Integer.valueOf(campoBuscar.getText());
+				fTotal = fTotal - (Float) tabla.getValueAt(tabla.getSelectedRow(), 4);
+				texTotal.setText(formato.format(fTotal));
+				modeloDTO.removeRow(tabla.getSelectedRow());
 
-		return idCompra;
+		} else {
+
+			throw new IllegalArgumentException("No se ha seleccionado un producto");
+
+		}
+	 
+	}//quitarProducto
+
+	public DTOCompra generarCompra() throws IllegalArgumentException{
+
+		campoVacio();
+		DTOCompra compra = new DTOCompra();
+		String sFecha = "";
+
+		sFecha = texDia.getText() + "/" + texMes.getText() + "/" + texAnio.getText();
+		java.sql.Date.valueOf(sFecha);
+			
+		int aIDInsumos[] = new int[modelo.getRowCount()];
+		int  aCantidades[] = new int[modelo.getRowCount()];
+		float aCostosUnitarios[] = new float[modelo.getRowCount()];
+
+		for (int con = 0; con < modelo.getRowCount(); con++) {
+			
+			aIDInsumos[con] = (int) tabla.getValueAt(con, 0);
+			aCantidades[con] = (int) tabla.getValueAt(con, 2);
+			aCostosUnitarios[con] = (float) tabla.getValueAt(con, 3);
+		}
+
+		compra.setIDInsumos(aIDInsumos);
+		compra.setCantidades(aCantidades);
+		compra.setCostosUnitarios(aCostosUnitarios);
+
+		throw new IllegalArgumentException("No se ha seleccionado un producto");
 
 	}
-	/*
-	public static void main(String[] args) {
-		
-		IGUCompras prueba = new IGUCompras();
+
+	public void campoVacio() throws NullPointerException, IllegalArgumentException {
+
+		if (modeloDTO.getRowCount() == 0) {
+			
+			throw new IllegalArgumentException("No se han ingresado insumos");
+
+		}
+
 	}
-*/
 }

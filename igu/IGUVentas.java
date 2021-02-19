@@ -489,7 +489,7 @@ public class IGUVentas extends JFrame{
 		aTextoProducto[0].requestFocus();
 		
 	}//limpiarCampoProducto
-
+/////
 	public void agregarProducto() throws NumberFormatException, IllegalArgumentException {
 
 		if (!aTextoProducto[1].getText().equals("")) {
