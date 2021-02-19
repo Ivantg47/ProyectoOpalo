@@ -63,27 +63,6 @@ public class IGUReporte extends JFrame{
 		tabla = new JTable();
 		JScrollPane jScroll = new JScrollPane(tabla);
 
-		String [] nombre = {
-                "Producto", "Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes"
-                , "Sabado", "Total Unidades", "Total Venta"
-            };
-
-		tabla.setModel(new DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            }, nombre
-            
-        ));
-
-        jScroll.setViewportView(tabla);
 
 		panel.add(jScroll);
 

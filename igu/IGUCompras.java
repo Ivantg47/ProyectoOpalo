@@ -196,6 +196,7 @@ public class IGUCompras extends JFrame{
 		texAnio.setBounds(735,4,40,25);
 
 		panelFecha.setPreferredSize(new Dimension(775, 35));
+		panelFecha.setBackground(new Color(100,10,100));
 		
 		return panelFecha;
 

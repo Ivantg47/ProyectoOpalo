@@ -130,7 +130,7 @@ public class IGUClientes extends JFrame{
 	/**Método utilizado para mostrar los datos de los clientes
 	* @return panelGeneral es el panel principal de la interfaz
 	*/
-	public JPanel getPanelGeneral(){
+	public JPanel getPanelDatosCliente(){
 
 		JPanel panelGeneral = new JPanel();
 
