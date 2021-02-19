@@ -21,10 +21,11 @@ import ProyectoOpalo.dto.*;
 
 public class IGUCompras extends JFrame{
 
+
 	public DTOCompra compras = new DTOCompra(); //instancia de la clase DTO que se usa para recopilar los datos de la interfaz.
 	private DefaultTableModel modelo, modeloDTO; //Modelos para las tablas usadas.
 	private JTable tabla;
-
+	private JLabel estado;
     private ControlCompra control = new ControlCompra(this); 
 	private DTOCompra[] comprasTabla; //Areglo de las compras que se van agregando.
 	public static int indiceTabla = 0; //Indice del arreglo que incrementra según se agregan objetos osea filas.
@@ -169,6 +170,13 @@ public class IGUCompras extends JFrame{
 		JPanel panelFecha = new JPanel();
 
 		panelFecha.setLayout(null);
+
+		estado = new JLabel();
+		estado.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		estado.setHorizontalAlignment(JTextField.RIGHT);
+
+        panelFecha.add(estado);
+        estado.setBounds(100, 40, 350, 30);
 
 		panelFecha.add(dia);
 		dia.setBounds(530,4,30,25);
@@ -342,8 +350,8 @@ public class IGUCompras extends JFrame{
 
 		texTotal = new JTextField("$ 0.00");
 		texTotal.setHorizontalAlignment(JTextField.RIGHT);
-		texTotal.setFont(new Font("Tahoma", Font.PLAIN, 30));
-		texTotal.setPreferredSize(new Dimension(100, 40));
+		texTotal.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		texTotal.setPreferredSize(new Dimension(150, 40));
 
 		botones.add(btAgregar);
 		botones.add(btCancelar);
@@ -456,6 +464,8 @@ public class IGUCompras extends JFrame{
 			compra.setIDInsumos(aIDInsumos);
 			compra.setCantidades(aCantidades);
 			compra.setCostosUnitarios(aCostosUnitarios);
+			compra.setEstado("REALIZADA");
+
 
 			return compra;
 
@@ -486,10 +496,7 @@ public class IGUCompras extends JFrame{
 		texAnio.setText(null);
 		fTotal = 0.0f;
 		texTotal.setText("$ 0.00");
-		campoBuscar.setText(null);
-
-		
-
+		estado.setText(null);
 	}
 
 	public int getCampoBuscar()throws NumberFormatException{
@@ -512,5 +519,36 @@ public class IGUCompras extends JFrame{
 		texAnio.setText(partes[0]);
 		texMes.setText(partes[1]);
 		texDia.setText(partes[2]);
+
+		if (compra.getEstado().equals("REALIZADA")) {
+			
+			estado.setText("Estado: " + compra.getEstado());
+			estado.setForeground(Color.GREEN);
+
+		} else {
+
+			estado.setText("Estado: " + compra.getEstado());
+			estado.setForeground(Color.RED);
+
+		}
 	}
+
+	public void cancelarVenta(){
+/*
+		DTOCompra compra = new DTOVentas();
+
+		try{
+
+			if (!campoBuscar.getText().equals("")) {
+
+
+			}
+
+
+		}catch(){
+
+		}
+*/
+	}
+
 }

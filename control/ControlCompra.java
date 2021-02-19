@@ -78,8 +78,16 @@ public class ControlCompra implements ActionListener, FocusListener{
             } else if (evento.getActionCommand().equals("nuevaVenta")) {
 
                 oIGU.nuevaVenta();
-                
-            }
+
+            } /*else if (evento.getActionCommand().equals("Tirar")) {
+               
+                daoVentas.cancelarVenta(iguVentas.cancelarVenta());
+                iguVentas.nuevaVenta();
+
+                JOptionPane.showMessageDialog( null, "Venta cancelada",
+                                "Cancelacion venta", JOptionPane.INFORMATION_MESSAGE);
+
+            }*/
 
         } catch (NumberFormatException numEx) {
 
