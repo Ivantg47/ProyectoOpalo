@@ -74,6 +74,11 @@ public class ControlCompra implements ActionListener, FocusListener{
 
                 oIGU.nuevaVenta();    
                 oIGU.setCompra(oDAO.buscar(oIGU.getCampoBuscar(), oIGU.getModeloDTO()));
+
+            } else if (evento.getActionCommand().equals("nuevaVenta")) {
+
+                oIGU.nuevaVenta();
+                
             }
 
         } catch (NumberFormatException numEx) {

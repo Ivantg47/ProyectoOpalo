@@ -332,17 +332,22 @@ public class IGUCompras extends JFrame{
 		btCancelar.addActionListener(control);
         btCancelar.setActionCommand("Tirar");
 
-
+        JButton btNuevo = new JButton(new ImageIcon(getClass().getResource("/iconos/borradorGrande.png")));
+		btNuevo.setPreferredSize(new Dimension(80, 80));
+		btNuevo.setToolTipText("Limpiar campos");
+		btNuevo.addActionListener(control);
+        btNuevo.setActionCommand("nuevaVenta");
 		total = new JLabel("         Total Compra");
 		total.setFont(new Font("Tahoma", Font.PLAIN, 36));
 
 		texTotal = new JTextField("$ 0.00");
 		texTotal.setHorizontalAlignment(JTextField.RIGHT);
 		texTotal.setFont(new Font("Tahoma", Font.PLAIN, 30));
-		texTotal.setPreferredSize(new Dimension(200, 40));
+		texTotal.setPreferredSize(new Dimension(100, 40));
 
 		botones.add(btAgregar);
 		botones.add(btCancelar);
+		botones.add(btNuevo);
 		botones.add(total);
 		botones.add(texTotal);
 
@@ -480,6 +485,9 @@ public class IGUCompras extends JFrame{
 		texMes.setText(null);
 		texAnio.setText(null);
 		fTotal = 0.0f;
+		texTotal.setText("$ 0.00");
+		campoBuscar.setText(null);
+
 		
 
 	}
