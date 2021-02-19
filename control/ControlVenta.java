@@ -105,7 +105,7 @@ public class ControlVenta implements ActionListener, FocusListener{
 
 		} catch (NullPointerException nullEx) {
 
-			if (!nullEx.getMessage().equals("cancela")) {
+			if (!nullEx.getMessage().equals("no ejecutar")) {
 
 				JOptionPane.showMessageDialog(iguVentas, "No debe dejar campos vacios",
            									"Campo vacio", JOptionPane.ERROR_MESSAGE);
@@ -120,7 +120,7 @@ public class ControlVenta implements ActionListener, FocusListener{
 
 		} catch (IllegalArgumentException illEx){
 
-			if (!illEx.getMessage().equals("cancela")) {
+			if (!illEx.getMessage().equals("no ejecutar")) {
 				
 				JOptionPane.showMessageDialog(iguVentas, illEx.getMessage(),
            				"Error", JOptionPane.ERROR_MESSAGE);

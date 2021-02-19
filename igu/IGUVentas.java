@@ -554,18 +554,27 @@ public class IGUVentas extends JFrame{
 	}//limpiarCampoVenta
 
 	public void quitarProducto() throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
-
-		if (tabla.getSelectedRow() != -1) {
 		
-				total = total - (Float) tabla.getValueAt(tabla.getSelectedRow(), 4);
-				texTotal[2].setText(formato.format(total));
-				modelo.removeRow(tabla.getSelectedRow());
+		if (modelo.getRowCount() > 0) {
+			
+			if (tabla.getSelectedRow() != -1) {
+			
+					total = total - (Float) tabla.getValueAt(tabla.getSelectedRow(), 4);
+					texTotal[2].setText(formato.format(total));
+					modelo.removeRow(tabla.getSelectedRow());
+
+			} else {
+
+				throw new IllegalArgumentException("No se ha seleccionado un producto");
+
+			}
 
 		} else {
 
-			throw new IllegalArgumentException("No se ha seleccionado un producto");
+			throw new IllegalArgumentException("no ejecutar");
 
 		}
+			
 	 
 	}//quitarProducto
 
@@ -576,7 +585,7 @@ public class IGUVentas extends JFrame{
 		if (campoFolio.getText().equals("")) {
 
 			campoVacio();
-			
+
 			venta.setFecha(campoFecha.getText());
 			venta.setIdCliente(Integer.valueOf(aTextoCliente[0].getText()));
 	
@@ -609,7 +618,7 @@ public class IGUVentas extends JFrame{
 	
 			} else {
 
-				throw new IllegalArgumentException("cancela");
+				throw new IllegalArgumentException("no ejecutar");
 
 			}
 				
@@ -734,7 +743,7 @@ public class IGUVentas extends JFrame{
 			}
 		} catch (NullPointerException ex) {
 
-			throw new NullPointerException("cancela");
+			throw new NullPointerException("no ejecutar");
 
 		}
 
