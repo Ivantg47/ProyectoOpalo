@@ -10,9 +10,10 @@ package ProyectoOpalo.control;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import ProyectoOpalo.igu.IGUVentas;
+import ProyectoOpalo.igu.*;
 import ProyectoOpalo.dao.*;
 import ProyectoOpalo.dto.*;
+
 
 public class ControlVenta implements ActionListener, FocusListener{
 
@@ -52,7 +53,11 @@ public class ControlVenta implements ActionListener, FocusListener{
 
 			if (evento.getActionCommand().equals("buscarCliente")) {
 				
-				iguVentas.setCampoCliente(new DAOClientes().buscarCliente(iguVentas.getCampoCliente()));
+				if (!iguVentas.getCampoCliente().equals("")) {
+
+					iguVentas.setCampoCliente(new DAOClientes().buscarCliente(Integer.parseInt(iguVentas.getCampoCliente())));
+
+				}
 
 			} else if (evento.getActionCommand().equals("limpiarCliente")) {
 
@@ -60,7 +65,11 @@ public class ControlVenta implements ActionListener, FocusListener{
 				
 			} else if (evento.getActionCommand().equals("buscarProducto")) {
 				
-				iguVentas.setCampoProducto(new DAOProducto().getProducto(iguVentas.getCampoProducto()));
+				if (!iguVentas.getCampoProducto().equals("")) {
+					
+					iguVentas.setCampoProducto(new DAOProducto().getProducto(Integer.parseInt(iguVentas.getCampoProducto())));
+
+				}	
 
 			} else if (evento.getActionCommand().equals("limpiarProducto")) {
 
@@ -97,8 +106,13 @@ public class ControlVenta implements ActionListener, FocusListener{
 
 			} else if (evento.getActionCommand().equals("buscarVenta")) {
 				
-				iguVentas.nuevaVenta();
-				iguVentas.setVenta(daoVentas.buscarVenta(iguVentas.getCampoBuscar(), iguVentas.getModelo()));
+				if (!iguVentas.getCampoBuscar().equals("Folio") && !iguVentas.getCampoBuscar().equals("")){
+
+					iguVentas.nuevaVenta();
+					iguVentas.setVenta(daoVentas.buscarVenta(Integer.parseInt(iguVentas.getCampoBuscar()), iguVentas.getModelo()));
+
+				}
+				
 				
 
 			}
