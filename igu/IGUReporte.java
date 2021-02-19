@@ -126,7 +126,7 @@ public class IGUReporte extends JFrame{
 		panel.add(new JLabel("Fecha inicio:"));
 		campoInicio = new JTextField("yyyy-mm-dd");
 		campoInicio.setForeground(new Color(111,111,111));
-		campoInicio.addFocusListener(control);
+		// campoInicio.addFocusListener(control);
 		campoInicio.setActionCommand("fecahaInicio");
 
 		panel.add(campoInicio);
@@ -134,7 +134,7 @@ public class IGUReporte extends JFrame{
 		panel.add(new JLabel("Fecha final:"));
 		campoFinal = new JTextField("yyyy-mm-dd");
 		campoFinal.setForeground(new Color(111,111,111));
-		campoFinal.addFocusListener(control);
+		// campoFinal.addFocusListener(control);
 		campoFinal.setActionCommand("fecahaFinal");
 	
 		panel.add(campoFinal);
@@ -142,7 +142,7 @@ public class IGUReporte extends JFrame{
 		panel.setBorder(BorderFactory.createTitledBorder("Datos Reporte"));
 
 		JButton consulta = new JButton("Consultar");
-		consulta.addActionCommand(control);
+		// consulta.addActionCommand(control);
 		consulta.setActionCommand("consulta");
 		panel.add(consulta);
 		panel.setPreferredSize(new Dimension(190, 250));
