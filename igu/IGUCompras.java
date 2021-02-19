@@ -332,17 +332,22 @@ public class IGUCompras extends JFrame{
 		btCancelar.addActionListener(control);
         btCancelar.setActionCommand("Tirar");
 
-
+        JButton btNuevo = new JButton(new ImageIcon(getClass().getResource("/iconos/borradorGrande.png")));
+		btNuevo.setPreferredSize(new Dimension(80, 80));
+		btNuevo.setToolTipText("Limpiar campos");
+		btNuevo.addActionListener(control);
+        btNuevo.setActionCommand("nuevaVenta");
 		total = new JLabel("         Total Compra");
 		total.setFont(new Font("Tahoma", Font.PLAIN, 36));
 
 		texTotal = new JTextField("$ 0.00");
 		texTotal.setHorizontalAlignment(JTextField.RIGHT);
 		texTotal.setFont(new Font("Tahoma", Font.PLAIN, 30));
-		texTotal.setPreferredSize(new Dimension(200, 40));
+		texTotal.setPreferredSize(new Dimension(100, 40));
 
 		botones.add(btAgregar);
 		botones.add(btCancelar);
+		botones.add(btNuevo);
 		botones.add(total);
 		botones.add(texTotal);
 
@@ -387,10 +392,10 @@ public class IGUCompras extends JFrame{
 											aTextoProducto[1].getText(), 
 											Integer.valueOf(aTextoProducto[3].getText()),
 											Float.valueOf(aTextoProducto[2].getText()), 
-											(Integer.valueOf(aTextoProducto[3].getText()) * Float.valueOf(aTextoProducto[3].getText()))});
+											(Integer.valueOf(aTextoProducto[3].getText()) * Float.valueOf(aTextoProducto[2].getText()))});
 					
 
-				fTotal += (Integer.valueOf(aTextoProducto[3].getText()) * Float.valueOf(aTextoProducto[3].getText()));
+				fTotal += (Integer.valueOf(aTextoProducto[3].getText()) * Float.valueOf(aTextoProducto[2].getText()));
 				texTotal.setText(formato.format(fTotal));
 
 			} else {
@@ -401,7 +406,7 @@ public class IGUCompras extends JFrame{
 
 		} else {
 
-			throw new IllegalArgumentException("Error, primero busque un producto");
+			throw new IllegalArgumentException("Error, primero busque un insumo");
 
 		} 
 
@@ -417,7 +422,7 @@ public class IGUCompras extends JFrame{
 
 		} else {
 
-			throw new IllegalArgumentException("No se ha seleccionado un producto");
+			throw new IllegalArgumentException("No se ha seleccionado un ");
 
 		}
 	 
@@ -428,26 +433,36 @@ public class IGUCompras extends JFrame{
 		campoVacio();
 		DTOCompra compra = new DTOCompra();
 		String sFecha = "";
+		Date oFecha;
 
-		sFecha = texDia.getText() + "/" + texMes.getText() + "/" + texAnio.getText();
-		java.sql.Date.valueOf(sFecha);
-			
-		int aIDInsumos[] = new int[modelo.getRowCount()];
-		int  aCantidades[] = new int[modelo.getRowCount()];
-		float aCostosUnitarios[] = new float[modelo.getRowCount()];
+		try{
 
-		for (int con = 0; con < modelo.getRowCount(); con++) {
-			
-			aIDInsumos[con] = (int) tabla.getValueAt(con, 0);
-			aCantidades[con] = (int) tabla.getValueAt(con, 2);
-			aCostosUnitarios[con] = (float) tabla.getValueAt(con, 3);
+			sFecha = texAnio.getText() + "-" + texMes.getText() + "-" + texDia.getText();
+		
+			oFecha = java.sql.Date.valueOf(sFecha);
+
+			int aIDInsumos[] = new int[modeloDTO.getRowCount()];
+			int  aCantidades[] = new int[modeloDTO.getRowCount()];
+			float aCostosUnitarios[] = new float[modeloDTO.getRowCount()];
+
+			for (int con = 0; con < modeloDTO.getRowCount(); con++) {
+				
+				aIDInsumos[con] = (int) tabla.getValueAt(con, 0);
+				aCantidades[con] = (int) tabla.getValueAt(con, 2);
+				aCostosUnitarios[con] = (float) tabla.getValueAt(con, 3);
+			}
+
+			compra.setFechaCompra(sFecha);
+			compra.setIDInsumos(aIDInsumos);
+			compra.setCantidades(aCantidades);
+			compra.setCostosUnitarios(aCostosUnitarios);
+
+			return compra;
+
+		}catch(IllegalArgumentException illEx){
+
+			throw new IllegalArgumentException("Fecha invalida");
 		}
-
-		compra.setIDInsumos(aIDInsumos);
-		compra.setCantidades(aCantidades);
-		compra.setCostosUnitarios(aCostosUnitarios);
-
-		throw new IllegalArgumentException("No se ha seleccionado un producto");
 
 	}
 
@@ -459,5 +474,43 @@ public class IGUCompras extends JFrame{
 
 		}
 
+	}
+
+	public void nuevaVenta(){
+
+		limpiarCampoInsumo();
+
+		modeloDTO.setRowCount(0);
+		texDia.setText(null);
+		texMes.setText(null);
+		texAnio.setText(null);
+		fTotal = 0.0f;
+		texTotal.setText("$ 0.00");
+		campoBuscar.setText(null);
+
+		
+
+	}
+
+	public int getCampoBuscar()throws NumberFormatException{
+
+		return Integer.valueOf(campoBuscar.getText());
+	}
+
+	public void setCompra(DTOCompra compra){
+
+		for (int con = 0; con < modeloDTO.getRowCount(); con++) {
+
+			fTotal += (float) tabla.getValueAt(con, 4);
+		
+		}
+
+		texTotal.setText(formato.format(fTotal));
+
+		String [] partes = compra.getFechaCompra().split("-");
+
+		texAnio.setText(partes[0]);
+		texMes.setText(partes[1]);
+		texDia.setText(partes[2]);
 	}
 }
