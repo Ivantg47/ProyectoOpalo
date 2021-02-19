@@ -58,7 +58,7 @@ public class DAOClientes{
 	}//fin conexion
 
 
-	/*Método utilizado para registrar un nuevo cliente
+	/**Método utilizado para registrar un nuevo cliente
 	* @param oCliente es el cliente que se creó en la DTO
 	*/
 	public void agregarCliente(DTOClientes oCliente){ //Método utilizado para registrar un nuevo cliente
@@ -139,7 +139,7 @@ public class DAOClientes{
 	}//fin agregar
 
 
-	/*Método utilizado para eliminar clientes de la BD
+	/**Método utilizado para eliminar clientes de la BD
 	* @param oCliente es el cliente que se creó en la DTO
 	*/
 	public void eliminarCliente(DTOClientes oCliente){
@@ -189,7 +189,7 @@ public class DAOClientes{
 	}//fin eliminar
 
 	
-	/*Método utilizado para modificar los registros de un cliente de la BD
+	/**Método utilizado para modificar los registros de un cliente de la BD
 	* @param oCliente es el cliente que se creó en la DTO
 	*/
 	public void modificarCliente(DTOClientes oCliente){
@@ -246,7 +246,7 @@ public class DAOClientes{
 
 	}//Fin modificar
 
-	/*Método utilizado para buscar un cliente registrado en la BD
+	/**Método utilizado para buscar un cliente registrado en la BD
 	* @param eId es el identificador único de cada cliente
 	*/
 	public DTOClientes buscarCliente(int eId){
@@ -313,7 +313,7 @@ public class DAOClientes{
 	}//fin buscar
 
 
-	/*Método utilizado para buscar clientes en la BD de acuerdo con su nombre
+	/**Método utilizado para buscar clientes en la BD de acuerdo con su nombre
 	* @param nombre del cliente que se desea buscar
 	*@param modelo es el diseño de la tabla
 	*/
@@ -402,7 +402,7 @@ public class DAOClientes{
 
 	
 
-	/*Método utilizado para listar los datos de los clientes
+	/**Método utilizado para listar los datos de los clientes
 	* @param modelo es el modelo de la tabla de la interfaz
 	*/
 	public void getTabla(DefaultTableModel modelo){
@@ -457,6 +457,10 @@ public class DAOClientes{
 	    }
 	}
 
+	/** Crea una tabla donde muestra los datos de los clientes consultados
+	*@param modelo sirve para la creación de la tabla
+	*@param nombre nombre del cliente
+	*/
 	public void getTabla(DefaultTableModel modelo, String nombre){
 		
 		String oConsultaTabla;

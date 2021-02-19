@@ -42,7 +42,7 @@ public class DTOClientes {
 		this.eIdCliente = eIdCliente;
 	}
 
-	/*Método utilizado asignar valores
+	/**Método utilizado asignar valores
 	* @param eIdClientes es el identificador único de cada cliente
 	*/
 	public void setIdCliente (int eIdCliente) {
@@ -51,7 +51,7 @@ public class DTOClientes {
 
 	}
 
-	/*Método utilizado asignar valores
+	/**Método utilizado asignar valores
 	* @param sNombre es el nombre de cada cliente
 	*/
 	public void setNombre(String sNombre) {
@@ -60,7 +60,7 @@ public class DTOClientes {
 
 	}
 
-	/*Método utilizado asignar valores
+	/**Método utilizado asignar valores
 	* @param aPaterno es el apellido Paterno de cada cliente
 	*/
 	public void setPaterno(String aPaterno){
@@ -69,7 +69,7 @@ public class DTOClientes {
 
 	}
 
-	/*Método utilizado asignar valores
+	/**Método utilizado asignar valores
 	* @param aMaterno es el apellido materno de cada cliente
 	*/
 	public void setMaterno(String aMaterno) {
@@ -78,7 +78,7 @@ public class DTOClientes {
 
 	}
 
-	/*Método utilizado asignar valores
+	/**Método utilizado asignar valores
 	* @param sCorreo es el correo electronico de cada cliente
 	*/
 	public void setCorreo(String sCorreo){
@@ -87,7 +87,7 @@ public class DTOClientes {
 
 	}
 
-	/*Método utilizado asignar valores
+	/**Método utilizado asignar valores
 	* @param sTelefono es el número de telefono de cada cliente
 	*/
 	public void setTelefono(String sTelefono){
@@ -96,7 +96,7 @@ public class DTOClientes {
 
 	}
 
-	/*Método utilizado asignar valores
+	/**Método utilizado asignar valores
 	* @param sDireccion es la direccion de cada cliente
 	*/
 	public void setDireccion(String sDireccion){
@@ -106,7 +106,7 @@ public class DTOClientes {
 	}
 
 
-	/*Método utilizado para obtener los valores
+	/**Método utilizado para obtener los valores
 	* @param eIdClientes es el identificador único de cada cliente
 	*/
 	public int getIdCliente(){
@@ -115,7 +115,7 @@ public class DTOClientes {
 
 	}
 
-	/*Método utilizado obtener valores
+	/**Método utilizado obtener valores
 	* @param aMaterno es el apellido materno de cada cliente
 	*/
 	public String getNombre(){
@@ -125,7 +125,7 @@ public class DTOClientes {
 	}
 
 
-	/*Método utilizado obtener valores
+	/**Método utilizado obtener valores
 	* @param aPaterno es el apellido Paterno de cada cliente
 	*/
 	public String getPaterno() {
@@ -134,7 +134,7 @@ public class DTOClientes {
 
 	}
 
-	/*Método utilizado obtener valores
+	/**Método utilizado obtener valores
 	* @param aMaterno es el apellido materno de cada cliente
 	*/
 	public String getMaterno() {
@@ -143,7 +143,7 @@ public class DTOClientes {
 
 	}
 
-	/*Método utilizado obtener valores
+	/**Método utilizado obtener valores
 	* @param sCorreo es el correo electronico de cada cliente
 	*/
 	public String getCorreo(){
@@ -151,7 +151,7 @@ public class DTOClientes {
 		return sCorreo;
 	}
 
-	/*Método utilizado obtener valores
+	/**Método utilizado obtener valores
 	* @param sTelefono es el número de telefono de cada cliente
 	*/
 	public String getTelefono(){
@@ -160,7 +160,7 @@ public class DTOClientes {
 
 	}
 
-	/*Método utilizado obtener valores
+	/**Método utilizado obtener valores
 	* @param sDireccion es la direccion de cada cliente
 	*/
 	public String getDireccion(){

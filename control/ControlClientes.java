@@ -22,7 +22,7 @@ public class ControlClientes implements ActionListener, FocusListener{
 
 		this.igu = igu;
 	}
-	/*Método utilizado para establecer las acciones que realiza cada boton
+	/**Método utilizado para establecer las acciones que realiza cada boton
 	* @param oEvento
 	*/
 	public void actionPerformed(ActionEvent oEvento){
@@ -129,7 +129,7 @@ public class ControlClientes implements ActionListener, FocusListener{
 	}//actionPerformed
 
 
-	/*Método utilizado para verificar que los datos de cliente ingresado sean correctos
+	/**Método utilizado para verificar que los datos de cliente ingresado sean correctos
 	* @param dto
 	*/
 	public boolean datosCorrectos(DTOClientes dto){
@@ -145,8 +145,8 @@ public class ControlClientes implements ActionListener, FocusListener{
 	}
 
 
-	/*Método utilizado para 
-	* @param e
+	/**Método que espera a que el campo buscar sea seleccionado
+	* @param e es un indicador de que el campo ha sido seleccionado
 	*/
 	public void focusGained(FocusEvent e) {
 		
@@ -160,7 +160,9 @@ public class ControlClientes implements ActionListener, FocusListener{
     	}
            
     }
-
+    /**Método utilizado para verificar si el campo se ha desdeleccionado y escribe un dato
+	* @param e indica si el campo ha sido desseleccionado
+	*/
     public void focusLost(FocusEvent e) {
 
     	JTextField campo = (JTextField) e.getSource();
@@ -174,7 +176,7 @@ public class ControlClientes implements ActionListener, FocusListener{
         
     }
 
-    /*Método utilizado para verificar si el dato ingresado en in número
+    /**Método utilizado para verificar si el dato ingresado en in número
 	* @param sCadena
 	*/
     public static boolean isNumeric(String sCadena) {
@@ -196,8 +198,8 @@ public class ControlClientes implements ActionListener, FocusListener{
     }//isNumeric
 
   	
-    /*Método utilizado comprobar la cadena ingresada
-	* @param sNombre wa la cadena nombre
+    /**Método utilizado comprobar la cadena ingresada
+	* @param sNombre la la cadena nombre
 	*/
   	public boolean comprobarNombre(String sNombre){
 

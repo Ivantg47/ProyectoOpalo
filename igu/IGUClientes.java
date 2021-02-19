@@ -18,7 +18,7 @@ public class IGUClientes extends JFrame{
 
 	public static final String ICONOS = "/iconos/"; 
 
-	private JTextField camposTexto[] = {
+	private JTextField camposTexto[] = { 	//Cra un campo de texto por cada dato de los clientes que se necesitan
 		new JTextField(),
 		new JTextField(),
 		new JTextField(),
@@ -28,7 +28,7 @@ public class IGUClientes extends JFrame{
 		new JTextField(),
 	};
 
-	private JLabel etiquetas[] = {
+	private JLabel etiquetas[] = { //añade las etiquetas de los datos de los clientes
 		new JLabel("ID Cliente"),
 		new JLabel("Nombre"),
 		new JLabel("Apellido Paterno"),
@@ -39,18 +39,21 @@ public class IGUClientes extends JFrame{
 	};
 
 
-	private JTextField campoBuscar;
+	private JTextField campoBuscar;//campo de texto usado para uscar un cliente
 
-	private DefaultTableModel modelo;
+	private DefaultTableModel modelo;//modelo de la tabla e datos
  	private JTable tabla;
 	
 	private ControlClientes control = new ControlClientes(this);
 
-	public IGUClientes(){
+	public IGUClientes(){ //Constructor sin parametros
 
 
 	}
 
+	/** Método que crea un panel para los clientes
+	*@return panel de clientes
+	*/
 	public JPanel getIGUClientes(){
 
 		JPanel panel = new JPanel();
@@ -63,6 +66,9 @@ public class IGUClientes extends JFrame{
 
 	}
 
+	/** Método que crea el panel para buscar a los clientes
+	*@return panel
+	*/
 	public JPanel getPanelBuscar(){
 
 		JPanel panel = new JPanel();
@@ -96,6 +102,9 @@ public class IGUClientes extends JFrame{
 
 	}
 
+	/** Método usado para mostrar la lista de clientes
+	*@return panel panel donde se muestra os datos
+	*/
 	public JPanel getPanelListaClientes(){
 
 		JPanel panel = new JPanel();
@@ -119,6 +128,9 @@ public class IGUClientes extends JFrame{
 
 	}
 	
+	/**Método utilizado para mostrar los datos de los clientes
+	* @return panelGeneral es el panel principal de la interfaz
+	*/
 	public JPanel getPanelDatosCliente(){
 
 		JPanel panelGeneral = new JPanel();
@@ -135,6 +147,9 @@ public class IGUClientes extends JFrame{
 
 	}
 
+	/**
+	* Método utilizado para mostrar un campo donde recibir los datos y el nombre del dato que le corresponde
+	*/
 	public JPanel getPanelDatos(){
 
 		JPanel panel = new JPanel();
@@ -154,6 +169,9 @@ public class IGUClientes extends JFrame{
 
 	}
 
+	/**Método utilizado para mostrar los botones necesarios para las acciones de la interfaz
+	* @return panel que muestra los botones 
+	*/
 	public JPanel getPanelBotones(){
 
 		JPanel panelBotones = new JPanel();
@@ -192,6 +210,9 @@ public class IGUClientes extends JFrame{
 		return panelBotones;
 	}
 
+	/**Método utilizado para recibir los datos del cliente
+	* @return oCliente es el objeto cliente 
+	*/
 	public DTOClientes getDTO(){
 
 		int eId = 0;
@@ -252,6 +273,9 @@ public class IGUClientes extends JFrame{
 
 	}
 
+	/**Método utilizado para recibir el ID del cliente
+	* @return eId el id del cliente 
+	*/
 	public int getId(){
 
 		int eId = 0;
@@ -265,12 +289,18 @@ public class IGUClientes extends JFrame{
 		return eId;
 	}
 
+	/**Método crear la tabla de datos
+	* @return modelo de la tabla
+	*/
 	public DefaultTableModel getModelo(){
 
 		return modelo;
 
 	}
 
+	/**Método utilizado para limpiar los campos de datos
+	* 
+	*/
 	public void limpiar(){
 
 
@@ -289,6 +319,9 @@ public class IGUClientes extends JFrame{
 		campoBuscar.setText("Codigo/Nombre");
 	}
 
+	/**Método utilizado para comprobar si los campos de datos están vacios
+	* @return vacio indica si es campos vacios es verdadero o falso
+	*/
 	public boolean camposVacios(){
 
 		boolean vacio = false;
@@ -316,7 +349,9 @@ public class IGUClientes extends JFrame{
 
 	}
 
-
+	/**Método utilizado para mostrar Los datos del cliente
+	* 
+	*/
 	public void mostrarDTO(DTOClientes oClientes){
 
 		if (oClientes.getIdCliente() != 0) {
@@ -331,6 +366,9 @@ public class IGUClientes extends JFrame{
 
 	}
 
+	/**Método utilizado para comprobar si un dato es númerico
+	* @return oResultado indica si es verdadero o falso 
+	*/
 	public static boolean isNumeric(String oCadena) {
 
         boolean oResultado;
@@ -349,6 +387,7 @@ public class IGUClientes extends JFrame{
         return oResultado;
     }
 
+    
     public String getCampoBuscar(){
 
     	return campoBuscar.getText();
