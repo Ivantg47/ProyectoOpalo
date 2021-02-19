@@ -9,17 +9,41 @@ package ProyectoOpalo.igu;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.*;
+import java.text.DecimalFormat;
 
 public class IGUReporte extends JFrame{
 
+	/**
+     * Atributo que determina el modelo de la tabla.
+     */
 	private JTable tabla;
-	private JComboBox<String> combo1;
 
-	private JLabel etiquetas[] = {
-		new JLabel("Año"),
-		new JLabel("Periodo"),
-		new JLabel("Semana"),
-	};
+	/**
+     * Atributo que determina el modelo de la tabla.
+     */
+ 	private DefaultTableModel modelo;
+
+ 	/**
+     * Atributo que determina el modelo de la tabla.
+     */
+ 	private JTextField campoInicio;
+
+ 	/**
+     * Atributo que determina el modelo de la tabla.
+     */
+ 	private JTextField campoFinal;
+
+ 	/**
+     * Atributo que determina el modelo de la tabla.
+     */
+ 	private JTextField campoTotal;
+
+ 	/**
+     * Atributo que determina el modelo de la tabla.
+     */
+ 	private DecimalFormat formato = new DecimalFormat("$ #,##0.00");
+
+
 
 	public IGUReporte(){
 
@@ -60,7 +84,10 @@ public class IGUReporte extends JFrame{
 		panel.setLayout(new FlowLayout());
 
 		//creacion de la tabla
-		tabla = new JTable();
+		modelo = new DefaultTableModel();
+		modelo.setColumnIdentifiers(new Object[]{"Codigo", "Nombre", "Descripcion", "Existencias"});
+		tabla = new JTable(modelo);
+        
 		JScrollPane jScroll = new JScrollPane(tabla);
 
 
@@ -69,9 +96,9 @@ public class IGUReporte extends JFrame{
 		JLabel venta = new JLabel("     Ventas semanal");
 		venta.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		panel.add(venta);
-		JTextField campo = new JTextField();
-		campo.setPreferredSize(new Dimension(200,40));
-		panel.add(campo);
+		campoTotal = new JTextField();
+		campoTotal.setPreferredSize(new Dimension(200,40));
+		panel.add(campoTotal);
 
 
 		JButton btImprimir = new JButton(new ImageIcon(getClass().getResource("/iconos/impresora (2).png")));
@@ -85,6 +112,7 @@ public class IGUReporte extends JFrame{
 		JPanel panel = new JPanel();
 
 		panel.add(getPanelConsulta(), BorderLayout.NORTH);
+		panel.setPreferredSize(new Dimension(200, 670));
 
 		return panel;
 
@@ -93,48 +121,39 @@ public class IGUReporte extends JFrame{
 	public JPanel getPanelConsulta(){
 
 		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(7, 1, 50, 10));
+		panel.setLayout(new GridLayout(5, 1, 50, 10));
 
-		panel.add(new JLabel("A\u00F1o"));
-		panel.add(new JTextField());
+		panel.add(new JLabel("Fecha inicio:"));
+		campoInicio = new JTextField("yyyy-mm-dd");
+		campoInicio.setForeground(new Color(111,111,111));
+		campoInicio.addFocusListener(control);
+		campoInicio.setActionCommand("fecahaInicio");
 
-		panel.add(new JLabel("Periodo"));
+		panel.add(campoInicio);
 
-		JComboBox combo1 = new JComboBox<String>();
-		combo1.addItem("Diario");
-        combo1.addItem("Semanal");
-        combo1.addItem("Mensual");
-        combo1.addItem("Anual");
-        panel.add(combo1);
-
-        panel.add(new JLabel("Semana"));
-
-		JComboBox combo2 = new JComboBox<String>();
-
-		for (int i = 1; i <= 52; i++) {
-			combo2.addItem(i);
-		}
-		
-        panel.add(combo2);
-
+		panel.add(new JLabel("Fecha final:"));
+		campoFinal = new JTextField("yyyy-mm-dd");
+		campoFinal.setForeground(new Color(111,111,111));
+		campoFinal.addFocusListener(control);
+		campoFinal.setActionCommand("fecahaFinal");
+	
+		panel.add(campoFinal);
 
 		panel.setBorder(BorderFactory.createTitledBorder("Datos Reporte"));
 
 		JButton consulta = new JButton("Consultar");
+		consulta.addActionCommand(control);
+		consulta.setActionCommand("consulta");
 		panel.add(consulta);
+		panel.setPreferredSize(new Dimension(190, 250));
 
 		return panel;
 
 	}
 
-	public static void main(String[] args) {
-		IGUReporte ventana = new IGUReporte();
-		
-	}
+	public DefaultTableModel getModelo(){
 
-	public JTable getTabla(){
-
-		return tabla;
+		return modelo;
 
 	}
 	

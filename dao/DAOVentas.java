@@ -210,39 +210,28 @@ public class DAOVentas{
 
 			conexion = getConnection();
 
-			String sql = "INSERT INTO Cancelacion (descripcion) VALUES (?);";
+			String sql = "CALL cancelar (?);";
 
 			prepared = conexion.prepareStatement(sql);
 
 			prepared.setString(1,venta.getMotivo());
 
-			if (prepared.executeUpdate() != 0){
+			result = prepared.executeQuery();
 
-				sql = "SELECT last_insert_id() AS codigo;";
+			if (result.next()) {
+				
+				sql = "UPDATE Venta SET id_cancelacion = ?, estado = ? WHERE id_venta = ?;";
 				prepared = conexion.prepareStatement(sql);
-				result = prepared.executeQuery();
 
-				if (result.next()) {
+				prepared.setInt(1, result.getInt("id_cancelacion"));
+				prepared.setString(2, venta.getEstado());
+				prepared.setInt(3,venta.getIdVenta());
+
+				if (prepared.executeUpdate() == 0) {
 					
-					sql = "UPDATE Venta SET id_cancelacion = ?, estado = ? WHERE id_venta = ?;";
-					prepared = conexion.prepareStatement(sql);
-
-					prepared.setInt(1, result.getInt("codigo"));
-					prepared.setString(2, venta.getEstado());
-					prepared.setInt(3,venta.getIdVenta());
-
-					if (prepared.executeUpdate() == 0) {
-						
-						throw new IllegalArgumentException("Error: En cancelacion");
-
-					}
-
-				} else {
-
 					throw new IllegalArgumentException("Error: En cancelacion");
 
 				}
-				
 
 			} else {
 
