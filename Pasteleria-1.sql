@@ -1,6 +1,6 @@
 
 CREATE TABLE Cancelacion (id_cancelacion SERIAL PRIMARY KEY ,descripcion VARCHAR(250) NOT NULL);
-CREATE TABLE Compras (id_compra SERIAL NOT NULL, fechaCompra DATE NOT NULL, CONSTRAINT PK_Compras PRIMARY KEY (id_compra));
+CREATE TABLE Compras (id_compra SERIAL NOT NULL, fechaCompra DATE NOT NULL, id_cancelacion INT REFERENCES Cancelacion(id_cancelacion), estado VARCHAR(75) NOT NULL DEFAULT 'REALIZADA', CONSTRAINT PK_Compras PRIMARY KEY (id_compra));
 CREATE TABLE Cliente (id_cliente SERIAL PRIMARY KEY, nombre VARCHAR(50) NOT NULL, aPaterno VARCHAR(50) NOT NULL, aMaterno VARCHAR(50) NOT NULL, correo VARCHAR(100) NOT NULL, telefono VARCHAR(10) NOT NULL, direccion VARCHAR(100)	NOT NULL);
 CREATE TABLE Producto (id_producto SERIAL NOT NULL, nombre VARCHAR(100) NOT NULL, descripcion VARCHAR (100) NOT NULL, existenciaMinima INT NOT NULL, existenciaMaxima INT NOT NULL, existenciaActual INT NOT NULL, CONSTRAINT PK_Producto PRIMARY KEY (id_producto));
 CREATE TABLE Factura (id_factura SERIAL PRIMARY KEY, fecha DATE NOT NULL);
@@ -35,6 +35,8 @@ CREATE TABLE Cancelacion (id_cancelacion 	SERIAL 		 PRIMARY KEY
 
 CREATE TABLE Compras (id_compra 	SERIAL 		NOT NULL
 					 ,fechaCompra 	DATE 		NOT NULL
+					 ,id_cancelacion INT 		REFERENCES Cancelacion(id_cancelacion)
+					 ,estado 		VARCHAR(75) NOT NULL DEFAULT 'REALIZADA'
 					 ,CONSTRAINT 	PK_Compras 	PRIMARY KEY (id_compra)
 					 );
 
@@ -141,41 +143,98 @@ END;//
 DELIMITER ;
 
 DELIMITER //
+DROP IF EXIST 
 CREATE TRIGGER aumentar_insumo 
 AFTER INSERT ON Compra_Insumo FOR EACH ROW 
 BEGIN 
-UPDATE Insumo SET existenciaActual = (existenciaActual - NEW.cantidad) WHERE id_insumo = NEW.id_insumo; 
+UPDATE Insumo SET existenciaActual = (existenciaActual + NEW.cantidad) WHERE id_insumo = NEW.id_insumo; 
 END;//
 DELIMITER ;
 
 
 
-SELECT  V.id_venta, P.id_producto AS id, CONCAT(P.nombre, ' ', P.descripcion) AS nombre, VP.cantidad, Pr.precio, Pr.fecha, V.fecha
-FROM Venta V INNER JOIN Venta_Producto VP ON (VP.id_venta = V.id_venta)
-INNER JOIN Producto P ON (VP.id_producto = P.id_producto)
-INNER JOIN Precio Pr ON (P.id_producto = Pr.id_producto)
-ORDER BY  V.id_venta
+SELECT P.id_producto AS id, CONCAT(P.nombre, ' ', P.descripcion) AS nombre, VP.cantidad, Pr.precio
+FROM Venta AS V INNER JOIN Venta_Producto AS VP ON (VP.id_venta = V.id_venta)
+INNER JOIN Producto AS P ON (VP.id_producto = P.id_producto)
+INNER JOIN (SELECT id_producto AS idProd, MAX(fecha) AS fecha, precio FROM Precio
+WHERE fecha <= '2021-02-17' GROUP BY id_producto) AS Pr ON (P.id_producto = Pr.idProd)
+WHERE V.fecha = '2021-02-17'
+
+//
+CREATE PROCEDURE reportes (IN fechaInicio DATE, IN fechaFin DATE)
+BEGIN
+	CREATE TEMPORARY TABLE Reporte(id_producto 		INT 		NOT NULL
+									,descripcion 	VARCHAR(50)	NOT NULL
+									,cantidad		INT 		NOT NULL
+									,total 			FLOAT		NOT NULL	
+									);
+
+	WHILE fechaInicio < fechaFin do 
+
+		SELECT P.id_producto AS id, CONCAT(P.nombre, ' ', P.descripcion) AS nombre, VP.cantidad, Pr.precio
+		FROM Venta AS V INNER JOIN Venta_Producto AS VP ON (VP.id_venta = V.id_venta)
+		INNER JOIN Producto AS P ON (VP.id_producto = P.id_producto)
+		INNER JOIN (SELECT id_producto AS idProd, MAX(fecha) AS fecha, precio FROM Precio
+		WHERE fecha <= '2021-02-17' GROUP BY id_producto) AS Pr ON (P.id_producto = Pr.idProd)
+		WHERE V.fecha = '2021-02-17'
+
+		INSERT INTO Reporte ()
+
+		SET fechaInicio = DATE_ADD(fechaInicio,INTERVAL 1 DAY);
+
+	END
+
+	SELECT * FROM Reporte;
+
+END;//
 
 
-(SELECT id_producto AS idProd, MAX(fecha) AS fecha, precio FROM Precio
-WHERE fecha <= ?
-GROUP BY id_producto) AS Pr
-WHERE VP.id_venta = ? AND VP.id_producto = P.id_producto AND P.id_producto = Pr.id_producto;
+
+DELIMITER//
+DROP PROCEDURE IF EXISTS reportes;
+CREATE PROCEDURE reportes (IN fechaInicio DATE, IN fechaFin DATE)
+BEGIN
+DROP TEMPORARY TABLE IF EXISTS Reporte;
+CREATE TEMPORARY TABLE Reporte(id_producto INT NOT NULL
+,descripcion VARCHAR(50) NOT NULL
+,cantidad INT NOT NULL
+,total FLOAT NOT NULL
+,fecha DATE NOT NULL	
+);
+WHILE fechaInicio <= fechaFin do 
+INSERT INTO Reporte (
+SELECT P.id_producto AS id, CONCAT(P.nombre, ' ', P.descripcion) AS nombre, VP.cantidad, Pr.precio, V.fecha
+FROM Venta AS V INNER JOIN Venta_Producto AS VP ON (VP.id_venta = V.id_venta)
+INNER JOIN Producto AS P ON (VP.id_producto = P.id_producto)
+INNER JOIN (SELECT id_producto AS idProd, MAX(fecha) AS fecha, precio FROM Precio
+WHERE fecha <= fechaInicio GROUP BY id_producto) AS Pr ON (P.id_producto = Pr.idProd)
+WHERE V.fecha = fechaInicio
+);
+SET fechaInicio = DATE_ADD(fechaInicio,INTERVAL 1 DAY);
+END WHILE;
+SELECT * FROM Reporte;
+END;//
+DELIMITER;
+
+DELIMITER//
+DROP PROCEDURE IF EXISTS cancelar;
+CREATE PROCEDURE cancelar (IN motivo VARCHAR)
+BEGIN
+IF (SELECT COUNT(*) FROM Cancelacion WHERE descripcion = motivo) = 0 THEN
+   {...statements to execute when condition1 is TRUE...}
+
+[ ELSEIF condition2 THEN
+   {...statements to execute when condition1 is FALSE and condition2 is TRUE...} ]
+
+[ ELSE
+   {...statements to execute when both condition1 and condition2 are FALSE...} ]
+
+END IF;
+END;//
+DELIMITER;
+
+CALL reportes ('2021-02-15', '2021-02-18');
 
 
-DECLARE @StartDate DATETIME ,
-    @EndDate DATETIME
-
-SELECT  @StartDate = '01 Jan 2010' ,
-        @EndDate = '15 Mar 2010'
-
-SELECT  [Products].pName AS ItemName,
-        SalesLog.[Price] AS Price ,
-        COUNT(*)AS Quantity ,
-        SUM(SalesLog.[Price]) AS Total
-FROM    SalesLog
-        JOIN [Products] ON [Products].pCode = SalesLog.ProductCode /*Check this join - I'm not sure what your relationship is*/
-WHERE   BillDate >= @StartDate
-        AND BillDate < @EndDate + 1
-GROUP BY [Products].pName ,
-        SalesLog.[Price]
+ALTER TABLE Compras ADD COLUMN (id_cancelacion INT REFERENCES Cancelacion(id_cancelacion))
+ALTER TABLE Compras ADD COLUMN(estado VARCHAR(75) NOT NULL DEFAULT 'REALIZADA');

@@ -452,9 +452,9 @@ public class IGUVentas extends JFrame{
 
 	}//setCampoCliente
 
-	public int getCampoCliente() throws NumberFormatException {
+	public String getCampoCliente() throws NumberFormatException {
 
-		return Integer.valueOf(aTextoCliente[0].getText());
+		return aTextoCliente[0].getText();
 
 	}//getCampoCliente
 
@@ -482,9 +482,9 @@ public class IGUVentas extends JFrame{
 
 	}//setCampoProducto
 
-	public int getCampoProducto() throws NumberFormatException {
+	public String getCampoProducto() {
 
-		return Integer.valueOf(aTextoProducto[0].getText());
+		return aTextoProducto[0].getText();
 
 	}//getCampoProducto
 
@@ -500,7 +500,7 @@ public class IGUVentas extends JFrame{
 		aTextoProducto[0].requestFocus();
 		
 	}//limpiarCampoProducto
-/////
+
 	public void agregarProducto() throws NumberFormatException, IllegalArgumentException {
 
 		if (!aTextoProducto[1].getText().equals("")) {
@@ -663,9 +663,9 @@ public class IGUVentas extends JFrame{
 
 	}//nuevaVenta
 
-	public int getCampoBuscar() throws NumberFormatException{
+	public String getCampoBuscar(){
 
-		return Integer.valueOf(campoBuscar.getText());
+		return campoBuscar.getText();
 
 	}//getCampoBuscar
 
@@ -681,10 +681,11 @@ public class IGUVentas extends JFrame{
 
 			total += (float) tabla.getValueAt(con, 4);
 			
-			texTotal[2].setText(formato.format(total));
-			texTotal[1].setText(formato.format(total * IVA));
-			texTotal[0].setText(formato.format(total - (total * IVA)));
 		}
+
+		texTotal[2].setText(formato.format(total));
+		texTotal[1].setText(formato.format(total * IVA));
+		texTotal[0].setText(formato.format(total - (total * IVA)));
 
 		campoFolio.setText(String.valueOf(venta.getIdVenta()));
 		campoFecha.setText(venta.getFecha());

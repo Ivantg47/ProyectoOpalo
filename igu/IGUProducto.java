@@ -147,7 +147,6 @@ public class IGUProducto extends JPanel{
 	public JPanel getPanelInventario(){
 
 		JPanel panel = new JPanel();
-		DAOProducto dao = new DAOProducto();
 
 		panel.setBorder(BorderFactory.createTitledBorder("Inventario"));
 		modelo = new DefaultTableModel();
@@ -156,7 +155,7 @@ public class IGUProducto extends JPanel{
 		tabla = new JTable(modelo);
 		JScrollPane jScroll = new JScrollPane(tabla);
 
-		dao.getTabla(modelo);
+		new DAOProducto().getTabla(modelo);
 
         jScroll.setViewportView(tabla);
 
