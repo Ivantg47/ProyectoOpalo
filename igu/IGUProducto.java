@@ -285,6 +285,8 @@ public class IGUProducto extends JPanel{
 
 	}
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	/**
      * Metodo que limpia los campos de texto de datos del producto.
      */

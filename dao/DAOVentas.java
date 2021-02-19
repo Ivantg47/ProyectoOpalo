@@ -145,6 +145,7 @@ public class DAOVentas{
 				venta.setFecha(result.getString("fecha"));
 				venta.setIdCliente(result.getInt("id_cliente"));
 				venta.setCliente(result.getString("nombre"));
+				venta.setEstado(result.getString("estado"));
 
 				sql = ("SELECT P.id_producto AS id, CONCAT(P.nombre, ' ', P.descripcion) AS nombre, VP.cantidad, Pr.precio"
 						+ " FROM Venta_Producto AS VP, Producto AS P ,"
@@ -203,107 +204,78 @@ public class DAOVentas{
 	    return venta;
 	}
 
-	// public void CancelarVenta(int idVenta, DTOVentas ventas){
-	// 	try {
+	public void cancelarVenta(DTOVentas venta){
 
-	// 		conexion = getConnection();
+		try {
 
-	// 		String sql = "UPDATE Venta SET id_cancelacion = 2, estado = 'cancelado' WHERE id_venta = ?";
+			conexion = getConnection();
 
-	// 		prepared = conexion.prepareStatement(sql);
+			String sql = "INSERT INTO Cancelacion (descripcion) VALUES (?);";
 
-	// 		ventas.setIdVenta(idVenta);
-	// 		prepared.setInt(1,ventas.getIdVenta());
+			prepared = conexion.prepareStatement(sql);
 
-	// 		int resultado = prepared.executeUpdate();
+			prepared.setString(1,venta.getMotivo());
 
-	// 		if (resultado == 1){
+			if (prepared.executeUpdate() != 0){
 
-	// 			JOptionPane.showMessageDialog(null, "Venta cancelada");
+				sql = "SELECT last_insert_id() AS codigo;";
+				prepared = conexion.prepareStatement(sql);
+				result = prepared.executeQuery();
 
-	// 		} else {
+				if (result.next()) {
+					
+					sql = "UPDATE Venta SET id_cancelacion = ?, estado = ? WHERE id_venta = ?;";
+					prepared = conexion.prepareStatement(sql);
 
-	// 			JOptionPane.showMessageDialog(null, "No existe una venta con el id ingresado.");
+					prepared.setInt(1, result.getInt("codigo"));
+					prepared.setString(2, venta.getEstado());
+					prepared.setInt(3,venta.getIdVenta());
 
-	// 		}
+					if (prepared.executeUpdate() == 0) {
+						
+						throw new IllegalArgumentException("Error: En cancelacion");
 
-	// 		conexion.close();
+					}
 
-	// 	} catch (SQLException es) {
+				} else {
 
-	//         es.printStackTrace();
+					throw new IllegalArgumentException("Error: En cancelacion");
 
-	//     } catch (Exception e) {
-	         
-	//         e.printStackTrace();
-
-	//     } finally {
-
-	//         try {
-
-	//             if (conexion != null) {
-
-	//                conexion.close();
-	               
-	//             } 
-
-	//         }catch (SQLException es){
-
-	//             es.printStackTrace();
-
-	//         }
-	//     }
-
-	// }
-
-	// public void getTabla(DefaultTableModel modelo){
-
-	// 	try {
-
-	// 		conexion = getConnection();
-
-	// 		String sql = "SELECT V.id_venta,C.descripcion,V.tipoPago,V.fecha,V.estado FROM Venta V, Cancelacion C WHERE V.id_cancelacion = C.id_cancelacion;";
-	
-	// 		prepared = conexion.prepareStatement(sql);
-
-	// 		result = prepared.executeQuery();
-
-	// 		modelo.setRowCount(0);
-
-	// 		while (result.next()) {
+				}
 				
-	// 			modelo.addRow(new Object[]{result.getInt("V.id_venta"), result.getString("C.descripcion"), result.getString("V.tipoPago"), result.getDate("V.fecha"), result.getString("V.estado")});
 
-	// 		} 
+			} else {
 
-	// 		conexion.close();
+				throw new IllegalArgumentException("Error: En cancelacion");
 
-	// 	} catch (SQLException es) {
+			}
 
-	//         es.printStackTrace();
+			prepared.close();
+			result.close();
+			conexion.close();
 
-	//     } catch (Exception e) {
-	         
-	//         e.printStackTrace();
+		} catch (SQLException es) {
 
-	//     } finally {
+	        es.printStackTrace();
 
-	//         try {
+	    } finally {
 
-	//             if (conexion != null) {
+	        try {
 
-	//                conexion.close();
+	            if (conexion != null) {
+
+	               conexion.close();
 	               
-	//             } 
+	            } 
 
-	//         }catch (SQLException es){
+	        }catch (SQLException es){
 
-	//             es.printStackTrace();
+	            es.printStackTrace();
 
-	//         }
-	//     }
+	        }
+	    }
 
- //    }
+	}
 
 	public Connection getConnection() {
    

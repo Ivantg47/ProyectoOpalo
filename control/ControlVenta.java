@@ -84,8 +84,8 @@ public class ControlVenta implements ActionListener, FocusListener{
                					"Registro venta", JOptionPane.INFORMATION_MESSAGE);
 
 			} else if (evento.getActionCommand().equals("cancelarVenta")) {
-
-				// daoVentas.cancelarVenta(iguVentas.generarVenta());
+				// iguVentas.cancelarVenta();
+				daoVentas.cancelarVenta(iguVentas.cancelarVenta());
 				iguVentas.nuevaVenta();
 
 				JOptionPane.showMessageDialog( null, "Venta cancelada",
@@ -105,8 +105,13 @@ public class ControlVenta implements ActionListener, FocusListener{
 
 		} catch (NullPointerException nullEx) {
 
-			JOptionPane.showMessageDialog(iguVentas, "No debe dejar campos vacios",
+			if (!nullEx.getMessage().equals("no ejecutar")) {
+
+				JOptionPane.showMessageDialog(iguVentas, "No debe dejar campos vacios",
            									"Campo vacio", JOptionPane.ERROR_MESSAGE);
+
+			} 
+			
 
 		} catch (NumberFormatException numEx) {
 
@@ -115,8 +120,13 @@ public class ControlVenta implements ActionListener, FocusListener{
 
 		} catch (IllegalArgumentException illEx){
 
-			JOptionPane.showMessageDialog(iguVentas, illEx.getMessage(),
+			if (!illEx.getMessage().equals("no ejecutar")) {
+				
+				JOptionPane.showMessageDialog(iguVentas, illEx.getMessage(),
            				"Error", JOptionPane.ERROR_MESSAGE);
+
+			}
+			
 
 		} catch (ArrayIndexOutOfBoundsException arEx){
 

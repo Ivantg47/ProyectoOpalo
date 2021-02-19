@@ -22,6 +22,10 @@ public class DTOVentas{
 	 */
 	private int eIDcancelacion;
 	/**
+ 	 * Atributo que guarda el motivo de la cancelacion.
+	 */
+	private String sMotivo;
+	/**
  	 * Atributo que guarda la fecha en que se realiza la venta.
 	 */
 	private String sfecha;
@@ -75,6 +79,14 @@ public class DTOVentas{
      */
 	public void setCancelacion(int eIDcancelacion){
 		this.eIDcancelacion = eIDcancelacion;
+	}
+
+	/**
+     * setMotivo es un método que modifica el valor del atributo del motivo de cancelacion.
+     * @param sMotivo atributo que define la fecha en que se realiza una venta.
+     */
+	public void setMotivo(String sMotivo){
+		this.sMotivo = sMotivo;
 	}
 
 	/**
@@ -148,6 +160,14 @@ public class DTOVentas{
      */
 	public int getCancelacion(){
 		return eIDcancelacion;
+	}
+
+	/**
+     *  getMotivo es un método que devuelve el motivo de la cancelacion.
+     * @return sMotivo motivo cancelacion.
+     */
+	public String getMotivo(){
+		return sMotivo;
 	}
 
 	/**
