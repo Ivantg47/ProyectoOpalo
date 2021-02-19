@@ -172,10 +172,12 @@ public class IGUCompras extends JFrame{
 		panelFecha.setLayout(null);
 
 		estado = new JLabel();
-		estado.setFont(new Font("Tahoma", Font.PLAIN, 8));
-		estado.setHorizontalAlignment(JTextField.RIGHT);
+		estado.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		estado.setHorizontalAlignment(JTextField.CENTER);
         panelFecha.add(estado);
-        estado.setBounds(530,4,30,25);
+        estado.setBounds(40,1,240,34);
+        // estado.setBackground(Color.YELLOW);
+        // estado.setOpaque(true);
 
 		panelFecha.add(dia);
 		dia.setBounds(530,4,30,25);
