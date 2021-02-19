@@ -89,7 +89,7 @@ public class DAOCompra{
 				result = prepared.executeQuery();
 
 				if (result.next()){
-					folio = return.getInt("codigo");
+					folio = result.getInt("codigo");
 					int aInsumos[] = compra.getIDInsumos();
 					int aCantidad[] = compra.getCantidades();
 					float aPrecioTotal[] = compra.getCostosUnitarios();
@@ -150,4 +150,77 @@ public class DAOCompra{
 	    return folio;
 	}
 
+	public DTOCompra buscar(int idCompra, DefaultTableModel modelo) throws IllegalArgumentException, SQLException{
+
+		DTOCompra compra = new DTOCompra();
+
+		try{
+
+			conexion = getConnection();
+			String sql = "SELECT * FROM Compras WHERE Id_compra = ?;";
+
+			prepared = conexion.prepareStatement(sql);
+
+			prepared.setInt(1, idCompra);
+
+			result = prepared.executeQuery();
+
+			if (result.next()) {
+
+				compra.setId(idCompra);
+				compra.setFechaCompra(result.getString("fechaCompra"));
+
+				sql = ("SELECT I.id_Insumo AS IdInsumo, I.nombre AS nombre, "
+					+ "CI.cantidad AS cantidad, CI.costoTotal AS precio, fechaCompra "
+					+ "FROM Compras C "
+					+ "INNER JOIN Compra_Insumo CI "
+					+ "INNER JOIN Insumo I "
+					+ "WHERE(C.Id_compra = ? AND C.Id_compra  = CI.Id_compra AND CI.id_Insumo = I.id_Insumo);");
+
+					prepared = conexion.prepareStatement(sql);
+
+					prepared.setInt(1, idCompra);
+
+					result = prepared.executeQuery();
+
+					while (result.next()){
+						
+						modelo.addRow(new Object[]{result.getInt("IdInsumo"), result.getString("nombre"), result.getFloat("cantidad"),
+												result.getInt("precio"), (result.getInt("cantidad") * result.getFloat("precio"))});
+
+					}
+				
+
+			} else {
+
+				throw new IllegalArgumentException("No hay compras registradas con ese folio");
+
+			}
+
+		} catch (SQLException es) {
+
+	        es.printStackTrace();
+	        throw new SQLException();
+
+	    } finally {
+
+	        try {
+
+	            if (conexion != null) {
+
+	               conexion.close();
+	               
+	            } 
+
+	        }catch (SQLException es){
+
+	            es.printStackTrace();
+
+	        }
+	    }
+
+	    return compra;
+		
+
+	}
 }

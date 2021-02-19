@@ -10,7 +10,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.table.*;
 import javax.swing.*;
-import ProyectoOpalo.igu.IGUCompras;
+import ProyectoOpalo.igu.*;
 import ProyectoOpalo.dao.*;
 import ProyectoOpalo.dto.*;
 
@@ -20,7 +20,8 @@ public class ControlCompra implements ActionListener, FocusListener{
     private DAOCompra oDAO;
     private IGUCompras oIGU;
     private DTOCompra oDTO;
-
+    private IGUInsumo oIGUInsumo = new IGUInsumo();
+    private DAOInsumo oDAOInsumo = new DAOInsumo();
 
 
     /**
@@ -62,12 +63,38 @@ public class ControlCompra implements ActionListener, FocusListener{
             } else if (evento.getActionCommand().equals("Registrar")) {
 
                 int folio = oDAO.agregar(oIGU.generarCompra());
-                oIGU.nuevaVenta();
+                oIGU.nuevaVenta();        
 
-                JOptionPane.showMessageDialog( null, "Venta registrada con folio: " + folio,
+           //     oDAOInsumo.getTabla(oIGUInsumo.getModelo());
+
+                JOptionPane.showMessageDialog( null, "Compra registrada con folio: " + folio,
                                 "Registro venta", JOptionPane.INFORMATION_MESSAGE);
 
-            }     
+            } else if (evento.getActionCommand().equals("Buscar")) {     
+
+                oIGU.nuevaVenta();    
+                oIGU.setCompra(oDAO.buscar(oIGU.getCampoBuscar(), oIGU.getModeloDTO()));
+            }
+
+        } catch (NumberFormatException numEx) {
+
+            JOptionPane.showMessageDialog(null, "Error, verificar datos en el campo, formato incorrecto",
+                        "Error en formato de n\u00FAmero", JOptionPane.ERROR_MESSAGE);
+
+        }catch (IllegalArgumentException illEx){
+                
+            JOptionPane.showMessageDialog(null, illEx.getMessage(),
+            "Error", JOptionPane.ERROR_MESSAGE);     
+
+        } catch (ArrayIndexOutOfBoundsException arEx){
+
+            JOptionPane.showMessageDialog(null, "Error, verificar datos en el campo, formato incorrecto",
+                                            "Fuera de rango", JOptionPane.ERROR_MESSAGE);
+
+        } catch (NullPointerException nullEx) {
+
+            JOptionPane.showMessageDialog(null, "No debe dejar campos vacios",
+                                            "Campo vacio", JOptionPane.ERROR_MESSAGE);
 
         }catch (Exception ex){
 

@@ -387,10 +387,10 @@ public class IGUCompras extends JFrame{
 											aTextoProducto[1].getText(), 
 											Integer.valueOf(aTextoProducto[3].getText()),
 											Float.valueOf(aTextoProducto[2].getText()), 
-											(Integer.valueOf(aTextoProducto[3].getText()) * Float.valueOf(aTextoProducto[3].getText()))});
+											(Integer.valueOf(aTextoProducto[3].getText()) * Float.valueOf(aTextoProducto[2].getText()))});
 					
 
-				fTotal += (Integer.valueOf(aTextoProducto[3].getText()) * Float.valueOf(aTextoProducto[3].getText()));
+				fTotal += (Integer.valueOf(aTextoProducto[3].getText()) * Float.valueOf(aTextoProducto[2].getText()));
 				texTotal.setText(formato.format(fTotal));
 
 			} else {
@@ -401,7 +401,7 @@ public class IGUCompras extends JFrame{
 
 		} else {
 
-			throw new IllegalArgumentException("Error, primero busque un producto");
+			throw new IllegalArgumentException("Error, primero busque un insumo");
 
 		} 
 
@@ -417,7 +417,7 @@ public class IGUCompras extends JFrame{
 
 		} else {
 
-			throw new IllegalArgumentException("No se ha seleccionado un producto");
+			throw new IllegalArgumentException("No se ha seleccionado un ");
 
 		}
 	 
@@ -476,11 +476,33 @@ public class IGUCompras extends JFrame{
 		limpiarCampoInsumo();
 
 		modeloDTO.setRowCount(0);
-		texDia.setText(formato.format(0));
-		texMes.setText(formato.format(0));
-		texAnio.setText(formato.format(0));
+		texDia.setText(null);
+		texMes.setText(null);
+		texAnio.setText(null);
 		fTotal = 0.0f;
 		
 
+	}
+
+	public int getCampoBuscar()throws NumberFormatException{
+
+		return Integer.valueOf(campoBuscar.getText());
+	}
+
+	public void setCompra(DTOCompra compra){
+
+		for (int con = 0; con < modeloDTO.getRowCount(); con++) {
+
+			fTotal += (float) tabla.getValueAt(con, 4);
+		
+		}
+
+		texTotal.setText(formato.format(fTotal));
+
+		String [] partes = compra.getFechaCompra().split("-");
+
+		texAnio.setText(partes[0]);
+		texMes.setText(partes[1]);
+		texDia.setText(partes[2]);
 	}
 }
