@@ -33,6 +33,7 @@ public class IGUVentas extends JFrame{
 	private JTextField campoBuscar;
 	private JTextField campoFolio;
 	private JTextField campoFecha;
+	private JLabel estado;
 
 	private JTextField texTotal[] = {
 
@@ -80,8 +81,6 @@ public class IGUVentas extends JFrame{
 	
 
 	public IGUVentas(){
-
-		
 
 	}
 
@@ -182,8 +181,16 @@ public class IGUVentas extends JFrame{
 		campoFecha.setBounds(655, 5, 90, 25);
 		campoFecha.setForeground(Color.BLACK);
 
+		estado = new JLabel();
+		estado.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		estado.setHorizontalAlignment(JTextField.CENTER);
+
+        panel.add(estado);
+        estado.setBounds(400, 40, 350, 30);
+
 		panel.setPreferredSize(new Dimension(775, 75));
 		// panel.setBackground(new Color(155,1,155));
+
 		return panel;
 
 	}//getPanelDatos
@@ -275,7 +282,7 @@ public class IGUVentas extends JFrame{
         aTextoProducto[4].setHorizontalAlignment(JTextField.RIGHT);
         aTextoProducto[4].setEnabled(false);
         aTextoProducto[4].addActionListener(control);
-        aTextoProducto[4].setActionCommand("agregar");
+        aTextoProducto[4].setActionCommand("agregarProducto");
         
 
         JButton btBuscar = new JButton(new ImageIcon(getClass().getResource("/iconos/lupa (2).png")));
@@ -386,13 +393,16 @@ public class IGUVentas extends JFrame{
 		pTotal.setLayout(null);
 
 		JLabel subtotal = new JLabel("Subtotal:");
-		subtotal.setBounds(210, 2, 60, 23);
+		subtotal.setHorizontalAlignment(JLabel.RIGHT);
+		subtotal.setBounds(205, 2, 60, 23);
 		pTotal.add(subtotal);
 		JLabel iva = new JLabel("I.V.A:");
-		iva.setBounds(210, 30, 60, 23);
+		iva.setHorizontalAlignment(JLabel.RIGHT);
+		iva.setBounds(205, 30, 60, 23);
 		pTotal.add(iva);
 		JLabel total = new JLabel("Total:");
-		total.setBounds(210, 57, 60, 23);
+		total.setHorizontalAlignment(JLabel.RIGHT);
+		total.setBounds(205, 57, 60, 23);
 		pTotal.add(total);
 		// total.setFont(new Font("Tahoma", Font.PLAIN, 36));
 
@@ -420,6 +430,7 @@ public class IGUVentas extends JFrame{
 		// pTotal.setBackground(new Color(200,100,155));
 		
 		return pTotal;
+
 	}//getPanelTotal
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -497,14 +508,17 @@ public class IGUVentas extends JFrame{
 			if (!aTextoProducto[4].getText().equals("") && Integer.valueOf(aTextoProducto[4].getText()) != 0) {
 				
 				if (aTextoProducto[4].getText().compareTo(aTextoProducto[3].getText()) <= 0){
+
 					modelo.addRow(new Object[]{Integer.valueOf(aTextoProducto[0].getText()), aTextoProducto[1].getText(), aTextoProducto[2].getText(),
 											Integer.valueOf(aTextoProducto[4].getText()), 
 											(Integer.valueOf(aTextoProducto[4].getText()) * Float.valueOf(aTextoProducto[2].getText()))});
 					
-					total = total + (Integer.valueOf(aTextoProducto[4].getText()) * Float.valueOf(aTextoProducto[2].getText()));
+					total += (Integer.valueOf(aTextoProducto[4].getText()) * Float.valueOf(aTextoProducto[2].getText()));
+					
 					texTotal[2].setText(formato.format(total));
 					texTotal[1].setText(formato.format(total * IVA));
 					texTotal[0].setText(formato.format(total - (total * IVA)));
+					
 					aTextoProducto[0].setEnabled(true);
 					aTextoProducto[0].requestFocus();
 					
@@ -557,12 +571,12 @@ public class IGUVentas extends JFrame{
 
 	public DTOVentas generarVenta() throws IllegalArgumentException {
 
-		campoVacio();
 		DTOVentas venta = new DTOVentas();
 
-		if (!campoFolio.getText().equals("")) {
+		if (campoFolio.getText().equals("")) {
 
-	
+			campoVacio();
+			
 			venta.setFecha(campoFecha.getText());
 			venta.setIdCliente(Integer.valueOf(aTextoCliente[0].getText()));
 	
@@ -589,17 +603,17 @@ public class IGUVentas extends JFrame{
 	
 				venta.setTipoPago("EFECTIVO");
 	
-			} else if (opcion == 0){
+			} else if (opcion == 1){
 	
 				venta.setTipoPago("TARJETA");
 	
 			} else {
 
-				throw new IllegalArgumentException("cancelo");
+				throw new IllegalArgumentException("cancela");
 
 			}
 				
-				venta.setEstado("CONCRETADA");
+				venta.setEstado("REALIZADA");
 
 		} else {
 
@@ -609,13 +623,13 @@ public class IGUVentas extends JFrame{
 
 		return venta;
 
-	} 
+	}//generarVenta
 
 	public void campoVacio() throws NullPointerException, IllegalArgumentException {
 
 		if (aTextoCliente[1].getText().equals("")) {
 			
-			throw new IllegalArgumentException("No a sido seleccionado un cliente");
+			throw new IllegalArgumentException("No ha sido seleccionado un cliente");
 
 		} else if (modelo.getRowCount() == 0) {
 			
@@ -623,7 +637,7 @@ public class IGUVentas extends JFrame{
 
 		}
 
-	}
+	}//campoVacio
 
 	public void nuevaVenta(){
 
@@ -631,6 +645,7 @@ public class IGUVentas extends JFrame{
 		limpiarCampoCliente();
 
 		modelo.setRowCount(0);
+		estado.setText(null);
 		texTotal[0].setText(formato.format(0));
 		texTotal[1].setText(formato.format(0));
 		texTotal[2].setText(formato.format(0));
@@ -638,24 +653,25 @@ public class IGUVentas extends JFrame{
 		campoFecha.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 		campoFolio.setText(null);
 
-	}
+	}//nuevaVenta
 
 	public int getCampoBuscar() throws NumberFormatException{
 
 		return Integer.valueOf(campoBuscar.getText());
 
-	}
+	}//getCampoBuscar
 
 	public DefaultTableModel getModelo(){
 
 		return modelo;
-	}
+
+	}//getModelo
 
 	public void setVenta(DTOVentas venta){
 
 		for (int con = 0; con < modelo.getRowCount(); con++) {
 
-			total = total + (float) tabla.getValueAt(con, 4);
+			total += (float) tabla.getValueAt(con, 4);
 			
 			texTotal[2].setText(formato.format(total));
 			texTotal[1].setText(formato.format(total * IVA));
@@ -672,7 +688,59 @@ public class IGUVentas extends JFrame{
 
 		campoBuscar.setText("Folio");
 		campoBuscar.setForeground(new Color(111,111,111));
+
+		if (venta.getEstado().equals("REALIZADA")) {
+			
+			estado.setText("Estado: " + venta.getEstado());
+			estado.setForeground(Color.GREEN);
+
+		} else {
+
+			estado.setText("Estado: " + venta.getEstado());
+			estado.setForeground(Color.RED);
+
+		}
+
+	}//setVenta
+
+	public DTOVentas cancelarVenta(){
+
+		DTOVentas venta = new DTOVentas();
+
+		try{
+
+			if (!campoFolio.getText().equals("")) {
+
+				if (estado.getText().equals("Estado: CANCELADA")) {
+					
+					throw new IllegalArgumentException("La venta ya se encuentra cancelada.");
+
+				} else {
+
+					venta.setIdVenta(Integer.valueOf(campoFolio.getText()));
+					
+					String motivo = JOptionPane.showInputDialog(null,"Motivo de cancelacion",
+								   "Cancelacion", JOptionPane.PLAIN_MESSAGE).toString();
+
+					venta.setEstado("CANCELADA");
+					venta.setMotivo(motivo);
+
+				}
+						
+			} else {
+
+				throw new IllegalArgumentException("No ha sido seleccionada una venta");
+
+			}
+		} catch (NullPointerException ex) {
+
+			throw new NullPointerException("cancela");
+
+		}
+
+		return venta; 
 	}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////	
 	
 

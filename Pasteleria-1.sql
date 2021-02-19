@@ -1,5 +1,5 @@
 
-CREATE TABLE Cancelacion (id_cancelacion SERIAL PRIMARY KEY ,descripcion VARCHAR(75) NOT NULL);
+CREATE TABLE Cancelacion (id_cancelacion SERIAL PRIMARY KEY ,descripcion VARCHAR(250) NOT NULL);
 CREATE TABLE Compras (id_compra SERIAL NOT NULL, fechaCompra DATE NOT NULL, CONSTRAINT PK_Compras PRIMARY KEY (id_compra));
 CREATE TABLE Cliente (id_cliente SERIAL PRIMARY KEY, nombre VARCHAR(50) NOT NULL, aPaterno VARCHAR(50) NOT NULL, aMaterno VARCHAR(50) NOT NULL, correo VARCHAR(100) NOT NULL, telefono VARCHAR(10) NOT NULL, direccion VARCHAR(100)	NOT NULL);
 CREATE TABLE Producto (id_producto SERIAL NOT NULL, nombre VARCHAR(100) NOT NULL, descripcion VARCHAR (100) NOT NULL, existenciaMinima INT NOT NULL, existenciaMaxima INT NOT NULL, existenciaActual INT NOT NULL, CONSTRAINT PK_Producto PRIMARY KEY (id_producto));
@@ -28,8 +28,8 @@ DROP TABLE Compras;
 DROP TABLE Cancelacion;
 */
 
-CREATE TABLE Cancelacion (id_cancelacion 	SERIAL 		PRIMARY KEY 
-						,descripcion 		VARCHAR(75) NOT NULL
+CREATE TABLE Cancelacion (id_cancelacion 	SERIAL 		 PRIMARY KEY 
+						,descripcion 		VARCHAR(250) NOT NULL
 						);
 
 
@@ -105,7 +105,7 @@ CREATE TABLE Venta (id_venta 		SERIAL 		PRIMARY KEY
 
 CREATE TABLE Venta_Producto (id_venta 		INT 		REFERENCES Venta(id_venta)
 							,id_producto 	INT 		REFERENCES Producto(id_producto)
-							,cantidad 		INT 		NOT NULL, CHECK (cantidad > 0)
+							,cantidad 		INT 		NOT NULL, CHECK (cantidad >= 0)
 							,CONSTRAINT 	PK_Ven_Prod PRIMARY KEY (id_venta, id_producto)
 							);
 
@@ -128,7 +128,22 @@ CREATE OR REPLACE  VIEW NombreConcatenado AS SELECT id_cliente, nombre, aPaterno
 	CONCAT(nombre, ' ', aPaterno, ' ', aMaterno) AS completo FROM Cliente;
 
 CREATE OR REPLACE  VIEW DatosVenta AS
-SELECT V.id_venta, C.id_cliente, fecha, CONCAT(nombre, ' ', aPaterno, ' ', aMaterno) AS nombre
+SELECT V.id_venta, C.id_cliente, fecha, CONCAT(nombre, ' ', aPaterno, ' ', aMaterno) AS nombre, V.estado
 FROM Venta V INNER JOIN Venta_Cliente VC ON (V.id_venta = VC.id_venta)
 INNER JOIN Cliente C ON (VC.id_cliente = C.id_cliente);
 
+DELIMITER //
+CREATE TRIGGER reducir_producto 
+AFTER INSERT ON Venta_Producto FOR EACH ROW 
+BEGIN 
+UPDATE Producto SET existenciaActual = (existenciaActual - NEW.cantidad) WHERE id_producto = NEW.id_producto; 
+END;//
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER aumentar_insumo 
+AFTER INSERT ON Compra_Insumo FOR EACH ROW 
+BEGIN 
+UPDATE Insumo SET existenciaActual = (existenciaActual - NEW.cantidad) WHERE id_insumo = NEW.id_insumo; 
+END;//
+DELIMITER ;
