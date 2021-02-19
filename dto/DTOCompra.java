@@ -25,6 +25,8 @@ public class DTOCompra {
 	 */
 	private String sMotivo;
 
+	private String sEstado;
+
 	private int aIDInsumos[];
 	private int aCantidades[];
 	private float aCostosUnitarios[];
@@ -91,6 +93,14 @@ public class DTOCompra {
 	}
 
 	/**
+     * getEstado es un método que devuelve el estado de la venta.
+     * @return sEstado estado de la venta.
+     */
+	public String getEstado(){
+		return sEstado;
+	}
+
+	/**
      * setCancelacion es un método que modifica el valor del atributo cancelacion.
      * @param eIDcancelacion atributo que define el id de cancelación de la venta.
      */
@@ -104,6 +114,14 @@ public class DTOCompra {
      */
 	public void setMotivo(String sMotivo){
 		this.sMotivo = sMotivo;
+	}
+
+	/**
+     * setEstado es un método que modifica el valor del atributo estado de una venta.
+     * @param sEstado atributo que define el estado de una venta.
+     */
+	public void setEstado(String sEstado){
+		this.sEstado = sEstado;
 	}
 
 
