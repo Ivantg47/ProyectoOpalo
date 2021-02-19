@@ -727,12 +727,29 @@ public class IGUVentas extends JFrame{
 				} else {
 
 					venta.setIdVenta(Integer.valueOf(campoFolio.getText()));
+					String[] opcion = {"...", "METODO DE PAGO", "DEVOLUCION", "EQUIVOCACION", "OTRO"};
+
+					String motivo;
+
+					do{
+
+						motivo = JOptionPane.showInputDialog(null,"Motivo de cancelacion",
+								   "Cancelacion", JOptionPane.PLAIN_MESSAGE, null, opcion, opcion[0]).toString();
+
+						if (motivo.equals("OTRO")) {
+
+							motivo = JOptionPane.showInputDialog(null,"Motivo de cancelacion",
+									   "Cancelacion", JOptionPane.PLAIN_MESSAGE).toString();
+
+						} 
+
+						venta.setMotivo(motivo);
+
+					} while (motivo.equals("..."));
 					
-					String motivo = JOptionPane.showInputDialog(null,"Motivo de cancelacion",
-								   "Cancelacion", JOptionPane.PLAIN_MESSAGE).toString();
 
 					venta.setEstado("CANCELADA");
-					venta.setMotivo(motivo);
+					
 
 				}
 						
