@@ -147,3 +147,35 @@ BEGIN
 UPDATE Insumo SET existenciaActual = (existenciaActual - NEW.cantidad) WHERE id_insumo = NEW.id_insumo; 
 END;//
 DELIMITER ;
+
+
+
+SELECT  V.id_venta, P.id_producto AS id, CONCAT(P.nombre, ' ', P.descripcion) AS nombre, VP.cantidad, Pr.precio, Pr.fecha, V.fecha
+FROM Venta V INNER JOIN Venta_Producto VP ON (VP.id_venta = V.id_venta)
+INNER JOIN Producto P ON (VP.id_producto = P.id_producto)
+INNER JOIN Precio Pr ON (P.id_producto = Pr.id_producto)
+ORDER BY  V.id_venta
+
+
+(SELECT id_producto AS idProd, MAX(fecha) AS fecha, precio FROM Precio
+WHERE fecha <= ?
+GROUP BY id_producto) AS Pr
+WHERE VP.id_venta = ? AND VP.id_producto = P.id_producto AND P.id_producto = Pr.id_producto;
+
+
+DECLARE @StartDate DATETIME ,
+    @EndDate DATETIME
+
+SELECT  @StartDate = '01 Jan 2010' ,
+        @EndDate = '15 Mar 2010'
+
+SELECT  [Products].pName AS ItemName,
+        SalesLog.[Price] AS Price ,
+        COUNT(*)AS Quantity ,
+        SUM(SalesLog.[Price]) AS Total
+FROM    SalesLog
+        JOIN [Products] ON [Products].pCode = SalesLog.ProductCode /*Check this join - I'm not sure what your relationship is*/
+WHERE   BillDate >= @StartDate
+        AND BillDate < @EndDate + 1
+GROUP BY [Products].pName ,
+        SalesLog.[Price]
