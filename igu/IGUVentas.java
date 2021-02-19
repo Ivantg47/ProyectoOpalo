@@ -575,7 +575,6 @@ public class IGUVentas extends JFrame{
 
 		}
 			
-	 
 	}//quitarProducto
 
 	public DTOVentas generarVenta() throws IllegalArgumentException {
@@ -751,13 +750,5 @@ public class IGUVentas extends JFrame{
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////	
-	
 
-/*
-	public static void main(String[] args) {
-		
-		IGUVentas ventana = new IGUVentas();
-	
-	}
-*/
 }
