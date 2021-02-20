@@ -215,8 +215,8 @@ public class DTOVentas{
 	}
 
 	/**
-     * getDescripcion es un método que devuelve la descripcion de un producto.
-     * @return sDescripcion descripcion del producto.
+     * getCliente es un método que devuelve los datos del cliente.
+     * @return sCliente datos del cliente.
      */
 	public String getCliente(){
 		return sCliente;

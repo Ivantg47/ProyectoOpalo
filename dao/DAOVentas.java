@@ -16,19 +16,36 @@ import ProyectoOpalo.dto.DTOVentas;
 import ProyectoOpalo.igu.IGUVentas;
 import javax.swing.*;
 import javax.swing.table.*;
-// import java.util.Date;
 import java.sql.*;
 
 public class DAOVentas{
 
+	/**
+ 	 * Atributo del tipo Connection que sirve para establecer la conexión con la base de datos.
+	 */
 	private Connection conexion = null;
+	/**
+ 	 * Atributo del tipo PreparedStatement que sirve para realizar operaciones en la base de datos.
+	 */
 	private PreparedStatement prepared;
+	/**
+ 	 * Atributo del tipo ResultSet que sirve para obtener resultados de la base de datos.
+	 */
     private ResultSet result, resultF;
 
+    /**
+     * Constructor vacio para la clase DAOVentas.
+     */	
     public DAOVentas(){
 
     }
 
+    /**
+     * agregarVenta es un método que establece conexión con la base de datos e inserta los datos
+     * de una venta en las tablas correspondientes.
+     * @param venta objeto del tipo DTOVentas.
+     * @return folio numero de folio de la venta
+     */
 	public int agregarVenta(DTOVentas venta) throws IllegalArgumentException, SQLException{
 
 		int folio = 0;
@@ -124,6 +141,13 @@ public class DAOVentas{
 	    return folio;
 	}
 
+	/**
+     * buscarVenta es un método que establece conexión con la base de datos y hace una consulta 
+     * para obtener los datos de una venta.
+     * @param idVenta id de la venta
+     * @param modelo atributo del tipo DefaultTableModel
+     * @return venta datos de la venta
+     */
 	public DTOVentas buscarVenta(int idVenta, DefaultTableModel modelo) throws IllegalArgumentException, SQLException{
 		
 		DTOVentas venta = new DTOVentas();
@@ -205,6 +229,11 @@ public class DAOVentas{
 	    return venta;
 	}
 
+	/**
+     * cancelarVenta es un método que establece conexión con la base de datos y hace las modificaciones 
+     * correspondientes para cancelar una venta.
+     * @param venta objeto del tipo DTOVentas con los datos de la venta
+     */
 	public void cancelarVenta(DTOVentas venta){
 
 		try {
@@ -267,6 +296,11 @@ public class DAOVentas{
 
 	}
 
+
+	/**
+     * getConnection es un método que establece conexión con la base de datos
+     * @return conexion objeto del tipo Connection
+     */
 	public Connection getConnection() {
    
         try {
