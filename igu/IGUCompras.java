@@ -535,22 +535,58 @@ public class IGUCompras extends JFrame{
 		}
 	}
 
-	public void cancelarVenta(){
-/*
-		DTOCompra compra = new DTOVentas();
+	public DTOCompra cancelar(){
+
+		DTOCompra compra = new DTOCompra();
 
 		try{
 
 			if (!campoBuscar.getText().equals("")) {
 
+				if (estado.getText().equals("CANCELADA")) {
+
+					throw new IllegalArgumentException("La venta ya se encuentra cancelada.");
+
+				} else {
+
+					compra.setId(Integer.valueOf(campoBuscar.getText()));
+					String[] opcion = {"...", "METODO DE PAGO", "DEVOLUCION", "EQUIVOCACION", "OTRO"};
+					
+					String motivo;
+
+					do{
+
+						motivo = JOptionPane.showInputDialog(null,"Motivo de cancelacion",
+								   "Cancelacion", JOptionPane.PLAIN_MESSAGE, null, opcion, opcion[0]).toString();
+
+						if(motivo.equals("OTRO")){
+
+							motivo = JOptionPane.showInputDialog(null,"Motivo de cancelacion",
+									   "Cancelacion", JOptionPane.PLAIN_MESSAGE).toString();
+
+						}
+
+						compra.setMotivo(motivo);
+
+					} while (motivo.equals("..."));
+
+					compra.setEstado("CANCELADA");
+					
+				}
+
+			}else {
+
+				throw new IllegalArgumentException("No ha sido seleccionada una compra");
 
 			}
 
+		} catch (NullPointerException ex) {
 
-		}catch(){
+			throw new NullPointerException("no ejecutar");
 
 		}
-*/
+
+		return compra; 
 	}
 
 }
