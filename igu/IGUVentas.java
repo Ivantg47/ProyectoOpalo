@@ -1,5 +1,5 @@
 /**
- * Clase IGU de Ventas.
+ * Clase DTO de Ventas.
  * @author Pamela Stephanie Moreno Parker
  * @author Ivan Tronco
  * @version 1.0
@@ -24,17 +24,50 @@ import ProyectoOpalo.dto.DTOClientes;
 
 public class IGUVentas extends JFrame{
 
+	/**
+ 	 * Constate del tipo float que almacena el valor del IVA
+	 */	
 	private static final float IVA = 0.16f;
+	/**
+ 	 * Atributo del tipo ControlVenta.
+	 */	
 	private ControlVenta control = new ControlVenta(this);
+	/**
+ 	 * Atributo del tipo DecimalFormat.
+	 */	
 	private DecimalFormat formato = new DecimalFormat("$ #,##0.00");
+	/**
+ 	 * Atributo del tipo DefaultTableModel.
+	 */	
 	private DefaultTableModel modelo;
+	/**
+ 	 * Atributo del tipo JTable.
+	 */	
 	private JTable tabla;
+	/**
+ 	 * Atributo del tipo float que guarda el total de la venta.
+	 */	
 	private float total;
+	/**
+ 	 * Atributo del tipo JTextField que se usa para recibir texto del usuario.
+	 */	
 	private JTextField campoBuscar;
+	/**
+ 	 * Atributo del tipo JTextField que se usa para recibir texto del usuario.
+	 */	
 	private JTextField campoFolio;
+	/**
+ 	 * Atributo del tipo JTextField que se usa para recibir texto del usuario.
+	 */	
 	private JTextField campoFecha;
+	/**
+ 	 * Atributo del tipo JLabel que se usa para mostrar datos al usuario.
+	 */	
 	private JLabel estado;
-
+	/**
+ 	 * Arreglo del tipo JTextField que se usa para mostrar al usuario el subtotal, 
+ 	 * iva y total de la venta.
+	 */
 	private JTextField texTotal[] = {
 
 		new JTextField(), //0 -> subtotal
@@ -43,6 +76,10 @@ public class IGUVentas extends JFrame{
 
 	};
 
+	/**
+ 	 * Arreglo del tipo JLabel que se usa para mostrar al usuario las etiquetas de
+ 	 * id y nombre.
+	 */	
 	private JLabel aDatosCliente[] = {
 
 		new JLabel("ID"),
@@ -50,13 +87,21 @@ public class IGUVentas extends JFrame{
 
 	};
 
+	/**
+ 	 * Arreglo del tipo JTextField que se usa para que el usuario pueda ingresar
+ 	 * el id y nombre del cliente.
+	 */	
 	public JTextField aTextoCliente[] = {
 
 		new JTextField(), //0 -> id
 		new JTextField()  //1 -> nombre
 
 	};
-
+	
+	/**
+ 	 * Arreglo del tipo JLabel que se usa para mostrar el usuario las etiquetas de
+ 	 * el id, descripción, precio, disponible y cantidad.
+	 */	
 	private JLabel aDatosProducto[] = {
 
 		new JLabel("ID"),
@@ -67,6 +112,10 @@ public class IGUVentas extends JFrame{
 
 	};
 
+	/**
+ 	 * Arreglo del tipo JTextField que se usa para que el usuario pueda ingresar los datos
+ 	 * de id, descripción, disponibilidad, perecio y cantidad.
+	 */	
 	private JTextField aTextoProducto[] = {
 
 		new JTextField(), //0 -> id
@@ -77,13 +126,18 @@ public class IGUVentas extends JFrame{
 
 	};
 
-	
-	
-
+	/**
+     * Constructor vacio para la clase IGUVentas.
+     */	
 	public IGUVentas(){
 
 	}
 
+	/**
+     * getPanelVentas es un método del tipo JPanel para mostrar la interfaz de buscar y
+     * de añadir una venta.
+     * @return panelVentas panel de la venta
+     */
 	public JPanel getPanelVentas(){
 
 		JPanel panelVentas = new JPanel();
@@ -97,6 +151,11 @@ public class IGUVentas extends JFrame{
 
 	}//getPanelVentas
 
+	/**
+     * getPanelVenta es un método del tipo JPanel para mostrar la interfaz de con los datos
+     * del cliente, el producto, la tabla de los productos y los botones.
+     * @return panelVentas panel de la venta
+     */
 	public JPanel getPanelVenta(){
 
 		JPanel panelVentas = new JPanel();
@@ -110,12 +169,15 @@ public class IGUVentas extends JFrame{
 		panelVentas.add(getPanelBotonesVenta());
 
 		panelVentas.setPreferredSize(new Dimension(785, 500));
-		// panelVentas.setBackground(new Color(155,255,100));
 
 		return panelVentas;
 
 	}//getPanelVenta
 
+	/**
+     * getPanelBuscar es un método del tipo JPanel para mostrar el apartado para buscar.
+     * @return panelBuscar panel de la busqueda.
+     */
 	public JPanel getPanelBuscar(){
 
 		JPanel panelBuscar = new JPanel();
@@ -151,6 +213,11 @@ public class IGUVentas extends JFrame{
 
 	}//getPanelBuscar
 
+	/**
+     * getPanelDatos es un método del tipo JPanel para mostrar el folio de la venta y la fecha,
+     * ademas de contener el panel con los datos del cliente
+     * @return panel panel de los datos.
+     */
 	public JPanel getPanelDatos(){
 
 		JPanel panel = new JPanel();
@@ -189,12 +256,15 @@ public class IGUVentas extends JFrame{
         estado.setBounds(400, 40, 350, 30);
 
 		panel.setPreferredSize(new Dimension(775, 75));
-		// panel.setBackground(new Color(155,1,155));
 
 		return panel;
 
 	}//getPanelDatos
 
+	/**
+     * getPanelDatosCliente es un método del tipo JPanel que contienen los datos del cliente.
+     * @return panelCliente panel de datos del cliente
+     */
 	public JPanel getPanelDatosCliente(){
 
 		JPanel panelCliente = new JPanel();
@@ -242,6 +312,10 @@ public class IGUVentas extends JFrame{
 
 	}//getPanelDatosCliente	
 
+	/**
+     * getPanelDatosProducto es un método del tipo JPanel que contienen los datos del producto.
+     * @return panelProductos panel de datos del producto.
+     */
 	public JPanel getPanelDatosProducto(){
 
 		JPanel panelProductos = new JPanel();
@@ -307,6 +381,11 @@ public class IGUVentas extends JFrame{
 
 	}//getPanelDatosProducto
 
+	/**
+     * getPanelProducto es un método del tipo JPanel que contienen los los botones para el panel
+     * de productos.
+     * @return panel panel con botones.
+     */
 	public JPanel getPanelProducto(){
 
 		JPanel panel = new JPanel();
@@ -333,6 +412,11 @@ public class IGUVentas extends JFrame{
 		return panel;
 	}//getPanelProducto
 
+	/**
+     * getPanelTablaProductos es un método del tipo JPanel que contienen la tabla con los datos
+     * de productos.
+     * @return panelTabla panel con la tabla.
+     */
 	public JPanel getPanelTablaProductos(){
 
 		JPanel panelTabla = new JPanel();
@@ -353,6 +437,11 @@ public class IGUVentas extends JFrame{
 
 	}//getPanelTablaProductos
 
+	/**
+     * getPanelBotonesVenta es un método del tipo JPanel que contienen los botones para el panel
+     * de la venta
+     * @return botones panel con los botones de la venta.
+     */
 	public JPanel getPanelBotonesVenta(){
 
 		JPanel botones = new JPanel();
@@ -382,11 +471,16 @@ public class IGUVentas extends JFrame{
 		botones.add(getPanelTotal());
 
 		botones.setPreferredSize(new Dimension(775, 90));
-		// botones.setBackground(new Color(255,100,255));
 		return botones;
 
 	}//getPanelBotonesVenta
 
+
+	/**
+     * getPanelTotal es un método del tipo JPanel que contienen el total
+     * de la venta
+     * @return pTotal panel con el total de la venta
+     */
 	public JPanel getPanelTotal(){
 
 		JPanel pTotal = new JPanel();
@@ -424,16 +518,19 @@ public class IGUVentas extends JFrame{
 		pTotal.add(texTotal[2]);
 		texTotal[2].setBounds(270, 57, 100, 23);
 		texTotal[2].setEnabled(false);
-		// texTotal.setFont(new Font("Tahoma", Font.PLAIN, 30));
 
 		pTotal.setPreferredSize(new Dimension(380, 85));
-		// pTotal.setBackground(new Color(200,100,155));
 		
 		return pTotal;
 
 	}//getPanelTotal
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	/**
+     * setCampoCliente es un método que modifica el contenido de los datos del cliente.
+     * @param cliente objeto del tipo DTOClientes.
+     */
 	public void setCampoCliente(DTOClientes cliente) {
 
 		if (cliente.getIdCliente() != 0){
@@ -452,12 +549,22 @@ public class IGUVentas extends JFrame{
 
 	}//setCampoCliente
 
+
+	/**
+     * getCampoCliente es un método que devuelve el contenido de los datos del cliente.
+     * @return aTextoCliente[0].getText() campos con los datos del cliente.
+     */
 	public String getCampoCliente() throws NumberFormatException {
 
 		return aTextoCliente[0].getText();
 
 	}//getCampoCliente
 
+
+	/**
+     * limpiarCampoCliente es un método que sirve para limpiar los campos de texto del 
+     * cliente.
+     */
 	public void limpiarCampoCliente(){
 
 		aTextoCliente[0].setText(null);
@@ -467,6 +574,11 @@ public class IGUVentas extends JFrame{
 		
 	}//limpiarCampo
 
+	/**
+     * setCampoProducto es un método que sirve para modificar los valores de los  
+     * campos de texto del producto.
+     * @param producto objeto del tipo DTOProducto
+     */
 	public void setCampoProducto(DTOProducto producto) {
 		
 		if (producto.getCodigo() != 0){
@@ -482,12 +594,21 @@ public class IGUVentas extends JFrame{
 
 	}//setCampoProducto
 
+	/**
+     * getCampoProducto es un método que sirve para regresar los valores del
+     * producto.
+     * @return aTextoProducto[0].getText() arreglo con los valores del producto.
+     */
 	public String getCampoProducto() {
 
 		return aTextoProducto[0].getText();
 
 	}//getCampoProducto
 
+	/**
+     * limpiarCampoProducto es un método que sirve para limpiar los campos de texto
+     * de producto.
+     */
 	public void limpiarCampoProducto(){
 		
 		aTextoProducto[0].setText(null);
@@ -501,6 +622,9 @@ public class IGUVentas extends JFrame{
 		
 	}//limpiarCampoProducto
 
+	/**
+     * agregarProducto es un método que sirve para agregar un producto.   
+     */
 	public void agregarProducto() throws NumberFormatException, IllegalArgumentException {
 
 		if (!aTextoProducto[1].getText().equals("")) {
@@ -542,8 +666,11 @@ public class IGUVentas extends JFrame{
 
 	}//agregarProducto
 
+	/**
+     * limpiarCampoVenta es un método que sirve para limpiar los campos de texto.
+     * de la venta.
+     */
 	public void limpiarCampoVenta(){
-		
 
 		aTextoProducto[0].setText(null);
 		aTextoProducto[1].setText(null);
@@ -553,6 +680,9 @@ public class IGUVentas extends JFrame{
 		
 	}//limpiarCampoVenta
 
+	/**
+     * quitarProducto es un método que sirve para quitar un producto.
+     */
 	public void quitarProducto() throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
 		
 		if (modelo.getRowCount() > 0) {
@@ -577,6 +707,10 @@ public class IGUVentas extends JFrame{
 			
 	}//quitarProducto
 
+	/**
+     * generarVenta es un método de tipo DTOVentas que sirve para generar una venta.
+     * @return venta objeto con los datos de una venta
+     */
 	public DTOVentas generarVenta() throws IllegalArgumentException {
 
 		DTOVentas venta = new DTOVentas();
@@ -633,6 +767,9 @@ public class IGUVentas extends JFrame{
 
 	}//generarVenta
 
+	/**
+     * campoVacio es un método que sirve para verificar si un campo esta vacio.
+     */
 	public void campoVacio() throws NullPointerException, IllegalArgumentException {
 
 		if (aTextoCliente[1].getText().equals("")) {
@@ -647,6 +784,9 @@ public class IGUVentas extends JFrame{
 
 	}//campoVacio
 
+	/**
+     * nuevaVenta es un método que sirve para realizar una nueva venta.
+     */
 	public void nuevaVenta(){
 
 		limpiarCampoProducto();
@@ -663,18 +803,31 @@ public class IGUVentas extends JFrame{
 
 	}//nuevaVenta
 
+	/**
+     * getCampoBuscar es un método que sirve mostrar lo que contiene el campo buscar.
+     * @return campoBuscar.getText() contenido del campo de texto.
+     */
 	public String getCampoBuscar(){
 
 		return campoBuscar.getText();
 
 	}//getCampoBuscar
 
+
+	/**
+     * getModelo es un método del tipo DefaultTableModel que sirve para las tablas de la interfaz.
+     * @return modelo atributo modelo.
+     */
 	public DefaultTableModel getModelo(){
 
 		return modelo;
 
 	}//getModelo
 
+	/**
+     * setVenta es un método que sirve para modificar los datos de la venta.
+     * @param venta objeto del tipo DTOVentas.
+     */
 	public void setVenta(DTOVentas venta){
 
 		for (int con = 0; con < modelo.getRowCount(); con++) {
@@ -711,7 +864,11 @@ public class IGUVentas extends JFrame{
 		}
 
 	}//setVenta
-
+	
+	/**
+     * cancelarVenta es un método que sirve para cancelar una venta.
+     * @param venta objeto del tipo DTOVentas.
+     */
 	public DTOVentas cancelarVenta(){
 
 		DTOVentas venta = new DTOVentas();
