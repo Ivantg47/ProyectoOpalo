@@ -10,11 +10,17 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.text.DecimalFormat;
+import ProyectoOpalo.control.ControlReportes;
 
 public class IGUReporte extends JFrame{
 
 	/**
-     * Atributo que determina el modelo de la tabla.
+     * Atributo que crea la clase control de repotes.
+     */
+ 	private ControlReportes control = new ControlReportes(this);
+
+	/**
+     * Atributo que guarda la tabla de reportes.
      */
 	private JTable tabla;
 
@@ -24,31 +30,37 @@ public class IGUReporte extends JFrame{
  	private DefaultTableModel modelo;
 
  	/**
-     * Atributo que determina el modelo de la tabla.
+     * Atributo que genera un campo de texto para la fecha.
      */
  	private JTextField campoInicio;
 
  	/**
-     * Atributo que determina el modelo de la tabla.
+     * Atributo que genera un campo de texto para la fecha.
      */
  	private JTextField campoFinal;
 
  	/**
-     * Atributo que determina el modelo de la tabla.
+     * Atributo que genera un campo de texto para el total de venta.
      */
  	private JTextField campoTotal;
 
  	/**
-     * Atributo que determina el modelo de la tabla.
+     * Atributo que determina el formato del campoTotal.
      */
  	private DecimalFormat formato = new DecimalFormat("$ #,##0.00");
 
 
-
+ 	/**
+     * Constructor, sin parametros.
+     */
 	public IGUReporte(){
 
 	}
 
+	/**
+     * Metodo para generar el panel de la interfas de insumo.
+     * @return panel de igu reporte
+     */
 	public JPanel getIGUReporte(){
 
 		JPanel panel = new JPanel();
@@ -61,6 +73,10 @@ public class IGUReporte extends JFrame{
 
 	}
 
+	/**
+     * Metodo para generar el panel del titulo de reporte.
+     * @return panel de titulo
+     */
 	public JPanel getPanelTitulo(){
 
 		JPanel panel = new JPanel();
@@ -76,6 +92,10 @@ public class IGUReporte extends JFrame{
 
 	}
 
+	/**
+     * Metodo para generar el panel de la tabla de reportes.
+     * @return panel de tabla
+     */
 	public JPanel getPanelTabla(){
 
 		JPanel panel = new JPanel();
@@ -93,20 +113,29 @@ public class IGUReporte extends JFrame{
 
 		panel.add(jScroll);
 
-		JLabel venta = new JLabel("     Ventas semanal");
+		JLabel venta = new JLabel("     Total Venta:");
 		venta.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		panel.add(venta);
-		campoTotal = new JTextField();
+		campoTotal = new JTextField(formato.format(0));
 		campoTotal.setPreferredSize(new Dimension(200,40));
+		campoTotal.setHorizontalAlignment(JTextField.RIGHT);
+		campoTotal.setFont(new Font("Tahoma", Font.PLAIN, 24));
+
 		panel.add(campoTotal);
 
-
 		JButton btImprimir = new JButton(new ImageIcon(getClass().getResource("/iconos/impresora (2).png")));
+		btImprimir.addActionListener(control);
+		btImprimir.setActionCommand("imprimir");
 		panel.add(btImprimir);
+
 		return panel;
 
 	}
 	
+	/**
+     * Metodo para generar el panel que alberga el panel consulta.
+     * @return panel
+     */	
 	public JPanel getPanelGeneral(){
 
 		JPanel panel = new JPanel();
@@ -118,6 +147,10 @@ public class IGUReporte extends JFrame{
 
 	}
 
+	/**
+     * Metodo para generar el panel para introducir datos.
+     * @return panel de consulta
+     */
 	public JPanel getPanelConsulta(){
 
 		JPanel panel = new JPanel();
@@ -126,7 +159,7 @@ public class IGUReporte extends JFrame{
 		panel.add(new JLabel("Fecha inicio:"));
 		campoInicio = new JTextField("yyyy-mm-dd");
 		campoInicio.setForeground(new Color(111,111,111));
-		// campoInicio.addFocusListener(control);
+		campoInicio.addFocusListener(control);
 		campoInicio.setActionCommand("fecahaInicio");
 
 		panel.add(campoInicio);
@@ -134,7 +167,7 @@ public class IGUReporte extends JFrame{
 		panel.add(new JLabel("Fecha final:"));
 		campoFinal = new JTextField("yyyy-mm-dd");
 		campoFinal.setForeground(new Color(111,111,111));
-		// campoFinal.addFocusListener(control);
+		campoFinal.addFocusListener(control);
 		campoFinal.setActionCommand("fecahaFinal");
 	
 		panel.add(campoFinal);
@@ -142,7 +175,7 @@ public class IGUReporte extends JFrame{
 		panel.setBorder(BorderFactory.createTitledBorder("Datos Reporte"));
 
 		JButton consulta = new JButton("Consultar");
-		// consulta.addActionCommand(control);
+		consulta.addActionListener(control);
 		consulta.setActionCommand("consulta");
 		panel.add(consulta);
 		panel.setPreferredSize(new Dimension(190, 250));
@@ -151,10 +184,65 @@ public class IGUReporte extends JFrame{
 
 	}
 
+	/**
+     * Metodo para obtener el modelo de la tabla.
+     * @return modelo de la tabla
+     */
 	public DefaultTableModel getModelo(){
 
 		return modelo;
 
 	}
+
+	/**
+     * Metodo para obtener la fecha inicial.
+     * @return fecha inicial
+     */
+	public String getFechaInicio(){
+
+		return campoInicio.getText();
+
+	}
 	
+	/**
+     * Metodo para obtener la fecha final.
+     * @return fecha final
+     */
+	public String getFechaFinal(){
+
+		return campoFinal.getText();
+
+	}
+
+	/**
+     * Metodo para obtener el total monetario de las ventas del reporte.
+     */
+	public void generarTotal(){
+
+		float total = 0;
+
+		for (int con = 0; con < modelo.getRowCount(); con++) {
+
+			total += (float) tabla.getValueAt(con, 3);
+			
+		}
+
+		campoTotal.setText(formato.format(total));
+
+		limpiarCampos();
+
+	}	
+
+	/**
+     * Metodo para limpiar los campos de las fechas.
+     */
+	public void limpiarCampos(){
+
+		campoInicio.setText("yyyy-mm-dd");
+		campoInicio.setForeground(new Color(111,111,111));
+		campoFinal.setText("yyyy-mm-dd");
+		campoFinal.setForeground(new Color(111,111,111));
+
+	}
+
 }

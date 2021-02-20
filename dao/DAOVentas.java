@@ -1,7 +1,8 @@
 /**
  * Clase DAO de Ventas.
  * @author Pamela Stephanie Moreno Parker
- * @version 1.0
+ * @author Ivan Tronco
+ * @version 1.3
  */
 
 package ProyectoOpalo.dao;

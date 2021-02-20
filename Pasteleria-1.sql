@@ -205,12 +205,3 @@ END; //
 DELIMITER ;
 
 
-
-CALL reportes ('2021-02-15', '2021-02-18');
-CALL cancelar ('devolucion');
-
-INSERT INTO Cancelacion (descripcion) VALUES (motivo);
-
-ALTER TABLE Compras ADD COLUMN (id_cancelacion INT REFERENCES Cancelacion(id_cancelacion))
-ALTER TABLE Compras ADD COLUMN(estado VARCHAR(75) NOT NULL DEFAULT 'REALIZADA');
-

@@ -412,12 +412,5 @@ public class IGUProducto extends JPanel{
 		return modelo;
 
 	}
-
-
-	public static void main(String[] args) {
-
-		IGUProducto ventana = new IGUProducto();
-		
-	}
 	
 }
