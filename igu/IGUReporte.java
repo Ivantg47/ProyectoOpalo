@@ -45,6 +45,11 @@ public class IGUReporte extends JFrame{
  	private JTextField campoTotal;
 
  	/**
+     * Atributo que muestra el periodo del reporte.
+     */
+ 	private JLabel reporte;
+
+ 	/**
      * Atributo que determina el formato del campoTotal.
      */
  	private DecimalFormat formato = new DecimalFormat("$ #,##0.00");
@@ -103,13 +108,19 @@ public class IGUReporte extends JFrame{
 		panel.setBorder(BorderFactory.createTitledBorder("Reporte"));
 		panel.setLayout(new FlowLayout());
 
+		reporte = new JLabel();
+		reporte.setPreferredSize(new Dimension(500,35));
+		reporte.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		reporte.setHorizontalAlignment(JLabel.CENTER);
+
+		panel.add(reporte);
 		//creacion de la tabla
 		modelo = new DefaultTableModel();
 		modelo.setColumnIdentifiers(new Object[]{"Codigo", "Nombre", "Descripcion", "Existencias"});
 		tabla = new JTable(modelo);
         
 		JScrollPane jScroll = new JScrollPane(tabla);
-
+		jScroll.setPreferredSize(new Dimension(500, 370));
 
 		panel.add(jScroll);
 
@@ -245,9 +256,21 @@ public class IGUReporte extends JFrame{
 
 	}
 
+	/**
+     * Metodo para limpiar la tabla reporte.
+     */
 	public void limpiarReporte(){
 
 		modelo.setRowCount(0);
+
+	}
+
+	/**
+     * Metodo para indicar el perido del reporte.
+     */
+	public void setReporte(String periodo){
+
+		reporte.setText(periodo);
 
 	}
 

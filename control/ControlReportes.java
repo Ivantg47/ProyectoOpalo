@@ -46,9 +46,20 @@ public class ControlReportes implements ActionListener, FocusListener {
 		try{	
 			
 			if (evento.getActionCommand().equals("consulta")) {
-				
-				new DAOReportes().generarReporte(igu.getModelo(), Date.valueOf(igu.getFechaInicio()), Date.valueOf(igu.getFechaFinal()));
-				igu.generarTotal();
+				String fechaI = igu.getFechaInicio(), fechaF = igu.getFechaFinal();
+
+				if (fechaI.compareTo(fechaF) <= 0) {
+
+					new DAOReportes().generarReporte(igu.getModelo(), Date.valueOf(fechaI ), Date.valueOf(fechaF));
+					igu.setReporte("Reporte del " + fechaI  + " al " + fechaF);
+					igu.generarTotal();
+
+				} else {
+
+					JOptionPane.showMessageDialog( null, "La fecha inicial no puede ser mayor a la fecha final",
+           				"Error en formato de fecha", JOptionPane.ERROR_MESSAGE);
+					
+				}
 
 			} else if (evento.getActionCommand().equals("imprimir")) {
 				
