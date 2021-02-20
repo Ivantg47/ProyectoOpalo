@@ -117,8 +117,6 @@ public class IGUClientes extends JFrame{
 		tabla = new JTable(modelo);
 		JScrollPane jScroll = new JScrollPane(tabla);
 
-		dao.getTabla(modelo); //error
-
 		jScroll.setViewportView(tabla);
 
 		panel.add(jScroll, BorderLayout.CENTER);

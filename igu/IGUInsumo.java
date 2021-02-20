@@ -155,8 +155,6 @@ public class IGUInsumo extends JFrame{
 		oTabla = new JTable(oModelo);
 		JScrollPane jScroll = new JScrollPane(oTabla);
 
-		oDAO.getTabla(oModelo);
-
 		jScroll.setViewportView(oTabla);
 
 		oPanel.add(jScroll, BorderLayout.CENTER);

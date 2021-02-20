@@ -155,8 +155,6 @@ public class IGUProducto extends JPanel{
 		tabla = new JTable(modelo);
 		JScrollPane jScroll = new JScrollPane(tabla);
 
-		new DAOProducto().getTabla(modelo);
-
         jScroll.setViewportView(tabla);
 
 

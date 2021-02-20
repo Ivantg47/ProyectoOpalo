@@ -245,4 +245,10 @@ public class IGUReporte extends JFrame{
 
 	}
 
+	public void limpiarReporte(){
+
+		modelo.setRowCount(0);
+
+	}
+
 }
