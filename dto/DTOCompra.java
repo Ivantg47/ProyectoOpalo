@@ -58,18 +58,30 @@ public class DTOCompra {
 
 	}	
 
+	/**
+	 * Método que retorna el id del insumo.
+	 * @return aIDInsumos que es el id de los insumos de la compra.
+	 */
 	public int[] getIDInsumos(){
 
 		return aIDInsumos;
 
 	}
 
+	/**
+	 * Método que obtiene el arreglo de las cantidades de las compras.
+	 * @return aCantidades que es el arreglo de las cantidades de las compras.
+	 */
 	public int[] getCantidades(){
 
 		return aCantidades;
 
 	}
 
+	/**
+	 * Método que obtiene el arreglo de costos unitarios.
+	 * @return aCostosUnitarios es el arreglo de los costos unitarios de las comrpas.
+	 */
 	public float[] getCostosUnitarios(){
 
 		return aCostosUnitarios;
@@ -142,14 +154,26 @@ public class DTOCompra {
 		this.sFechaCompra = sFechaCompra;
 	}
 
+	/**
+	 * Método que establece el id del insumo.
+	 * @param aIDInsumos recibe un entero que va a ser el id del insumo.
+	 */
 	public void setIDInsumos(int aIDInsumos[]){
 		this.aIDInsumos = aIDInsumos;
 	}
 
+	/**
+	 * Método que establece la cantidad comprada.
+	 * @param aCantidades entero que se refiere a la cantidad comprada del insumo.
+	 */
 	public void setCantidades(int aCantidades[]){
 		this.aCantidades = aCantidades;
 	}
 
+	/**
+	 * Método que establece los costos unitarios del insumo.
+	 * @param aCostosUnitarios es un flotante que estbalece el costo unitario del insumo.
+	 */
 	public void setCostosUnitarios(float aCostosUnitarios[]){
 
 		this.aCostosUnitarios = aCostosUnitarios;

@@ -376,12 +376,19 @@ public class IGUCompras extends JFrame{
 
 	}//setCampoInsumo
 
+	/**
+	 * Método que obtiene el campo dónde el usuario ingresa el id del insumo.
+	 * @return devuleve el valor entero del campo del insumo.
+	 */
 	public int getCampoInsumo() throws NumberFormatException {
 
 		return Integer.valueOf(aTextoProducto[0].getText());
 
 	}//getCampoProducto
 
+	/**
+	 * Método que limpia los campos de registro de insumo.
+	 */
 	public void limpiarCampoInsumo(){
 		
 		aTextoProducto[0].setText(null);
@@ -391,7 +398,11 @@ public class IGUCompras extends JFrame{
 
 	}//limpiarCampoProducto
 
-
+	/**
+	 * Método que sirve para agregar un insumo alarreglo de los insumos.
+	 * @throws NumberFormatException
+	 * @throws IllegalArgumentException
+	 */
 	public void agregarInsumo() throws NumberFormatException, IllegalArgumentException {
 
 		if (!aTextoProducto[0].getText().equals("")) {
@@ -422,6 +433,11 @@ public class IGUCompras extends JFrame{
 
 	}//AgregarInsumo
 
+	/**
+	 * Método que quita un insumo del arreglo según la fila que está seleccionada por el mouse.
+	 * @throws IllegalArgumentException
+	 * @throws ArrayIndexOutOfBoundsException
+	 */
 	public void quitarInsumo() throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
 
 		if (tabla.getSelectedRow() != -1) {
@@ -438,6 +454,11 @@ public class IGUCompras extends JFrame{
 	 
 	}//quitarProducto
 
+	/**
+	 * Método que genera la compra mediante los campos de texto.
+	 * @return compra que es un objeto de tipo dTOCompra con los campos de la intefaz.
+	 * @throws IllegalArgumentException
+	 */
 	public DTOCompra generarCompra() throws IllegalArgumentException{
 
 		campoVacio();
@@ -478,6 +499,11 @@ public class IGUCompras extends JFrame{
 
 	}
 
+	/**
+	 * Método que verifica si se ha dejado un campo vacío.
+	 * @throws NullPointerException
+	 * @throws IllegalArgumentException
+	 */
 	public void campoVacio() throws NullPointerException, IllegalArgumentException {
 
 		if (modeloDTO.getRowCount() == 0) {
@@ -488,6 +514,9 @@ public class IGUCompras extends JFrame{
 
 	}
 
+	/**
+	 * Método que reinicia la interfaz.
+	 */
 	public void nuevaVenta(){
 
 		limpiarCampoInsumo();
@@ -501,11 +530,20 @@ public class IGUCompras extends JFrame{
 		estado.setText(null);
 	}
 
+	/**
+	 * Método que obtiene el campo de buscar la compra.
+	 * @return devuelve el valor del campo de buscar
+	 * @throws NumberFormatException
+	 */
 	public int getCampoBuscar()throws NumberFormatException{
 
 		return Integer.valueOf(campoBuscar.getText());
 	}
 
+	/**
+	 * Método que prepara el objeto de tipo DTOCompra.
+	 * @param compra es un objeto de tipo compra que no está preparado.
+	 */
 	public void setCompra(DTOCompra compra){
 
 		for (int con = 0; con < modeloDTO.getRowCount(); con++) {
@@ -535,6 +573,10 @@ public class IGUCompras extends JFrame{
 		}
 	}
 
+	/**
+	 * Método que cancela una compra.
+	 * @return compra es un objeto de tipo DTOCompra cancelado.
+	 */
 	public DTOCompra cancelar(){
 
 		DTOCompra compra = new DTOCompra();

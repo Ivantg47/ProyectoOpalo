@@ -31,6 +31,10 @@ public class DAOCompra{
 
     }
 
+	/**
+	 * Método que establece la conexión.
+	 * @return conexion es un objeto de tipo Connection que nos va a servir para realizar las instrucciones con la BD.
+	 */
     public Connection getConnection() {
    
         try {
@@ -150,6 +154,14 @@ public class DAOCompra{
 	    return folio;
 	}
 
+	/**
+	 * Método que busca una compra en la base de datos.
+	 * @param idCompra id de la compra, es un valor entero.
+	 * @param modelo DefaultTableModel que es la tabla dónde va a buscar.
+	 * @return compra es la compra que se le va a mostrar al usuario.
+	 * @throws IllegalArgumentException
+	 * @throws SQLException
+	 */
 	public DTOCompra buscar(int idCompra, DefaultTableModel modelo) throws IllegalArgumentException, SQLException{
 
 		DTOCompra compra = new DTOCompra();
@@ -225,6 +237,10 @@ public class DAOCompra{
 
 	}
 
+	/**
+	 * Método que establece el estado de una compra a cancelada.
+	 * @param compra es un objeto de tipo DTOCompra.
+	 */
 	public void cancelar(DTOCompra compra){
 
 		try{
