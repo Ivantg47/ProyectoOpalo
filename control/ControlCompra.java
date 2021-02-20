@@ -79,15 +79,15 @@ public class ControlCompra implements ActionListener, FocusListener{
 
                 oIGU.nuevaVenta();
 
-            } /*else if (evento.getActionCommand().equals("Tirar")) {
+            } else if (evento.getActionCommand().equals("Tirar")) {
                
-                daoVentas.cancelarVenta(iguVentas.cancelarVenta());
-                iguVentas.nuevaVenta();
+                oDAO.cancelar(oIGU.cancelar());
+                oIGU.nuevaVenta();
 
-                JOptionPane.showMessageDialog( null, "Venta cancelada",
-                                "Cancelacion venta", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog( null, "Compra cancelada",
+                                "Cancelacion compra", JOptionPane.INFORMATION_MESSAGE);
 
-            }*/
+            }
 
         } catch (NumberFormatException numEx) {
 
@@ -106,9 +106,11 @@ public class ControlCompra implements ActionListener, FocusListener{
 
         } catch (NullPointerException nullEx) {
 
-            JOptionPane.showMessageDialog(null, "No debe dejar campos vacios",
+            if (!nullEx.getMessage().equals("no ejecutar")) {
+                
+                JOptionPane.showMessageDialog(null, "No debe dejar campos vacios",
                                             "Campo vacio", JOptionPane.ERROR_MESSAGE);
-
+            }
         }catch (Exception ex){
 
             ex.printStackTrace();

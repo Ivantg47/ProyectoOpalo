@@ -224,4 +224,62 @@ public class DAOCompra{
 		
 
 	}
+
+	public void cancelar(DTOCompra compra){
+
+		try{
+
+			conexion = getConnection();
+
+			String sql = "CALL cancelar (?);";
+
+			prepared = conexion.prepareStatement(sql);
+
+			prepared.setString(1, compra.getMotivo());
+
+			result = prepared.executeQuery();
+
+			if (result.next()){
+
+				sql =  "UPDATE Compras SET id_cancelacion = ?, estado = ? WHERE Id_compra = ? ;";
+
+				prepared = conexion.prepareStatement(sql);
+
+				prepared.setInt(1, result.getInt("id_cancelacion"));
+				prepared.setString(2, compra.getEstado());
+				prepared.setInt(3, compra.getId());			
+
+				if (prepared.executeUpdate() == 0) {
+					
+					throw new IllegalArgumentException("Error: En cancelacion");
+
+				}
+
+			} else {
+
+				throw new IllegalArgumentException("Error: En cancelacion");
+			}
+
+		} catch (SQLException es) {
+
+	        es.printStackTrace();
+
+	    } finally {
+
+	        try {
+
+	            if (conexion != null) {
+
+	               conexion.close();
+	               
+	            } 
+
+	        }catch (SQLException es){
+
+	            es.printStackTrace();
+
+	        }
+	    }
+
+	}
 }
